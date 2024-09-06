@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contest;
+use App\Models\Event;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,13 +12,19 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
+    public function run()
     {
-        // User::factory(10)->create();
+        $users = User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $events = Event::factory(50)->make()->each(function ($event) use ($users) {
+            $event->creator_id = $users->random()->id;
+            $event->save();
+        });
+        $eventsCount = $events->count();
+
+        Contest::factory()->count(200)->make()->each(function ($contest, $index) use ($events, $eventsCount) {
+            $contest->event_id = $events[$index % $eventsCount]->id;
+            $contest->save();
+        });
     }
 }

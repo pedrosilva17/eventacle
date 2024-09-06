@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Event>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Contest>
  */
-class EventFactory extends Factory
+class ContestFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,8 +20,9 @@ class EventFactory extends Factory
         return [
             'name' => fake()->words(3, true),
             'description' => fake()->paragraph(),
-            //'creator_id' => User::factory(),
-            'start_time' => fake()->dateTimeBetween('+2 days', '+1 year'),
+            'options' => fake()->name().'|'.fake()->name(),
+            'result' => null,
+            //'event_id' => Event::factory(),
         ];
     }
 }
