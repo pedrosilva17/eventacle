@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Eventacle;
 
 use App\Models\Contest;
 use App\Models\Event;
@@ -15,15 +15,19 @@ class CreateEvent
     public function create(array $input): Event
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:50'],
-            'description' => ['nullable', 'string'],
+            'name' => ['required', 'string', 'max:70'],
+            'description' => ['nullable', 'string', 'max:300'],
             'start_time' => ['required', 'date'],
-            'contests' => ['nullable', 'array'],
-            'contests.*.name' => ['required_with:contests', 'string', 'max:70'],
-            'contests.*.description' => ['nullable', 'string'],
+            'contests' => ['required', 'array'],
+            'contests.*.name' => ['required_with:contests', 'string', 'max:120'],
+            'contests.*.description' => ['nullable', 'string', 'max:300'],
             'contests.*.options' => ['required_with:contests', 'array'],
-            'contests.*.options.*' => ['required_with:contests', 'string'],
-        ], ['required' => 'Required field!', 'required_with' => 'Required field!'])->validate();
+            'contests.*.options.*' => ['required_with:contests', 'string', 'max:70'],
+        ], [
+            'required' => 'This field is required.',
+            'required_with' => 'This field is required.',
+            'max' => 'Keep this field under :max characters.',
+        ])->validate();
 
         $event = Event::create([
             'name' => $input['name'],

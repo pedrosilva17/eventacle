@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\CreateEvent;
+use App\Actions\Eventacle\CreateEvent;
 use App\Models\Event;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;

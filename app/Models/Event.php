@@ -20,7 +20,7 @@ class Event extends Model
 
         static::creating(function ($event) {
             if (empty($event->url)) {
-                $event->url = md5($event->name.$event->id);
+                $event->url = md5($event->name.$event->creator_id);
             }
         });
     }
