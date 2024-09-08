@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class EventFactory extends Factory
             'name' => fake()->words(3, true),
             'description' => fake()->paragraph(),
             //'creator_id' => User::factory(),
-            'start_time' => fake()->dateTimeBetween('+2 days', '+1 year'),
+            'start_time' => Carbon::now()->addDays(rand(1, 365))->addHours(rand(1, 23))->addMinutes(rand(1, 59))->format('Y-m-d\TH:i'),
         ];
     }
 }

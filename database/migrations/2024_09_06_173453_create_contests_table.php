@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('options')->nullable();
+            $table->string('options');
             $table->string('result')->nullable();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->timestamps();

@@ -1,5 +1,7 @@
 node_modules/*
 composer.json
+composer.lock
+README.md
 package.json
 package-lock.json
 jsconfig.json
