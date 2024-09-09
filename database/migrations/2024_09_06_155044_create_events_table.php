@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('url')->unique();
+            $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
             $table->dateTime('start_time');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -61,5 +62,39 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the events created by the user.
+     */
+    public function eventsCreated(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    /**
+     * Get the contests in which the user has predicted.
+     */
+    public function contestsPredicted()
+    {
+        return $this->belongsToMany(Contest::class, 'predictions')->using(Prediction::class);
+    }
+
+    /**
+     * Get the events in which the user has predicted.
+     */
+    public function eventsPredicted()
+    {
+        return Event::findMany($this->contestsPredicted()->get()->pluck('event_id'));
+    }
+
+    /**
+     * Get the predictions made by this user.
+     *
+     * @return void
+     */
+    public function predictions(): HasMany
+    {
+        return $this->hasMany(Prediction::class);
     }
 }

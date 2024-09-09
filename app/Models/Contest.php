@@ -18,4 +18,12 @@ class Contest extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    /**
+     * Get the users who predicted in this contest.
+     */
+    public function usersWithPrediction()
+    {
+        return $this->belongsToMany(User::class)->using(Prediction::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Contest;
 use App\Models\Event;
+use App\Models\Prediction;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -22,9 +23,11 @@ class DatabaseSeeder extends Seeder
         });
         $eventsCount = $events->count();
 
-        Contest::factory()->count(200)->make()->each(function ($contest, $index) use ($events, $eventsCount) {
+        Contest::factory(200)->make()->each(function ($contest, $index) use ($events, $eventsCount) {
             $contest->event_id = $events[$index % $eventsCount]->id;
             $contest->save();
         });
+
+        Prediction::factory(200)->create();
     }
 }

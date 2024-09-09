@@ -17,7 +17,7 @@ class CreateEvent
         Validator::make($input, [
             'name' => ['required', 'string', 'max:70'],
             'description' => ['nullable', 'string', 'max:300'],
-            'start_time' => ['required', 'date'],
+            'start_time' => ['required', 'date', 'after:today'],
             'contests' => ['required', 'array'],
             'contests.*.name' => ['required_with:contests', 'string', 'max:120'],
             'contests.*.description' => ['nullable', 'string', 'max:300'],

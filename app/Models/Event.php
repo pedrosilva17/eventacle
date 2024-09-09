@@ -4,36 +4,38 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'url', 'description', 'creator_id', 'start_time'];
+    protected $fillable = ['name', 'slug', 'description', 'creator_id', 'start_time'];
 
     /**
-     * Automatically generate a url when creating an event.
+     * Automatically generate a url slug when creating an event.
      */
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($event) {
-            if (empty($event->url)) {
-                $event->url = md5($event->name.$event->creator_id);
+            if (empty($event->slug)) {
+                $event->slug = str_replace(' ', '-', strtolower($event->name)).'-'.md5($event->name.$event->creator_id);
             }
         });
     }
 
     public function getRouteKeyName()
     {
-        return 'url';
+        return 'slug';
     }
 
     /**
      * Get the contests for the event.
      */
-    public function contests()
+    public function contests(): HasMany
     {
         return $this->hasMany(Contest::class);
     }
@@ -41,8 +43,18 @@ class Event extends Model
     /**
      * Get the creator of the event.
      */
-    public function creator()
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    /**
+     * Get the predictions made for this event.
+     *
+     * @return void
+     */
+    public function predictions(): HasMany
+    {
+        return $this->hasMany(Prediction::class);
     }
 }

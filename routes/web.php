@@ -33,7 +33,7 @@ Route::prefix('/event')->name('event')->group(function () {
 
     Route::get('/{event}', function (Event $event) {
         return Inertia::render('Event/Show', [
-            'event' => $event->load('contests', 'creator'),
+            'event' => $event->load('contests', 'creator', 'predictions'),
         ]);
     })->name('.show');
 });
