@@ -22,7 +22,7 @@ class Event extends Model
 
         static::creating(function ($event) {
             if (empty($event->slug)) {
-                $event->slug = str_replace(' ', '-', strtolower($event->name)).'-'.md5($event->name.$event->creator_id);
+                $event->slug = str_replace(' ', '-', preg_replace('/\s+/', ' ', preg_replace('/[^A-Za-z0-9 ]/', '', strtolower($event->name)))).'-'.md5($event->name.$event->creator_id);
             }
         });
     }

@@ -41,7 +41,7 @@ class CreateEvent
                 Contest::create([
                     'name' => $contest['name'],
                     'description' => $contest['description'] ?? null,
-                    'options' => implode('|', $contest['options']),
+                    'options' => implode('|', str_replace('|', '', $contest['options'])),
                     'event_id' => $event->id,
                 ]);
             }

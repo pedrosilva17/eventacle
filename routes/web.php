@@ -1,6 +1,8 @@
 <?php
 
 use App\Actions\Eventacle\CreateEvent;
+use App\Actions\Eventacle\PredictEvent;
+use App\Http\Middleware\CheckGuestName;
 use App\Models\Event;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +38,19 @@ Route::prefix('/event')->name('event')->group(function () {
             'event' => $event->load('contests', 'creator', 'predictions'),
         ]);
     })->name('.show');
+
+    Route::get('/{event}/predict', function (Event $event) {
+        return Inertia::render('Event/Predict', [
+            'event' => $event->load('contests', 'predictions'),
+        ]);
+    })->middleware(CheckGuestName::class)->name('.prediction-form');
+
+    Route::post('/{event}/predict', function (Event $event) {
+        (new PredictEvent)->predict(request()->all());
+        request()->session()->forget('guest_user_name');
+
+        return redirect()->route('event.show', $event)->with('success', 'Prediction saved.');
+    })->name('.predict');
 });
 
 Route::middleware([

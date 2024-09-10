@@ -14,7 +14,7 @@ class Prediction extends Pivot
 
     protected $table = 'predictions';
 
-    protected $fillable = ['prediction_name', 'points'];
+    protected $fillable = ['user_id', 'user_name', 'contest_id', 'event_id', 'prediction_name', 'points'];
 
     /**
      * Get the event this prediction was made for.
