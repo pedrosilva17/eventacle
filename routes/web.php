@@ -5,6 +5,7 @@ use App\Actions\Eventacle\EditEvent;
 use App\Actions\Eventacle\PredictEvent;
 use App\Actions\Eventacle\PublishWinners;
 use App\Http\Middleware\CheckEventCreator;
+use App\Http\Middleware\CheckEventTiming;
 use App\Http\Middleware\CheckGuestName;
 use App\Models\Event;
 use Illuminate\Foundation\Application;
@@ -46,19 +47,19 @@ Route::prefix('/event')->name('event')->group(function () {
             (new EditEvent)->edit(request()->all());
 
             return redirect()->route('event.show', $event)->with('success', 'Event edited successfully.');
-        })->name('.edit');
+        })->middleware(CheckEventCreator::class)->name('.edit');
 
         Route::get('/{event}/winners', function (Event $event) {
             return Inertia::render('Event/Winners', [
                 'event' => $event->load('contests', 'predictions'),
             ]);
-        })->middleware(CheckEventCreator::class)->name('.winners-form');
+        })->middleware([CheckEventCreator::class, CheckEventTiming::class.':winners'])->name('.winners-form');
 
         Route::post('/{event}/winners', function (Event $event) {
             (new PublishWinners)->publish(request()->all());
 
             return redirect()->route('event.show', $event)->with('success', 'Winners published successfully.');
-        })->name('.publish-winners');
+        })->middleware([CheckEventCreator::class, CheckEventTiming::class.':winners'])->name('.publish-winners');
     });
 
     Route::get('/{event}', function (Event $event) {
@@ -71,14 +72,14 @@ Route::prefix('/event')->name('event')->group(function () {
         return Inertia::render('Event/Predict', [
             'event' => $event->load('contests', 'predictions'),
         ]);
-    })->middleware(CheckGuestName::class)->name('.prediction-form');
+    })->middleware([CheckGuestName::class, CheckEventTiming::class.':predictions'])->name('.prediction-form');
 
     Route::post('/{event}/predict', function (Event $event) {
         (new PredictEvent)->predict(request()->all());
         session()->forget('guest_user_name');
 
         return redirect()->route('event.show', $event)->with('success', 'Prediction saved successfully.');
-    })->name('.predict');
+    })->middleware([CheckGuestName::class, CheckEventTiming::class.':predictions'])->name('.predict');
 });
 
 Route::middleware([

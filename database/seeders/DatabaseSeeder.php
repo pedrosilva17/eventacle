@@ -8,6 +8,7 @@ use App\Models\LeaderboardEntry;
 use App\Models\Prediction;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,6 +31,9 @@ class DatabaseSeeder extends Seeder
         });
 
         Prediction::factory(200)->create();
-        LeaderboardEntry::factory(200)->create();
+        LeaderboardEntry::factory(200)->make()->each(function ($entry) {
+            $entry->event_id = Event::where('start_time', '<', Carbon::now())->get()->random()->id;
+            $entry->save();
+        });
     }
 }
