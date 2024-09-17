@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Eventacle\CreateEvent;
+use App\Actions\Eventacle\EditEvent;
 use App\Actions\Eventacle\PredictEvent;
 use App\Actions\Eventacle\PublishWinners;
 use App\Http\Middleware\CheckEventCreator;
@@ -28,11 +29,36 @@ Route::prefix('/event')->name('event')->group(function () {
         Route::get('/create', function () {
             return Inertia::render('Event/Create');
         })->name('.create');
-        Route::post('/new', function () {
+
+        Route::post('/create', function () {
             (new CreateEvent)->create(request()->all());
 
-            return redirect()->route('dashboard')->with('success', 'Event created.');
+            return redirect()->route('dashboard')->with('success', 'Event created successfully.');
         })->name('.new');
+
+        Route::get('/{event}/edit', function (Event $event) {
+            return Inertia::render('Event/Edit', [
+                'event' => $event->load('contests'),
+            ]);
+        })->middleware(CheckEventCreator::class)->name('.edit-form');
+
+        Route::post('/{event}/edit', function (Event $event) {
+            (new EditEvent)->edit(request()->all());
+
+            return redirect()->route('event.show', $event)->with('success', 'Event edited successfully.');
+        })->name('.edit');
+
+        Route::get('/{event}/winners', function (Event $event) {
+            return Inertia::render('Event/Winners', [
+                'event' => $event->load('contests', 'predictions'),
+            ]);
+        })->middleware(CheckEventCreator::class)->name('.winners-form');
+
+        Route::post('/{event}/winners', function (Event $event) {
+            (new PublishWinners)->publish(request()->all());
+
+            return redirect()->route('event.show', $event)->with('success', 'Winners published successfully.');
+        })->name('.publish-winners');
     });
 
     Route::get('/{event}', function (Event $event) {
@@ -53,18 +79,6 @@ Route::prefix('/event')->name('event')->group(function () {
 
         return redirect()->route('event.show', $event)->with('success', 'Prediction saved successfully.');
     })->name('.predict');
-
-    Route::get('/{event}/winners', function (Event $event) {
-        return Inertia::render('Event/Winners', [
-            'event' => $event->load('contests', 'predictions'),
-        ]);
-    })->middleware(CheckEventCreator::class)->name('.winners-form');
-
-    Route::post('/{event}/winners', function (Event $event) {
-        (new PublishWinners)->publish(request()->all());
-
-        return redirect()->route('event.show', $event)->with('success', 'Winners published successfully.');
-    })->name('.publish-winners');
 });
 
 Route::middleware([
