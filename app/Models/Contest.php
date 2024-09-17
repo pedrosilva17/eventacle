@@ -20,10 +20,10 @@ class Contest extends Model
     }
 
     /**
-     * Get the users who predicted in this contest.
+     * Get the predicted made for this contest.
      */
-    public function usersWithPrediction()
+    public function predictions()
     {
-        return $this->belongsToMany(User::class)->using(Prediction::class);
+        return $this->hasMany(Prediction::class);
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Contest;
 use App\Models\Event;
+use App\Models\LeaderboardEntry;
 use App\Models\Prediction;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -29,5 +30,6 @@ class DatabaseSeeder extends Seeder
         });
 
         Prediction::factory(200)->create();
+        LeaderboardEntry::factory(200)->create();
     }
 }

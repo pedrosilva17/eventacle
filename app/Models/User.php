@@ -73,11 +73,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the contests in which the user has predicted.
+     * Get the predictions made by the user.
      */
-    public function contestsPredicted()
+    public function predictions()
     {
-        return $this->belongsToMany(Contest::class, 'predictions')->using(Prediction::class);
+        return $this->belongsToMany(Contest::class, 'predictions')->withPivot('event_id', 'prediction_name', 'points')->using(Prediction::class);
     }
 
     /**
@@ -85,16 +85,14 @@ class User extends Authenticatable
      */
     public function eventsPredicted()
     {
-        return Event::findMany($this->contestsPredicted()->get()->pluck('event_id'));
+        return Event::findMany($this->predictions()->get()->pluck('event_id'));
     }
 
     /**
-     * Get the predictions made by this user.
-     *
-     * @return void
+     * Get the prediction leaderboards the user appears in.
      */
-    public function predictions(): HasMany
+    public function leaderboardEntries(): HasMany
     {
-        return $this->hasMany(Prediction::class);
+        return $this->hasMany(LeaderboardEntry::class)->orderByDesc('score');
     }
 }

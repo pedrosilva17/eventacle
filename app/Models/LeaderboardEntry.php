@@ -6,22 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Prediction extends Model
+class LeaderboardEntry extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'user_name', 'contest_id', 'event_id', 'prediction_name', 'points'];
+    protected $table = 'leaderboards';
+
+    protected $fillable = ['user_id', 'user_name', 'event_id', 'score'];
 
     /**
-     * Get the contest this prediction was made for.
-     */
-    public function contest(): BelongsTo
-    {
-        return $this->belongsTo(Contest::class);
-    }
-
-    /**
-     * Get the event this prediction was made for.
+     * Get the event this entry was created from.
      */
     public function event(): BelongsTo
     {
@@ -29,7 +23,7 @@ class Prediction extends Model
     }
 
     /**
-     * Get the (registered) user who made this prediction.
+     * Get the (registered) user who this entry belongs to.
      */
     public function user(): BelongsTo
     {

@@ -9,8 +9,6 @@ class PredictEvent
 {
     /**
      * Make predictions on all contests of an event.
-     *
-     * @return array<string, mixed>
      */
     public function predict(array $input): array
     {
@@ -18,14 +16,22 @@ class PredictEvent
         $user_name = auth()->check() ? auth()->user()->name : substr(request()->session()->get('guest_user_name'), 0, 255);
         $predictions = [];
         foreach (($input['predictions']) as $contest_id => $prediction) {
-            array_push($predictions, Prediction::create([
-                'user_id' => $user_id,
-                'user_name' => $user_name,
-                'contest_id' => $contest_id,
-                'event_id' => $input['event']['id'],
-                'prediction_name' => $prediction,
-                'points' => 1,
-            ]));
+            $user_id === null ? $existing_prediction = Prediction::where('user_name', $user_name)->where('contest_id', $contest_id) : $existing_prediction = Prediction::where('user_id', $user_id)->where('contest_id', $contest_id);
+            if ($existing_prediction->count() > 0) {
+                $existing_prediction->update([
+                    'prediction_name' => $prediction,
+                    'points' => 1,
+                ]);
+            } else {
+                array_push($predictions, Prediction::create([
+                    'user_id' => $user_id,
+                    'user_name' => $user_name,
+                    'contest_id' => $contest_id,
+                    'event_id' => $input['event']['id'],
+                    'prediction_name' => $prediction,
+                    'points' => 1,
+                ]));
+            }
         }
 
         return $predictions;

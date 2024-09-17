@@ -22,7 +22,14 @@ class Event extends Model
 
         static::creating(function ($event) {
             if (empty($event->slug)) {
-                $event->slug = str_replace(' ', '-', preg_replace('/\s+/', ' ', preg_replace('/[^A-Za-z0-9 ]/', '', strtolower($event->name)))).'-'.md5($event->name.$event->creator_id);
+                $event->slug =
+                    str_replace(' ', '-',
+                        preg_replace('/\s+/', ' ',
+                            preg_replace('/[^A-Za-z0-9 ]/', '',
+                                iconv('UTF-8', 'ASCII//TRANSLIT',
+                                    strtolower($event->name))))).
+                    '-'.
+                    md5($event->name.$event->creator_id);
             }
         });
     }
@@ -56,5 +63,15 @@ class Event extends Model
     public function predictions(): HasMany
     {
         return $this->hasMany(Prediction::class);
+    }
+
+    /**
+     * Get the prediction leaderboard for this event.
+     *
+     * @return void
+     */
+    public function leaderboard(): HasMany
+    {
+        return $this->hasMany(LeaderboardEntry::class)->orderByDesc('score');
     }
 }
