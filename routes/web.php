@@ -32,9 +32,9 @@ Route::prefix('/event')->name('event')->group(function () {
         })->name('.create');
 
         Route::post('/create', function () {
-            (new CreateEvent)->create(request()->all());
+            $event = (new CreateEvent)->create(request()->all());
 
-            return redirect()->route('dashboard')->with('success', 'Event created successfully.');
+            return redirect()->route('event.show', $event)->with('success', 'Event created successfully.');
         })->name('.new');
 
         Route::get('/{event}/edit', function (Event $event) {
@@ -48,6 +48,14 @@ Route::prefix('/event')->name('event')->group(function () {
 
             return redirect()->route('event.show', $event)->with('success', 'Event edited successfully.');
         })->middleware(CheckEventCreator::class)->name('.edit');
+
+        Route::delete('/{event}/delete', function (Event $event) {
+            DB::transaction(function () use ($event) {
+                $event->delete();
+            });
+
+            return redirect()->route('dashboard')->with('success', 'Event deleted successfully.');
+        })->middleware(CheckEventCreator::class)->name('.delete');
 
         Route::get('/{event}/winners', function (Event $event) {
             return Inertia::render('Event/Winners', [
