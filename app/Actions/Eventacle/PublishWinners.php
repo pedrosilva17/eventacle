@@ -22,11 +22,12 @@ class PublishWinners
         }
 
         $eventId = $input['event']['id'];
+        $eventName = $input['event']['name'];
 
-        return $this->calculateLeaderboard($input['event']['predictions'], $eventId);
+        return $this->calculateLeaderboard($input['event']['predictions'], $eventId, $eventName);
     }
 
-    protected function calculateLeaderboard(array $predictions, int $eventId)
+    protected function calculateLeaderboard(array $predictions, int $eventId, string $eventName)
     {
         $entries = [];
         $predictions = Prediction::where('event_id', $eventId)->get()->groupBy('user_id');
@@ -49,7 +50,8 @@ class PublishWinners
             $newEntry = LeaderboardEntry::make();
             $newEntry->user_id = gettype($userId) === 'integer' ? $userId : null;
             $newEntry->user_name = $userPredictions[0]['user_name'];
-            $newEntry->event_id = $userPredictions[0]['event_id'];
+            $newEntry->event_id = $eventId;
+            $newEntry->event_name = $eventName;
             $newEntry->score = $score;
             $newEntry->save();
             array_push($entries, $newEntry);

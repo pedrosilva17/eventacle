@@ -23,6 +23,7 @@ class EventFactory extends Factory
             'description' => fake()->paragraph(),
             //'creator_id' => User::factory(),
             'start_time' => Carbon::now()->addDays(rand(-365, 365))->addHours(rand(1, 23))->addMinutes(rand(1, 59))->format('Y-m-d\TH:i'),
+            'scoring_type' => fake()->boolean() ? 'single points' : 'confidence points',
         ];
     }
 }

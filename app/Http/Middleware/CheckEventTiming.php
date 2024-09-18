@@ -19,12 +19,12 @@ class CheckEventTiming
         switch ($type) {
             case 'predictions':
                 if (Carbon::now()->isAfter($startTime)) {
-                    return redirect()->route('event.show', $event)->with('error', 'No more predictions! The event has already started.');
+                    return redirect()->route('event.show', $event)->with('error', 'You can\'t do that, the event has already started!');
                 }
                 break;
             case 'winners':
                 if (Carbon::now()->isBefore($startTime)) {
-                    return redirect()->route('event.show', $event)->with('error', 'Publishing winners is only possible after the event has started.');
+                    return redirect()->route('event.show', $event)->with('error', 'You can\'t do that, the event hasn\'t started yet!');
                 }
                 break;
             default:

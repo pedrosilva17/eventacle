@@ -4,6 +4,7 @@ namespace App\Actions\Eventacle;
 
 use App\Models\Event;
 use App\Models\Prediction;
+use Illuminate\Support\Facades\Validator;
 
 class PredictEvent
 {
@@ -12,6 +13,9 @@ class PredictEvent
      */
     public function predict(array $input): array
     {
+        Validator::make($input, [
+            'points.*' => 'distinct',
+        ], ['points.*.distinct' => 'Each contest must have a unique confidence point.'])->validate();
         $user_id = auth()->check() ? auth()->user()->id : null;
         $user_name = auth()->check() ? auth()->user()->name : substr(request()->session()->get('guest_user_name'), 0, 255);
         $predictions = [];
@@ -20,12 +24,12 @@ class PredictEvent
             if ($existing_prediction->count() > 0) {
                 $existing_prediction->update([
                     'prediction_name' => $prediction,
-                    'points' => 1,
+                    'points' => (array_key_exists($contest_id, $input['points']) && $input['event']['scoring_type'] === 'confidence points') ? $input['points'][$contest_id] : 1,
                 ]);
             } else {
                 $newPrediction = Prediction::make([
                     'prediction_name' => $prediction,
-                    'points' => 1,
+                    'points' => (array_key_exists($contest_id, $input['points']) && $input['event']['scoring_type'] === 'confidence points') ? $input['points'][$contest_id] : 1,
                 ]);
                 $newPrediction->user_id = $user_id;
                 $newPrediction->user_name = $user_name;

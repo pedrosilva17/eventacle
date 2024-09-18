@@ -33,6 +33,7 @@ class CreateEvent
             'name' => $input['name'],
             'description' => $input['description'] ?? null,
             'start_time' => $input['start_time'],
+            'scoring_type' => $input['scoring_type'],
         ]);
         $event->creator_id = Auth::id();
         $event->save();
