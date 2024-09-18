@@ -46,9 +46,13 @@ class PublishWinners
                     $score += $prediction['points'];
                 }
             }
-            array_push($entries, LeaderboardEntry::create(
-                ['user_id' => (gettype($userId) === 'integer' ? $userId : null), 'user_name' => $userPredictions[0]['user_name'], 'event_id' => $userPredictions[0]['event_id'], 'score' => $score]
-            ));
+            $newEntry = LeaderboardEntry::make();
+            $newEntry->user_id = gettype($userId) === 'integer' ? $userId : null;
+            $newEntry->user_name = $userPredictions[0]['user_name'];
+            $newEntry->event_id = $userPredictions[0]['event_id'];
+            $newEntry->score = $score;
+            $newEntry->save();
+            array_push($entries, $newEntry);
         }
 
         return $entries;

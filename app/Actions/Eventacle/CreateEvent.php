@@ -29,21 +29,23 @@ class CreateEvent
             'max' => 'Keep this field under :max characters.',
         ])->validate();
 
-        $event = Event::create([
+        $event = Event::make([
             'name' => $input['name'],
             'description' => $input['description'] ?? null,
-            'creator_id' => Auth::id(),
             'start_time' => $input['start_time'],
         ]);
+        $event->creator_id = Auth::id();
+        $event->save();
 
         if (isset($input['contests']) && is_array($input['contests'])) {
             foreach ($input['contests'] as $contest) {
-                Contest::create([
+                $newContest = Contest::make([
                     'name' => $contest['name'],
                     'description' => $contest['description'] ?? null,
                     'options' => implode('|', str_replace('|', '', $contest['options'])),
-                    'event_id' => $event->id,
                 ]);
+                $newContest->event_id = $event->id;
+                $newContest->save();
             }
         }
 

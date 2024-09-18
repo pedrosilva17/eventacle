@@ -23,14 +23,16 @@ class PredictEvent
                     'points' => 1,
                 ]);
             } else {
-                array_push($predictions, Prediction::create([
-                    'user_id' => $user_id,
-                    'user_name' => $user_name,
-                    'contest_id' => $contest_id,
-                    'event_id' => $input['event']['id'],
+                $newPrediction = Prediction::make([
                     'prediction_name' => $prediction,
                     'points' => 1,
-                ]));
+                ]);
+                $newPrediction->user_id = $user_id;
+                $newPrediction->user_name = $user_name;
+                $newPrediction->contest_id = $contest_id;
+                $newPrediction->event_id = $input['event']['id'];
+                $newPrediction->save();
+                array_push($predictions, $newPrediction);
             }
         }
 

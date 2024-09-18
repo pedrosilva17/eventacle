@@ -11,7 +11,7 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'creator_id', 'start_time'];
+    protected $fillable = ['name', 'description', 'start_time'];
 
     /**
      * Automatically generate a url slug when creating an event.

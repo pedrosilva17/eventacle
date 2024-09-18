@@ -9,7 +9,7 @@ class Contest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'options', 'result', 'event_id'];
+    protected $fillable = ['name', 'description', 'options', 'result'];
 
     /**
      * Get the event that the contest belongs to.

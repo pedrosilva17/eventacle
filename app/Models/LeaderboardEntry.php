@@ -12,8 +12,6 @@ class LeaderboardEntry extends Model
 
     protected $table = 'leaderboards';
 
-    protected $fillable = ['user_id', 'user_name', 'event_id', 'score'];
-
     /**
      * Get the event this entry was created from.
      */

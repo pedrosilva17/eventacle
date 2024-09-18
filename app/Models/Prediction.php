@@ -10,7 +10,7 @@ class Prediction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'user_name', 'contest_id', 'event_id', 'prediction_name', 'points'];
+    protected $fillable = ['prediction_name', 'points'];
 
     /**
      * Get the contest this prediction was made for.
