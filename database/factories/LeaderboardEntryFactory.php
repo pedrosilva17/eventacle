@@ -29,6 +29,7 @@ class LeaderboardEntryFactory extends Factory
             'user_id' => $userId,
             'user_name' => $userId !== null ? User::where('id', '=', $userId)->first()->name : fake()->name().' (Guest)',
             //'event_id' => $event->id,
+            //'event_name' => $event->name,
             'score' => fake()->randomDigit(),
         ];
     }

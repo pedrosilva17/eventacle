@@ -8,6 +8,7 @@ use App\Http\Middleware\CheckEventCreator;
 use App\Http\Middleware\CheckEventTiming;
 use App\Http\Middleware\CheckGuestName;
 use App\Models\Event;
+use App\Models\LeaderboardEntry;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,6 +52,7 @@ Route::prefix('/event')->name('event')->group(function () {
 
         Route::delete('/{event}/delete', function (Event $event) {
             DB::transaction(function () use ($event) {
+                LeaderboardEntry::where('event_id', $event->id)->update(['event_id' => null]);
                 $event->delete();
             });
 
