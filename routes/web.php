@@ -6,7 +6,6 @@ use App\Actions\Eventacle\PredictEvent;
 use App\Actions\Eventacle\PublishWinners;
 use App\Http\Middleware\CheckEventCreator;
 use App\Http\Middleware\CheckEventTiming;
-use App\Http\Middleware\CheckGuestName;
 use App\Models\Event;
 use App\Models\LeaderboardEntry;
 use Illuminate\Foundation\Application;
@@ -81,15 +80,15 @@ Route::prefix('/event')->name('event')->group(function () {
     Route::get('/{event}/predict', function (Event $event) {
         return Inertia::render('Event/Predict', [
             'event' => $event->load('contests', 'predictions'),
+            'userId' => Auth::id(),
         ]);
-    })->middleware([CheckGuestName::class, CheckEventTiming::class.':predictions'])->name('.prediction-form');
+    })->middleware(CheckEventTiming::class.':predictions')->name('.prediction-form');
 
     Route::post('/{event}/predict', function (Event $event) {
         (new PredictEvent)->predict(request()->all());
-        session()->forget('guest_user_name');
 
         return redirect()->route('event.show', $event)->with('success', 'Prediction saved successfully.');
-    })->middleware([CheckGuestName::class, CheckEventTiming::class.':predictions'])->name('.predict');
+    })->middleware(CheckEventTiming::class.':predictions')->name('.predict');
 });
 
 Route::middleware([
