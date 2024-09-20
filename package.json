@@ -7,10 +7,12 @@
         "prepare": "husky"
     },
     "devDependencies": {
+        "@iconify-json/ic": "^1.2.0",
         "@inertiajs/vue3": "^1.0.14",
         "@tailwindcss/forms": "^0.5.7",
         "@tailwindcss/typography": "^0.5.10",
         "@vitejs/plugin-vue": "^5.0.0",
+        "@vue/compiler-sfc": "^3.5.7",
         "@vue/server-renderer": "^3.3.13",
         "autoprefixer": "^10.4.16",
         "axios": "^1.7.4",
@@ -20,6 +22,8 @@
         "postcss": "^8.4.32",
         "prettier": "^3.3.3",
         "tailwindcss": "^3.4.0",
+        "unplugin-icons": "^0.19.3",
+        "unplugin-vue-components": "^0.27.4",
         "vite": "^5.0",
         "vue": "^3.3.13"
     },
