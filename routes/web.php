@@ -6,6 +6,7 @@ use App\Actions\Eventacle\PredictEvent;
 use App\Actions\Eventacle\PublishWinners;
 use App\Http\Middleware\CheckEventCreator;
 use App\Http\Middleware\CheckEventTiming;
+use App\Http\Middleware\CheckExistingWinners;
 use App\Models\Event;
 use App\Models\LeaderboardEntry;
 use Illuminate\Foundation\Application;
@@ -62,13 +63,13 @@ Route::prefix('/event')->name('event')->group(function () {
             return Inertia::render('Event/Winners', [
                 'event' => $event->load('contests', 'predictions'),
             ]);
-        })->middleware([CheckEventCreator::class, CheckEventTiming::class.':winners'])->name('.winners-form');
+        })->middleware([CheckEventCreator::class, CheckEventTiming::class.':winners', CheckExistingWinners::class])->name('.winners-form');
 
         Route::post('/{event}/winners', function (Event $event) {
             (new PublishWinners)->publish(request()->all());
 
             return redirect()->route('event.show', $event)->with('success', 'Winners published successfully.');
-        })->middleware([CheckEventCreator::class, CheckEventTiming::class.':winners'])->name('.publish-winners');
+        })->middleware([CheckEventCreator::class, CheckEventTiming::class.':winners', CheckExistingWinners::class])->name('.publish-winners');
     });
 
     Route::get('/{event}', function (Event $event) {
