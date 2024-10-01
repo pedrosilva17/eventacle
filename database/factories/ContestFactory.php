@@ -17,10 +17,16 @@ class ContestFactory extends Factory
      */
     public function definition(): array
     {
+        $optionCount = fake()->numberBetween(2, 8);
+        $options = [];
+        for ($i = 0; $i < $optionCount; $i++) {
+            array_push($options, fake()->name());
+        }
+
         return [
             'name' => fake()->words(3, true),
             'description' => fake()->paragraph(),
-            'options' => fake()->name().'|'.fake()->name(),
+            'options' => implode('|SEP|', $options),
             'result' => null,
             //'event_id' => Event::factory(),
         ];

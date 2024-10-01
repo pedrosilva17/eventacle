@@ -21,13 +21,13 @@ class PredictionFactory extends Factory
     {
         $event = Event::get()->random();
         $contest = Contest::where('event_id', $event->id)->get()->random();
-        $options = explode('|', $contest->options);
+        $options = explode('|SEP|', $contest->options);
         $isAuthenticated = fake()->boolean();
         $userId = $isAuthenticated ? User::get()->random()->id : null;
 
         return [
             'user_id' => $userId,
-            'user_name' => $userId !== null ? User::where('id', '=', $userId)->first()->name : fake()->name().' (Guest)',
+            'user_name' => $userId !== null ? User::find($userId)->name : fake()->name().' (Guest)',
             'contest_id' => $contest->id,
             'event_id' => $event->id,
             'prediction_name' => $options[fake()->numberBetween(0, count($options) - 1)],

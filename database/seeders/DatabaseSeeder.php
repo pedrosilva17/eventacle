@@ -30,7 +30,27 @@ class DatabaseSeeder extends Seeder
             $contest->save();
         });
 
-        Prediction::factory(200)->create();
+        Event::all()->each(function ($event) {
+            $possiblePoints = [];
+            $isAuthenticated = fake()->boolean();
+            $userId = $isAuthenticated ? User::get()->random()->id : null;
+            $fakeName = fake()->name().' (Guest)';
+            Contest::where('event_id', '=', $event->id)->orderBy('event_id')->each(function ($contest) use ($event, $possiblePoints, $userId, $fakeName) {
+                $options = explode('|SEP|', $contest->options);
+                if (empty($possiblePoints)) {
+                    $possiblePoints = range(1, count($options));
+                    shuffle($possiblePoints);
+                }
+                Prediction::factory(1)->create([
+                    'user_id' => $userId,
+                    'user_name' => $userId !== null ? User::find($userId)->name : $fakeName,
+                    'event_id' => $event->id,
+                    'contest_id' => $contest->id,
+                    'prediction_name' => $options[fake()->numberBetween(0, count($options) - 1)],
+                    'points' => $event->scoring_type === 'confidence points' ? array_pop($possiblePoints) : 1,
+                ]);
+            });
+        });
         LeaderboardEntry::factory(200)->make()->each(function ($entry) {
             $entry->event_id = Event::where('start_time', '<', Carbon::now())->get()->random()->id;
             $entry->event_name = Event::find($entry->event_id)->name;

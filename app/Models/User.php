@@ -69,7 +69,7 @@ class User extends Authenticatable
      */
     public function eventsCreated(): HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Event::class, 'creator_id');
     }
 
     /**
@@ -77,7 +77,7 @@ class User extends Authenticatable
      */
     public function predictions()
     {
-        return $this->belongsToMany(Contest::class, 'predictions')->withPivot('event_id', 'prediction_name', 'points')->using(Prediction::class);
+        return $this->hasMany(Prediction::class);
     }
 
     /**

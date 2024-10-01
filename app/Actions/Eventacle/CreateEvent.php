@@ -43,7 +43,7 @@ class CreateEvent
                 $newContest = Contest::make([
                     'name' => $contest['name'],
                     'description' => $contest['description'] ?? null,
-                    'options' => implode('|', str_replace('|', '', $contest['options'])),
+                    'options' => implode('|SEP|', str_replace('|SEP|', '', $contest['options'])),
                 ]);
                 $newContest->event_id = $event->id;
                 $newContest->save();
