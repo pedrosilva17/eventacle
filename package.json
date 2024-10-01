@@ -21,6 +21,7 @@
         "lint-staged": "^15.2.10",
         "postcss": "^8.4.32",
         "prettier": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.8",
         "tailwindcss": "^3.4.0",
         "unplugin-icons": "^0.19.3",
         "unplugin-vue-components": "^0.27.4",

@@ -14,8 +14,50 @@ export default {
 
 	theme: {
 		extend: {
+			boxShadow: {
+				reverse: 'inset 0 4px 8px 0 rgb(255 255 255 / 0.15)',
+			},
 			fontFamily: {
-				sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+				sans: ['Inter', ...defaultTheme.fontFamily.sans],
+				serif: ['Aleo', ...defaultTheme.fontFamily.serif],
+			},
+			colors: {
+				primary: {
+					DEFAULT: '#622E88',
+					extralight: '#A681CD',
+					light: '#8651AD',
+					dark: '#4B1C68',
+					extradark: '#3B0C58',
+				},
+				secondary: {
+					DEFAULT: '#CB80AB',
+					extralight: '#F1C7DF',
+					light: '#E1B7CF',
+					dark: '#BE6095',
+					extradark: '#AE5085',
+				},
+				success: {
+					DEFAULT: '#B1E85E',
+					extralight: '#DBF0A4',
+					light: '#CBE094',
+					dark: '#97E029',
+					extradark: '#87D019',
+				},
+				error: {
+					DEFAULT: '#F26419',
+					light: '#F58B51',
+					dark: '#C14B0B',
+				},
+				white: {
+					DEFAULT: '#EDEDED',
+					light: '#FDFDFD',
+					dark: '#DDDDDD',
+				},
+				black: {
+					DEFAULT: '#222222',
+					light: '#323232',
+					dark: '#121212',
+				},
 			},
 		},
 	},

@@ -16,7 +16,7 @@ const props = defineProps({
 	},
 });
 
-let open = ref(false);
+let open = defineModel();
 
 const closeOnEscape = (e) => {
 	if (open.value && e.key === 'Escape') {
@@ -44,11 +44,15 @@ const alignmentClasses = computed(() => {
 
 	return 'origin-top';
 });
+
+const toggleDropdown = () => {
+	open.value = !open.value;
+};
 </script>
 
 <template>
 	<div class="relative">
-		<div @click="open = !open">
+		<div @click="toggleDropdown">
 			<slot name="trigger" />
 		</div>
 
