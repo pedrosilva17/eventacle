@@ -21,6 +21,9 @@ export default {
 				sans: ['Inter', ...defaultTheme.fontFamily.sans],
 				serif: ['Aleo', ...defaultTheme.fontFamily.serif],
 			},
+			gridTemplateColumns: {
+				auto: 'auto 1fr',
+			},
 			colors: {
 				primary: {
 					DEFAULT: '#622E88',

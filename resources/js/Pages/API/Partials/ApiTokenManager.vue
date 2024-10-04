@@ -86,13 +86,7 @@ const deleteApiToken = () => {
 				<!-- Token Name -->
 				<div class="col-span-6 sm:col-span-4">
 					<InputLabel for="name" value="Name" />
-					<TextInput
-						id="name"
-						v-model="createApiTokenForm.name"
-						type="text"
-						class="mt-1 block w-full"
-						autofocus
-					/>
+					<TextInput id="name" v-model="createApiTokenForm.name" type="text" autofocus />
 					<InputError :message="createApiTokenForm.errors.name" class="mt-2" />
 				</div>
 
@@ -100,7 +94,7 @@ const deleteApiToken = () => {
 				<div v-if="availablePermissions.length > 0" class="col-span-6">
 					<InputLabel for="permissions" value="Permissions" />
 
-					<div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div class="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div v-for="permission in availablePermissions" :key="permission">
 							<label class="flex items-center">
 								<Checkbox v-model:checked="createApiTokenForm.permissions" :value="permission" />
@@ -139,25 +133,25 @@ const deleteApiToken = () => {
 					<template #content>
 						<div class="space-y-6">
 							<div v-for="token in tokens" :key="token.id" class="flex items-center justify-between">
-								<div class="break-all dark:text-white">
+								<div class="break-all dark:text-white-light">
 									{{ token.name }}
 								</div>
 
-								<div class="flex items-center ms-2">
+								<div class="ms-2 flex items-center">
 									<div v-if="token.last_used_ago" class="text-sm text-gray-400">
 										Last used {{ token.last_used_ago }}
 									</div>
 
 									<button
 										v-if="availablePermissions.length > 0"
-										class="cursor-pointer ms-6 text-sm text-gray-400 underline"
+										class="ms-6 cursor-pointer text-sm text-gray-400 underline"
 										@click="manageApiTokenPermissions(token)"
 									>
 										Permissions
 									</button>
 
 									<button
-										class="cursor-pointer ms-6 text-sm text-red-500"
+										class="ms-6 cursor-pointer text-sm text-red-500"
 										@click="confirmApiTokenDeletion(token)"
 									>
 										Delete
@@ -179,7 +173,7 @@ const deleteApiToken = () => {
 
 				<div
 					v-if="$page.props.jetstream.flash.token"
-					class="mt-4 bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded font-mono text-sm text-gray-500 break-all"
+					class="mt-4 break-all rounded bg-gray-100 px-4 py-2 font-mono text-sm text-gray-500 dark:bg-gray-900"
 				>
 					{{ $page.props.jetstream.flash.token }}
 				</div>
@@ -195,7 +189,7 @@ const deleteApiToken = () => {
 			<template #title> API Token Permissions </template>
 
 			<template #content>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<div v-for="permission in availablePermissions" :key="permission">
 						<label class="flex items-center">
 							<Checkbox v-model:checked="updateApiTokenForm.permissions" :value="permission" />

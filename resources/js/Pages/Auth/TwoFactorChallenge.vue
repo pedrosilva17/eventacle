@@ -65,7 +65,6 @@ const submit = () => {
 					v-model="form.code"
 					type="text"
 					inputmode="numeric"
-					class="mt-1 block w-full"
 					autofocus
 					autocomplete="one-time-code"
 				/>
@@ -79,16 +78,15 @@ const submit = () => {
 					ref="recoveryCodeInput"
 					v-model="form.recovery_code"
 					type="text"
-					class="mt-1 block w-full"
 					autocomplete="one-time-code"
 				/>
 				<InputError class="mt-2" :message="form.errors.recovery_code" />
 			</div>
 
-			<div class="flex items-center justify-end mt-4">
+			<div class="mt-4 flex items-center justify-end">
 				<button
 					type="button"
-					class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 underline cursor-pointer"
+					class="cursor-pointer text-sm text-gray-600 underline hover:text-gray-900 dark:text-gray-400"
 					@click.prevent="toggleRecovery"
 				>
 					<template v-if="!recovery"> Use a recovery code </template>

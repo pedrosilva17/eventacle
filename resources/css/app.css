@@ -22,10 +22,37 @@
 
 .scale-enter-active,
 .scale-leave-active {
-  transition: scale 0.15s ease;
+  transition: scale 0.15s cubic-bezier(0.47, 0, 0.745, 0.715);
 }
 
 .scale-enter-from,
 .scale-leave-to {
   scale: 0;
+}
+
+.slide-fade-move,
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  position: absolute;
+  right: 0;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+:root {
+  background-color: theme('colors.white.dark');
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: theme('colors.black.dark');
+  }
 }

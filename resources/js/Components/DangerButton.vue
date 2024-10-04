@@ -12,7 +12,7 @@ defineProps({
 <template>
 	<Button
 		:type="type"
-		class="active:bg-error-extradark border border-transparent bg-error text-black-dark shadow-sm hover:bg-error-dark focus:bg-error-dark focus:ring-error"
+		class="border border-transparent bg-error text-black-dark shadow-sm focus:bg-error-dark focus:ring-error enabled:hover:bg-error-dark enabled:active:bg-error-dark"
 	>
 		<slot />
 	</Button>

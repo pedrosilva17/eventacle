@@ -34,41 +34,19 @@ const submit = () => {
 		<form @submit.prevent="submit">
 			<div>
 				<InputLabel for="name" value="Name" />
-				<TextInput
-					id="name"
-					v-model="form.name"
-					type="text"
-					class="mt-1 block w-full"
-					required
-					autofocus
-					autocomplete="name"
-				/>
+				<TextInput id="name" v-model="form.name" type="text" required autofocus autocomplete="name" />
 				<InputError class="mt-2" :message="form.errors.name" />
 			</div>
 
 			<div class="mt-4">
 				<InputLabel for="email" value="Email" />
-				<TextInput
-					id="email"
-					v-model="form.email"
-					type="email"
-					class="mt-1 block w-full"
-					required
-					autocomplete="username"
-				/>
+				<TextInput id="email" v-model="form.email" type="email" required autocomplete="username" />
 				<InputError class="mt-2" :message="form.errors.email" />
 			</div>
 
 			<div class="mt-4">
 				<InputLabel for="password" value="Password" />
-				<TextInput
-					id="password"
-					v-model="form.password"
-					type="password"
-					class="mt-1 block w-full"
-					required
-					autocomplete="new-password"
-				/>
+				<TextInput id="password" v-model="form.password" type="password" required autocomplete="new-password" />
 				<InputError class="mt-2" :message="form.errors.password" />
 			</div>
 
@@ -78,7 +56,6 @@ const submit = () => {
 					id="password_confirmation"
 					v-model="form.password_confirmation"
 					type="password"
-					class="mt-1 block w-full"
 					required
 					autocomplete="new-password"
 				/>
@@ -95,14 +72,14 @@ const submit = () => {
 							<a
 								target="_blank"
 								:href="route('terms.show')"
-								class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+								class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
 								>Terms of Service</a
 							>
 							and
 							<a
 								target="_blank"
 								:href="route('policy.show')"
-								class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+								class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
 								>Privacy Policy</a
 							>
 						</div>
@@ -111,10 +88,10 @@ const submit = () => {
 				</InputLabel>
 			</div>
 
-			<div class="flex items-center justify-end mt-4">
+			<div class="mt-4 flex items-center justify-end">
 				<Link
 					:href="route('login')"
-					class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+					class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
 				>
 					Already registered?
 				</Link>

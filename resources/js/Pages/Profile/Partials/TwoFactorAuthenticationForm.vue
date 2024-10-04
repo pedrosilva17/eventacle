@@ -115,11 +115,11 @@ const disableTwoFactorAuthentication = () => {
 				Finish enabling two factor authentication.
 			</h3>
 
-			<h3 v-else class="text-lg font-medium text-gray-900 dark:text-gray-100">
+			<h3 v-else class="text-lg font-medium text-black-dark dark:text-white-light">
 				You have not enabled two factor authentication.
 			</h3>
 
-			<div class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+			<div class="mt-3 max-w-xl text-sm text-black dark:text-white">
 				<p>
 					When two factor authentication is enabled, you will be prompted for a secure, random token during
 					authentication. You may retrieve this token from your phone's Google Authenticator application.
@@ -128,7 +128,7 @@ const disableTwoFactorAuthentication = () => {
 
 			<div v-if="twoFactorEnabled">
 				<div v-if="qrCode">
-					<div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+					<div class="mt-4 max-w-xl text-sm text-black dark:text-white">
 						<p v-if="confirming" class="font-semibold">
 							To finish enabling two factor authentication, scan the following QR code using your phone's
 							authenticator application or enter the setup key and provide the generated OTP code.
@@ -140,9 +140,9 @@ const disableTwoFactorAuthentication = () => {
 						</p>
 					</div>
 
-					<div class="mt-4 p-2 inline-block bg-white" v-html="qrCode" />
+					<div class="mt-4 inline-block bg-white p-2" v-html="qrCode" />
 
-					<div v-if="setupKey" class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+					<div v-if="setupKey" class="mt-4 max-w-xl text-sm text-black-dark dark:text-white-light">
 						<p class="font-semibold">Setup Key: <span v-html="setupKey"></span></p>
 					</div>
 
@@ -154,7 +154,7 @@ const disableTwoFactorAuthentication = () => {
 							v-model="confirmationForm.code"
 							type="text"
 							name="code"
-							class="block mt-1 w-1/2"
+							class="mt-1 block w-1/2"
 							inputmode="numeric"
 							autofocus
 							autocomplete="one-time-code"
@@ -166,7 +166,7 @@ const disableTwoFactorAuthentication = () => {
 				</div>
 
 				<div v-if="recoveryCodes.length > 0 && !confirming">
-					<div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+					<div class="mt-4 max-w-xl text-sm text-black dark:text-white">
 						<p class="font-semibold">
 							Store these recovery codes in a secure password manager. They can be used to recover access
 							to your account if your two factor authentication device is lost.
@@ -174,7 +174,7 @@ const disableTwoFactorAuthentication = () => {
 					</div>
 
 					<div
-						class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 dark:bg-gray-900 dark:text-gray-100 rounded-lg"
+						class="mt-4 grid max-w-xl gap-1 rounded-lg bg-white px-4 py-4 font-mono text-sm dark:bg-black dark:text-gray-100"
 					>
 						<div v-for="code in recoveryCodes" :key="code">
 							{{ code }}

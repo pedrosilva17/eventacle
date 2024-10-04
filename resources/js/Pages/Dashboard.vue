@@ -71,7 +71,7 @@ const options = {
 						{{ console.log(eventsPredicted) }}
 						<Link :href="route('event.show', event)" v-for="event in eventsPredicted" class="group">
 							<div
-								class="flex min-h-32 flex-1 flex-col justify-between rounded-lg bg-white-light p-4 text-xl transition duration-300 ease-in-out hover:bg-primary-extralight group-focus:bg-primary-extralight sm:flex-row dark:bg-black-light dark:hover:bg-primary-extradark dark:group-focus:bg-primary-extradark"
+								class="flex min-h-32 flex-1 flex-row justify-between rounded-lg bg-white-light p-4 text-xl transition duration-300 ease-in-out hover:bg-primary-extralight group-focus:bg-primary-extralight dark:bg-black-light dark:hover:bg-primary-extradark dark:group-focus:bg-primary-extradark"
 							>
 								<section
 									class="-my-4 -ml-4 flex w-48 flex-col rounded-l-lg bg-primary-extralight p-4 dark:bg-primary-extradark"

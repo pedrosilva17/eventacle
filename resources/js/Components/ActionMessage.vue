@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-	<div>
+	<div class="flex items-center">
 		<transition
 			leave-active-class="transition ease-in duration-1000"
 			leave-from-class="opacity-100"
