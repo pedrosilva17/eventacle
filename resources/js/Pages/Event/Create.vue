@@ -129,9 +129,9 @@ function submit() {
 								@before-leave="beforeLeave"
 								name="slide-fade"
 								tag="ul"
-								class="relative mt-4 max-md:mb-4 md:col-span-2 md:ml-auto md:w-fit"
+								class="relative mt-8 flex flex-col max-md:mb-4 md:col-span-2 md:ml-auto md:mt-4 md:w-2/3 md:gap-2"
 							>
-								<span class="mb-4 flex w-full flex-col items-end gap-2 md:col-start-2" key="add button">
+								<span class="flex w-full flex-col items-end gap-2 md:col-start-2" key="add button">
 									<SecondaryButton
 										aria-label="Add option"
 										class="w-fit gap-2 md:col-start-2"
@@ -200,7 +200,7 @@ function submit() {
 						<Transition
 							name="fade"
 							mode="out-in"
-							class="col-span-2 mt-2 w-2/3 justify-start break-words text-end"
+							class="col-span-2 mt-2 w-full justify-start break-words text-end md:w-2/3"
 						>
 							<p v-if="form.scoring_type === 'single points'">
 								Single point scoring is simple: every contest is worth a point.
