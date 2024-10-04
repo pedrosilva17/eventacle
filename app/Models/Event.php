@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Event extends Model
 {
@@ -29,7 +30,7 @@ class Event extends Model
                                 iconv('UTF-8', 'ASCII//TRANSLIT',
                                     strtolower($event->name))))).
                     '-'.
-                    md5($event->name.$event->creator_id);
+                    md5(Str::random(16).$event->name.$event->creator_id);
             }
         });
     }
