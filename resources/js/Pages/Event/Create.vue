@@ -54,9 +54,7 @@ const removeOption = (index, optionIndex) => {
 	const options = form.contests[index].options;
 	const optionIndices = form.contests[index].optionIndices;
 	form.contests[index].options.splice(optionIndices.indexOf(optionIndex), 1);
-	console.log(optionIndices.indexOf(optionIndex));
 	form.contests[index].optionIndices.splice(optionIndices.indexOf(optionIndex), 1);
-	console.log(form.contests[index].optionIndices);
 };
 
 const beforeLeave = (el) => {
@@ -109,15 +107,15 @@ function submit() {
 							:key="contest"
 							class="grid md:col-span-2 md:grid-cols-subgrid md:gap-4"
 						>
-							<h3 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h3>
+							<h2 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
 							<InputGroup>
-								<InputLabel for="contest-name">Contest Name</InputLabel>
+								<InputLabel :for="'contest-name-' + index">Contest Name</InputLabel>
 								<TextInput v-model="contest.name" type="text" :id="'contest-name-' + index" />
 								<InputError :message="form.errors[`contests.${index}.name`]" />
 							</InputGroup>
 
 							<InputGroup>
-								<InputLabel for="contest-description">Contest Description</InputLabel>
+								<InputLabel :for="'contest-description-' + index">Contest Description</InputLabel>
 								<TextareaInput
 									v-model="contest.description"
 									:id="'contest-description-' + index"
@@ -128,7 +126,7 @@ function submit() {
 							<TransitionGroup
 								@before-leave="beforeLeave"
 								name="slide-fade"
-								tag="ul"
+								tag="div"
 								class="relative mt-8 flex flex-col max-md:mb-4 md:col-span-2 md:ml-auto md:mt-4 md:w-2/3 md:gap-2"
 							>
 								<span class="flex w-full flex-col items-end gap-2 md:col-start-2" key="add button">
@@ -140,20 +138,24 @@ function submit() {
 										><i-ic-round-add class="text-lg"
 									/></SecondaryButton>
 								</span>
-								<li
-									v-for="(op, op_index) in contest.options"
-									:key="form.contests[index].optionIndices[op_index]"
+								<span
+									v-for="(op, opIndex) in contest.options"
+									:key="form.contests[index].optionIndices[opIndex]"
 									class="flex justify-end"
 								>
 									<InputGroup class="w-full">
 										<span
 											class="flex flex-col items-end text-center md:flex-row md:items-center md:gap-4"
 										>
-											<InputLabel class="w-full text-start md:w-48">Contest Option</InputLabel>
+											<InputLabel
+												:for="`contest-option-${index}-${opIndex}`"
+												class="w-full text-start md:w-48"
+												>Contest Option</InputLabel
+											>
 											<TextInput
-												v-model="contest.options[op_index]"
+												v-model="contest.options[opIndex]"
 												type="text"
-												:id="'contest-option-' + index + '-' + op_index"
+												:id="`contest-option-${index}-${opIndex}`"
 											/>
 											<DangerButton
 												aria-label="Remove option"
@@ -161,15 +163,15 @@ function submit() {
 												class="w-fit items-end max-md:mt-2"
 												type="button"
 												@click="
-													removeOption(index, form.contests[index].optionIndices[op_index])
+													removeOption(index, form.contests[index].optionIndices[opIndex])
 												"
 											>
 												<i-ic-round-delete class="text-lg" />
 											</DangerButton>
 										</span>
-										<InputError :message="form.errors[`contests.${index}.options.${op_index}`]" />
+										<InputError :message="form.errors[`contests.${index}.options.${opIndex}`]" />
 									</InputGroup>
-								</li>
+								</span>
 								<span
 									class="mt-8 flex w-full flex-col items-end gap-4 md:col-start-2"
 									key="contest buttons"

@@ -61,14 +61,13 @@ const options = {
 			</DashboardSection>
 			<DashboardSection title="Your predictions">
 				<template #icon>
-					<i-ic-round-casino aria-labelledby="your-events" />
+					<i-ic-round-casino aria-labelledby="your-predictions" />
 				</template>
 				<template #content>
 					<p v-if="eventsPredicted.length === 0" class="text-center">
 						You have no predictions on upcoming events. Try your luck!
 					</p>
 					<div v-else class="flex flex-col gap-3">
-						{{ console.log(eventsPredicted) }}
 						<Link :href="route('event.show', event)" v-for="event in eventsPredicted" class="group">
 							<div
 								class="flex min-h-32 flex-1 flex-row justify-between rounded-lg bg-white-light p-4 text-xl transition duration-300 ease-in-out hover:bg-primary-extralight group-focus:bg-primary-extralight dark:bg-black-light dark:hover:bg-primary-extradark dark:group-focus:bg-primary-extradark"
@@ -91,7 +90,7 @@ const options = {
 											{{ prediction.contest.name }}
 										</h3>
 										<p
-											class="flex flex-1 flex-row flex-wrap gap-2 italic text-primary-extradark opacity-100 dark:text-primary-extralight"
+											class="flex flex-1 flex-row flex-wrap gap-2 italic text-primary-extralight opacity-100 dark:text-secondary-extralight"
 										>
 											{{ prediction.prediction_name }}
 											{{

@@ -33,7 +33,7 @@ const logout = () => {
 					<div class="flex shrink-0 items-center">
 						<Link :href="route('dashboard')">
 							<p
-								class="block h-auto w-auto font-serif text-3xl text-primary dark:text-primary-extralight"
+								class="block h-auto w-auto font-serif text-3xl font-bold text-primary dark:text-primary-extralight"
 							>
 								Eventacle
 							</p>
@@ -88,7 +88,10 @@ const logout = () => {
 
 					<!-- Hamburger -->
 					<div class="-me-2 flex items-center sm:hidden">
-						<PrimaryButton @click="showingNavigationDropdown = !showingNavigationDropdown">
+						<PrimaryButton
+							aria-label="Open Navigation Menu"
+							@click="showingNavigationDropdown = !showingNavigationDropdown"
+						>
 							<Transition name="scale" mode="out-in" class="text-2xl">
 								<i-ic-round-menu v-if="!showingNavigationDropdown" />
 								<i-ic-round-close v-else />
