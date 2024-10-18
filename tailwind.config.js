@@ -62,6 +62,27 @@ export default {
 					dark: '#121212',
 				},
 			},
+			animation: {
+				shake: 'shake 1s ease-in-out',
+			},
+			keyframes: {
+				shake: {
+					'10%, 90%': {
+						transform: 'translate(-1px, 0)',
+					},
+					'20%, 80%': {
+						transform: 'translate(2px, 0)',
+					},
+
+					'30%, 50%, 70%': {
+						transform: 'translate(-3px, 0)',
+					},
+
+					'40%, 60%': {
+						transform: 'translate(3px, 0)',
+					},
+				},
+			},
 		},
 	},
 

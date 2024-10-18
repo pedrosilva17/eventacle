@@ -5,7 +5,7 @@ const props = defineProps({
 		default: '',
 	},
 });
-const classes = 'flex mb-8 flex-col overflow-hidden bg-white p-4 shadow-xl sm:rounded-xl dark:bg-black';
+const classes = 'flex mb-8 flex-col overflow-hidden bg-white p-4 shadow-sm sm:rounded-xl dark:bg-black';
 </script>
 
 <template>
