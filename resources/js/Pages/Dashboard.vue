@@ -18,6 +18,7 @@ const props = defineProps({
 
 const options = {
 	weekday: 'short',
+	year: 'numeric',
 	month: 'short',
 	day: 'numeric',
 	hour: 'numeric',
@@ -54,7 +55,7 @@ const options = {
 								</p>
 								<p class="flex items-center justify-end gap-1 text-sm">
 									{{ event.predictions.length / event.contests.length }}
-									<i-ic-round-group class="text-base" aria-label="Users with predictions" />
+									<i-ic-round-group class="text-base" aria-label="Number of users with predictions" />
 								</p>
 							</span>
 						</section>
@@ -76,7 +77,7 @@ const options = {
 							class="flex min-h-32 flex-1 flex-row justify-between rounded-lg bg-white-light p-4 text-xl transition duration-300 ease-in-out hover:bg-primary-extralight group-focus:bg-primary-extralight dark:bg-black-light dark:hover:bg-primary-extradark dark:group-focus:bg-primary-extradark"
 						>
 							<section
-								class="-my-4 -ml-4 flex w-48 flex-col rounded-l-lg bg-primary-extralight p-4 dark:bg-primary-extradark"
+								class="-my-4 -ml-4 flex w-1/2 flex-col rounded-l-lg bg-primary-extralight p-4 sm:w-1/3 dark:bg-primary-extradark"
 							>
 								<h2 class="break-words text-xl sm:text-2xl">{{ event.name }}</h2>
 								<p class="flex-1 text-sm">

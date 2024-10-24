@@ -1,11 +1,12 @@
 <script setup>
+import Container from './Container.vue';
+
 const props = defineProps({
 	title: {
 		type: String,
 		default: '',
 	},
 });
-const classes = 'flex mb-8 flex-col overflow-hidden bg-white p-4 shadow-sm sm:rounded-xl dark:bg-black';
 </script>
 
 <template>
@@ -21,9 +22,9 @@ const classes = 'flex mb-8 flex-col overflow-hidden bg-white p-4 shadow-sm sm:ro
 				<slot name="icon" />
 			</span>
 		</h1>
-		<div :class="classes">
+		<Container class="mb-8 flex-col">
 			<slot name="content" />
-		</div>
+		</Container>
 	</section>
 	<div v-else :class="classes">
 		<slot name="icon" />
