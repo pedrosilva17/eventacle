@@ -48,10 +48,41 @@
 
 :root {
   background-color: theme('colors.white.dark');
+  scrollbar-color: theme('colors.primary.DEFAULT') theme('colors.white.dark');
+}
+
+:root::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+:root::-webkit-scrollbar-track {
+  background: theme('colors.white.dark');
+}
+
+:root::-webkit-scrollbar-thumb {
+  background: theme('colors.white.dark');
+  border-radius: 100vh;
+  border: 1px solid theme('colors.primary.DEFAULT');
+}
+
+:root::-webkit-scrollbar-thumb:hover {
+  background: theme('colors.primary.DEFAULT');
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     background-color: theme('colors.black.dark');
+    scrollbar-color: theme('colors.primary.DEFAULT') theme('colors.black.dark');
+  }
+
+  :root::-webkit-scrollbar-track {
+    background: theme('colors.black.dark');
+  }
+
+  :root::-webkit-scrollbar-thumb {
+    background: theme('colors.black.dark');
+    border-radius: 100vh;
+    border: 1px solid theme('colors.primary.DEFAULT');
   }
 }

@@ -33,5 +33,13 @@
     "lint-staged": {
         "*.{js,json,vue}": "prettier -w",
         "*.php": "./pint"
+    },
+    "dependencies": {
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.1",
+        "lucide-vue-next": "^0.454.0",
+        "radix-vue": "^1.9.8",
+        "tailwind-merge": "^2.5.4",
+        "tailwindcss-animate": "^1.0.7"
     }
 }

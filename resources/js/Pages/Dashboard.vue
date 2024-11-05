@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DashboardSection from '@/Components/DashboardSection.vue';
 import { Link } from '@inertiajs/vue3';
-import { plural } from '@/utils';
+import { plural } from '@/Lib/utils';
 
 const props = defineProps({
 	eventsCreated: {

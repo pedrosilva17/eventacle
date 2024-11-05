@@ -51,7 +51,6 @@ const addOption = (index) => {
 };
 
 const removeOption = (index, optionIndex) => {
-	const options = form.contests[index].options;
 	const optionIndices = form.contests[index].optionIndices;
 	form.contests[index].options.splice(optionIndices.indexOf(optionIndex), 1);
 	form.contests[index].optionIndices.splice(optionIndices.indexOf(optionIndex), 1);

@@ -3,7 +3,7 @@ import Container from '@/Components/Container.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { plural } from '@/utils';
+import { plural } from '@/Lib/utils';
 import { Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -64,7 +64,7 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 </script>
 
 <template>
-	<AppLayout>
+	<AppLayout :title="event.name">
 		<span class="grid-rows-auto grid auto-rows-min grid-cols-2 gap-3">
 			<Container class="col-span-2 flex-col sm:flex-row">
 				<template class="flex flex-1 flex-col gap-2">
