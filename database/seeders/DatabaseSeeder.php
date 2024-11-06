@@ -27,6 +27,10 @@ class DatabaseSeeder extends Seeder
 
         Contest::factory(200)->make()->each(function ($contest, $index) use ($events, $eventsCount) {
             $contest->event_id = $events[$index % $eventsCount]->id;
+            if ($events[$index % $eventsCount]->start_time < Carbon::now()) {
+                $options = explode('|SEP|', $contest->options);
+                $contest->result = $options[fake()->numberBetween(0, count($options) - 1)];
+            }
             $contest->save();
         });
 

@@ -23,6 +23,10 @@ export default {
 			},
 		},
 		extend: {
+			backgroundImage: ({ theme }) => ({
+				'overflow-gradient': `linear-gradient(90deg, ${theme('colors.white.light')} 0%, rgba(0,0,0,0) 5%, rgba(0,0,0,0) 95%, ${theme('colors.white.light')} 100%);`,
+				'overflow-gradient-dark': `linear-gradient(90deg, ${theme('colors.black.light')} 0%, rgba(0,0,0,0) 5%, rgba(0,0,0,0) 95%, ${theme('colors.black.light')} 100%);`,
+			}),
 			boxShadow: {
 				reverse: 'inset 0 4px 8px 0 rgb(255 255 255 / 0.15)',
 			},

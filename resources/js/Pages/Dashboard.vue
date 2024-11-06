@@ -94,7 +94,7 @@ const options = {
 										{{ prediction.contest.name }}
 									</h3>
 									<p
-										class="flex flex-1 flex-row flex-wrap gap-2 italic text-primary-extralight opacity-100 dark:text-secondary-extralight"
+										class="flex flex-1 flex-row flex-wrap gap-2 italic text-secondary-extradark opacity-100 dark:text-secondary-extralight"
 									>
 										{{ prediction.prediction_name }}
 										{{

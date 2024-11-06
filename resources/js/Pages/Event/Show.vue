@@ -2,12 +2,16 @@
 import Container from '@/Components/Container.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { plural } from '@/Lib/utils';
 import { Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
 	event: {
+		type: Object,
+	},
+	predictionsByContest: {
 		type: Object,
 	},
 });
@@ -119,16 +123,26 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 						<p>
 							{{ contest.description }}
 						</p>
-						<span
-							class="relative mt-2 flex flex-1 flex-row flex-wrap items-center justify-center gap-5 rounded-lg bg-white-light px-4 pb-4 pt-9 dark:bg-black-light"
-						>
-							<p class="absolute left-4 top-1 italic opacity-60">Options</p>
-							<p
-								class="rounded-md bg-primary-extralight px-2 dark:bg-primary-extradark"
-								v-for="option in contest.options.split('|SEP|')"
+						<span class="relative mt-2 flex flex-1">
+							<span
+								class="flex flex-1 flex-row items-center justify-between gap-5 overflow-x-auto rounded-lg bg-white-light px-4 pb-4 pt-9 dark:bg-black-light"
 							>
-								{{ option }}
-							</p>
+								<p class="absolute left-4 top-2 italic opacity-60">
+									Options ({{ contest.options.split('|SEP|').length }})
+								</p>
+								<p
+									class="relative min-w-max rounded-md bg-primary-extralight px-2 text-center dark:bg-primary-extradark"
+									v-for="option in contest.options
+										.split('|SEP|')
+										.sort((opt) => contest.result !== opt)"
+								>
+									<i-ic-baseline-emoji-events
+										class="absolute -left-2 -top-2 text-amber-400"
+										v-if="contest.result === option"
+									/>
+									{{ option }}
+								</p>
+							</span>
 						</span>
 					</li>
 				</ul>
@@ -175,13 +189,39 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
 				<h2 class="text-2xl">Predictions</h2>
-				<template v-if="event.predictions.length > 0">
-					<ul>
-						<li v-for="prediction in event.predictions" :key="prediction.id">
-							{{ prediction.user_name }} predicted {{ prediction.prediction_name }} for
-							{{ plural(prediction.points, 'point') }}
-						</li>
-					</ul>
+				<template v-if="Object.keys(predictionsByContest).length > 0">
+					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-5">
+						<AccordionItem as="li" :value="key" v-for="key in Object.keys(predictionsByContest)">
+							<AccordionTrigger class="text-lg">
+								{{ event.contests.find((c) => c.id.toString() === key).name }}
+								{{ console.log(event.contests.find((c) => c.id.toString() === key).result) }}
+							</AccordionTrigger>
+							<AccordionContent>
+								<p v-for="prediction in predictionsByContest[key]" class="flex items-center gap-1">
+									{{ prediction.user_name
+									}}<i-ic-round-keyboard-arrow-right class="inline-flex" /><span
+										class="inline-flex text-secondary-extradark dark:text-secondary-extralight"
+										>{{ prediction.prediction_name }}</span
+									>
+									{{
+										event.scoring_type === 'confidence points'
+											? `(${plural(prediction.points, 'point')})`
+											: ''
+									}}
+									<template v-if="event.contests.find((c) => c.id.toString() === key).result">
+										<i-ic-round-check
+											class="inline-flex text-success"
+											v-if="
+												prediction.prediction_name ===
+												event.contests.find((c) => c.id.toString() === key).result
+											"
+										/>
+										<i-ic-round-close class="inline-flex text-error" v-else />
+									</template>
+								</p>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
 				</template>
 				<template v-else>
 					<p>No predictions made yet.</p>
