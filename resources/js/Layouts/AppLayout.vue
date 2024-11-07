@@ -1,13 +1,14 @@
 <script setup>
-import { ref } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
-import Banner from '@/Components/Banner.vue';
+import { onMounted, ref } from 'vue';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import Toaster from '@/Components/shadcn/sonner/Sonner.vue';
+import { toast } from 'vue-sonner';
 
 defineProps({
 	title: String,
@@ -19,12 +20,30 @@ const showingNavigationDropdown = ref(false);
 const logout = () => {
 	router.post(route('logout'));
 };
+
+const page = usePage();
+const message = ref('');
+
+onMounted(() => {
+	const flash = page.props.flash;
+	const messageSet = new Set(Object.values(flash));
+	const toastProps = {
+		action: {
+			label: 'Got it',
+		},
+	};
+	if (messageSet.size !== 1) {
+		message.value = flash.error || flash.success || '';
+		const toastFunc = flash.error ? toast.error : flash.success ? toast.success : toast.info;
+		return toastFunc(message.value, toastProps);
+	}
+});
 </script>
 
 <template>
 	<div>
 		<Head :title="title" />
-		<Banner />
+		<Toaster />
 		<div class="min-h-screen bg-white-dark text-black-dark dark:bg-black-dark dark:text-white-light">
 			<nav class="bg-white text-black-dark dark:bg-black dark:text-white-light">
 				<!-- Primary Navigation Menu -->

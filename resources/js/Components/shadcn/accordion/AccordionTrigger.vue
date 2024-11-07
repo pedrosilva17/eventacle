@@ -1,5 +1,5 @@
 <script setup>
-import { cn } from '@/Lib/utils';
+import { cn } from '@/Lib/Utils';
 import { ChevronDown } from 'lucide-vue-next';
 import { AccordionHeader, AccordionTrigger } from 'radix-vue';
 import { computed } from 'vue';

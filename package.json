@@ -24,6 +24,7 @@
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.8",
         "tailwindcss": "^3.4.0",
+        "tailwindcss-animate": "^1.0.7",
         "unplugin-icons": "^0.19.3",
         "unplugin-vue-components": "^0.27.4",
         "vite": "^5.0",
@@ -40,6 +41,6 @@
         "lucide-vue-next": "^0.454.0",
         "radix-vue": "^1.9.8",
         "tailwind-merge": "^2.5.4",
-        "tailwindcss-animate": "^1.0.7"
+        "vue-sonner": "^1.2.5"
     }
 }

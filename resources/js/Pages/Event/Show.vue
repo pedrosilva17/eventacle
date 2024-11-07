@@ -4,7 +4,7 @@ import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { plural } from '@/Lib/utils';
+import { plural } from '@/Lib/Utils';
 import { Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -83,8 +83,9 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 						<Link
 							v-if="new Date(event.start_time) > Date.now()"
 							:href="route('event.prediction-form', event)"
+							tabindex="-1"
 						>
-							<PrimaryButton> Make a Prediction </PrimaryButton>
+							<PrimaryButton>Make a Prediction</PrimaryButton>
 						</Link>
 						<DangerButton
 							class="w-fit"
@@ -194,7 +195,6 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 						<AccordionItem as="li" :value="key" v-for="key in Object.keys(predictionsByContest)">
 							<AccordionTrigger class="text-lg">
 								{{ event.contests.find((c) => c.id.toString() === key).name }}
-								{{ console.log(event.contests.find((c) => c.id.toString() === key).result) }}
 							</AccordionTrigger>
 							<AccordionContent>
 								<p v-for="prediction in predictionsByContest[key]" class="flex items-center gap-1">
