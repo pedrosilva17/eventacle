@@ -19,6 +19,7 @@ class PredictEvent
         ], [
             'points.*.distinct' => 'Each contest must have a unique confidence point.',
             'points.*.between' => 'Confidence points must be between :min and :max.',
+            'points.*.integer' => 'Points must be integer values.',
         ])->validate();
         $userId = auth()->check() ? auth()->user()->id : null;
         $userName = auth()->check() ? auth()->user()->name : substr($input['guest_user_name'], 0, 255);

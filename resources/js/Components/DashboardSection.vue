@@ -11,8 +11,7 @@ const props = defineProps({
 
 <template>
 	<section v-if="title">
-		<h1
-			:id="title.toLowerCase().replace(' ', '-')"
+		<h2
 			class="flex w-full items-center justify-between pb-6 pt-1 text-center text-xl font-bold max-sm:px-4 sm:pt-2 sm:text-3xl"
 		>
 			{{ title }}
@@ -21,7 +20,7 @@ const props = defineProps({
 			>
 				<slot name="icon" />
 			</span>
-		</h1>
+		</h2>
 		<Container class="mb-8 flex-col">
 			<slot name="content" />
 		</Container>

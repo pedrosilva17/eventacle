@@ -72,10 +72,10 @@ function submit() {
 
 <template>
 	<AppLayout title="Create">
+		<h1 class="flex w-full items-center pb-6 pt-1 text-center text-xl font-bold max-sm:px-4 sm:pt-2 sm:text-3xl">
+			Create Event
+		</h1>
 		<FormSection @submit.prevent="submit">
-			<template #title>
-				<h1>Create Event</h1>
-			</template>
 			<template #form>
 				<InputGroup>
 					<InputLabel for="name">Name</InputLabel>
@@ -154,6 +154,7 @@ function submit() {
 											v-model="contest.options[opIndex]"
 											type="text"
 											:id="`contest-option-${index}-${opIndex}`"
+											class="md:w-64"
 										/>
 										<DangerButton
 											aria-label="Remove option"

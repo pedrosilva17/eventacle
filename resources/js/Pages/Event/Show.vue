@@ -5,7 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { plural } from '@/Lib/Utils';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
 	event: {
@@ -15,6 +15,7 @@ const props = defineProps({
 		type: Object,
 	},
 });
+const page = usePage();
 
 const dateOptions = {
 	weekday: 'long',
@@ -32,6 +33,8 @@ const timeOptions = {
 const dateTime = new Date(props.event.start_time);
 const date = dateTime.toLocaleDateString('en-UK', dateOptions);
 const time = dateTime.toLocaleTimeString('en-UK', timeOptions);
+const hasPrediction =
+	!!page.props.auth.user && !!props.event.predictions.find((e) => e.user_id === page.props.auth.user.id);
 const scoringType = props.event.scoring_type
 	.split(' ')
 	.map((w) => {
@@ -70,55 +73,57 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 <template>
 	<AppLayout :title="event.name">
 		<span class="grid-rows-auto grid auto-rows-min grid-cols-2 gap-3">
-			<Container class="col-span-2 flex-col sm:flex-row">
-				<template class="flex flex-1 flex-col gap-2">
-					<h1
-						:class="{ 'break-all': needsBreakAll(35), 'max-md:break-all': needsBreakAll(15) }"
-						class="text-2xl font-bold lg:break-words lg:text-4xl"
+			<Container class="col-span-2 flex-col">
+				<span class="flex flex-col gap-3 sm:flex-row">
+					<template class="flex flex-1 flex-col gap-2">
+						<h1
+							:class="{ 'break-all': needsBreakAll(35), 'max-md:break-all': needsBreakAll(15) }"
+							class="text-2xl font-bold lg:break-words lg:text-4xl"
+						>
+							{{ event.name }}
+						</h1>
+						<p>{{ event.description }}</p>
+					</template>
+					<template class="flex flex-col py-1 text-lg sm:text-xl">
+						<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row sm:items-start">
+							<p>{{ date }}</p>
+							<i-ic-round-calendar-today aria-label="Event Date" class="text-secondary" />
+						</span>
+						<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
+							<p>{{ time }}</p>
+							<i-ic-round-access-time-filled aria-label="Event Time" class="text-secondary" />
+						</span>
+						<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
+							<p>{{ event.creator.name }}</p>
+							<i-ic-round-person aria-label="Creator Name" class="text-secondary" />
+						</span>
+						<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
+							<p>{{ scoringType }}</p>
+							<i-ic-round-plus-one aria-label="Scoring Type" class="text-xl text-secondary" />
+						</span>
+					</template>
+				</span>
+				<span class="flex flex-row gap-5">
+					<Link
+						v-if="new Date(event.start_time) > Date.now()"
+						:href="route('event.prediction-form', event)"
+						tabindex="-1"
 					>
-						{{ event.name }}
-					</h1>
-					<p>{{ event.description }}</p>
-					<span class="flex flex-row gap-5">
-						<Link
-							v-if="new Date(event.start_time) > Date.now()"
-							:href="route('event.prediction-form', event)"
-							tabindex="-1"
-						>
-							<PrimaryButton>Make a Prediction</PrimaryButton>
-						</Link>
-						<DangerButton
-							class="w-fit"
-							v-if="$page.props.auth.user?.id === props.event.creator_id"
-							@click="deleteEvent"
-							>Delete Event</DangerButton
-						>
-					</span>
-				</template>
-				<template class="flex flex-col py-1 text-lg sm:text-xl">
-					<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row sm:items-start">
-						<p>{{ date }}</p>
-						<i-ic-round-calendar-today aria-label="Event Date" class="text-secondary" />
-					</span>
-					<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
-						<p>{{ time }}</p>
-						<i-ic-round-access-time-filled aria-label="Event Time" class="text-secondary" />
-					</span>
-					<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
-						<p>{{ event.creator.name }}</p>
-						<i-ic-round-person aria-label="Creator Name" class="text-secondary" />
-					</span>
-					<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
-						<p>{{ scoringType }}</p>
-						<i-ic-round-plus-one aria-label="Scoring Type" class="text-xl text-secondary" />
-					</span>
-				</template>
+						<PrimaryButton>{{ hasPrediction ? 'Edit prediction' : 'Make a Prediction' }}</PrimaryButton>
+					</Link>
+					<DangerButton
+						class="w-fit"
+						v-if="$page.props.auth.user?.id === props.event.creator_id"
+						@click="deleteEvent"
+						>Delete Event</DangerButton
+					>
+				</span>
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
 				<h2 class="text-2xl">Contests</h2>
 				<ul class="grid grid-cols-1 gap-5 md:grid-cols-2">
 					<li v-for="contest in event.contests" :key="contest.id" class="flex h-full flex-col">
-						<p class="text-xl">
+						<p class="break-words text-xl">
 							{{ contest.name }}
 						</p>
 						<p>
