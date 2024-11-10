@@ -19,7 +19,7 @@ const update = (inc) => {
 			:min="min"
 			:max="max"
 			type="number"
-			class="block w-full rounded-md border-black-light bg-white-light text-black-dark transition duration-300 ease-in-out focus:border-primary-extradark focus:ring-primary-extradark dark:border-black-dark dark:border-white-dark dark:text-white-light dark:focus:border-primary-extralight dark:focus:ring-primary-extralight"
+			class="block w-full rounded-md border-black-light bg-white-light text-black-dark transition duration-300 ease-in-out focus:border-primary-extradark focus:ring-primary-extradark dark:border-black-dark dark:border-white-dark dark:bg-black-dark dark:text-white-light dark:focus:border-primary-extralight dark:focus:ring-primary-extralight"
 			v-model="modelValue"
 		/>
 		<button

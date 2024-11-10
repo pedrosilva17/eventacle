@@ -4,7 +4,7 @@ import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { plural } from '@/Lib/Utils';
+import { needsBreakAll, plural } from '@/Lib/Utils';
 import { Link, router, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -42,11 +42,6 @@ const scoringType = props.event.scoring_type
 	})
 	.join(' ');
 
-const needsBreakAll = (len) => {
-	return props.event.name.split(' ').some((w) => {
-		return w.length >= len;
-	});
-};
 const leaderboardColor = (rank) => {
 	if (rank > 3) return 'bg-transparent';
 	return ['bg-amber-400 text-black', 'bg-slate-500 text-white', 'bg-amber-700 text-white'][rank - 1];
@@ -77,7 +72,10 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 				<span class="flex flex-col gap-3 sm:flex-row">
 					<template class="flex flex-1 flex-col gap-2">
 						<h1
-							:class="{ 'break-all': needsBreakAll(35), 'max-md:break-all': needsBreakAll(15) }"
+							:class="{
+								'break-all': needsBreakAll(props.event.name, 35),
+								'max-md:break-all': needsBreakAll(props.event.name, 15),
+							}"
 							class="text-2xl font-bold lg:break-words lg:text-4xl"
 						>
 							{{ event.name }}
@@ -198,13 +196,24 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 				<template v-if="Object.keys(predictionsByContest).length > 0">
 					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-5">
 						<AccordionItem as="li" :value="key" v-for="key in Object.keys(predictionsByContest)">
-							<AccordionTrigger class="text-lg">
+							<AccordionTrigger
+								class="text-left text-lg"
+								:class="{
+									'max-md:break-all': needsBreakAll(
+										event.contests.find((c) => c.id.toString() === key).name,
+										25,
+									),
+								}"
+							>
 								{{ event.contests.find((c) => c.id.toString() === key).name }}
 							</AccordionTrigger>
 							<AccordionContent>
-								<p v-for="prediction in predictionsByContest[key]" class="flex items-center gap-1">
+								<p
+									v-for="prediction in predictionsByContest[key]"
+									class="flex flex-col gap-1 pb-3 md:flex-row md:items-center md:pb-0"
+								>
 									{{ prediction.user_name
-									}}<i-ic-round-keyboard-arrow-right class="inline-flex" /><span
+									}}<i-ic-round-keyboard-arrow-right class="hidden md:inline-flex" /><span
 										class="inline-flex text-secondary-extradark dark:text-secondary-extralight"
 										>{{ prediction.prediction_name }}</span
 									>
