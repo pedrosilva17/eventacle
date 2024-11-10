@@ -9,7 +9,7 @@ const hasActions = computed(() => !!useSlots().actions);
 
 <template>
 	<div class="flex flex-col gap-3">
-		<SectionTitle>
+		<SectionTitle v-if="!!$slots.title || !!$slots.description">
 			<template #title>
 				<slot name="title" />
 			</template>

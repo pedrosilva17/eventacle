@@ -1,5 +1,4 @@
 <script setup>
-import Container from '@/Components/Container.vue';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -57,13 +56,17 @@ function submit() {
 			<template #form>
 				<form
 					@submit.prevent="submitForm"
-					class="col-span-full m-auto grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
+					class="col-span-full m-auto grid w-full grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
 				>
 					<template v-for="contest in event.contests" :key="contest.id" class="flex-col">
 						<span class="col-span-1 flex flex-col gap-3">
 							<h2 class="break-words text-xl">{{ contest.name }}</h2>
 							<span class="flex max-h-52 flex-1 flex-col gap-3 overflow-y-auto py-2">
-								<div v-for="(option, index) in contest.options.split('|SEP|')" :key="index">
+								<div
+									v-for="(option, index) in contest.options.split('|SEP|')"
+									:key="index"
+									class="pl-2"
+								>
 									<RadioInput
 										:id="'prediction_' + contest.id + '_' + index"
 										:name="'prediction_' + contest.id"

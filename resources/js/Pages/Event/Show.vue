@@ -2,10 +2,12 @@
 import Container from '@/Components/Container.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { needsBreakAll, plural } from '@/Lib/Utils';
 import { Link, router, usePage } from '@inertiajs/vue3';
+import { reactive, ref } from 'vue';
 
 const props = defineProps({
 	event: {
@@ -30,6 +32,7 @@ const timeOptions = {
 	timeZoneName: 'short',
 };
 
+let openStates = ref(new Array(Object.keys(props.predictionsByContest).length).fill(false));
 const dateTime = new Date(props.event.start_time);
 const date = dateTime.toLocaleDateString('en-UK', dateOptions);
 const time = dateTime.toLocaleTimeString('en-UK', timeOptions);
@@ -63,6 +66,19 @@ const getRanks = (points) => {
 	return points.map((x) => rank.get(x));
 };
 const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
+
+const toggleAccordion = (idx) => {
+	openStates.value[idx] = !openStates.value[idx];
+	const element = document.querySelectorAll('.accordion')[idx];
+};
+
+const toggleAccordions = () => {
+	const accordions = document.querySelectorAll('.accordion');
+	const newState = Array.from(accordions).some((acc) => acc.dataset.state === 'closed') ? 'open' : 'closed';
+	accordions.forEach((element) => {
+		if (element.dataset.state !== newState) element.click();
+	});
+};
 </script>
 
 <template>
@@ -192,12 +208,19 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 				</template>
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
-				<h2 class="text-2xl">Predictions</h2>
+				<span class="flex flex-row justify-between">
+					<h2 class="text-2xl">Predictions</h2>
+					<SecondaryButton @click="toggleAccordions">
+						<i-ic-round-expand v-if="openStates.some((s) => s === false)" />
+						<i-ic-round-compress v-else />
+					</SecondaryButton>
+				</span>
 				<template v-if="Object.keys(predictionsByContest).length > 0">
 					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-5">
-						<AccordionItem as="li" :value="key" v-for="key in Object.keys(predictionsByContest)">
+						<AccordionItem as="li" :value="key" v-for="(key, idx) in Object.keys(predictionsByContest)">
 							<AccordionTrigger
-								class="text-left text-lg"
+								@click="toggleAccordion(idx)"
+								class="accordion text-left text-lg"
 								:class="{
 									'max-md:break-all': needsBreakAll(
 										event.contests.find((c) => c.id.toString() === key).name,
