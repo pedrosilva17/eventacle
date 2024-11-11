@@ -6,8 +6,8 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { needsBreakAll, plural } from '@/Lib/Utils';
-import { Link, router, usePage } from '@inertiajs/vue3';
-import { reactive, ref } from 'vue';
+import { router, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
 	event: {
@@ -67,11 +67,6 @@ const getRanks = (points) => {
 };
 const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 
-const toggleAccordion = (idx) => {
-	openStates.value[idx] = !openStates.value[idx];
-	const element = document.querySelectorAll('.accordion')[idx];
-};
-
 const toggleAccordions = () => {
 	const accordions = document.querySelectorAll('.accordion');
 	const newState = Array.from(accordions).some((acc) => acc.dataset.state === 'closed') ? 'open' : 'closed';
@@ -117,20 +112,22 @@ const toggleAccordions = () => {
 						</span>
 					</template>
 				</span>
-				<span class="flex flex-row gap-5">
-					<Link
+				<span class="flex w-full flex-col justify-between gap-5 sm:flex-row">
+					<PrimaryButton
 						v-if="new Date(event.start_time) > Date.now()"
 						:href="route('event.prediction-form', event)"
-						tabindex="-1"
-					>
-						<PrimaryButton>{{ hasPrediction ? 'Edit prediction' : 'Make a Prediction' }}</PrimaryButton>
-					</Link>
-					<DangerButton
 						class="w-fit"
-						v-if="$page.props.auth.user?.id === props.event.creator_id"
-						@click="deleteEvent"
-						>Delete Event</DangerButton
+						>{{ hasPrediction ? 'Change prediction' : 'Make a Prediction' }}</PrimaryButton
 					>
+					<span v-if="$page.props.auth.user?.id === props.event.creator_id" class="flex flex-row gap-5">
+						<PrimaryButton
+							v-if="new Date(event.start_time) > Date.now()"
+							:href="route('event.edit-form', event)"
+						>
+							Edit
+						</PrimaryButton>
+						<DangerButton class="w-fit" @click="deleteEvent"> Delete </DangerButton>
+					</span>
 				</span>
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
@@ -210,7 +207,7 @@ const toggleAccordions = () => {
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
 				<span class="flex flex-row justify-between">
 					<h2 class="text-2xl">Predictions</h2>
-					<SecondaryButton @click="toggleAccordions">
+					<SecondaryButton aria-label="Open or close prediction drawers" @click="toggleAccordions">
 						<i-ic-round-expand v-if="openStates.some((s) => s === false)" />
 						<i-ic-round-compress v-else />
 					</SecondaryButton>
@@ -219,7 +216,7 @@ const toggleAccordions = () => {
 					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-5">
 						<AccordionItem as="li" :value="key" v-for="(key, idx) in Object.keys(predictionsByContest)">
 							<AccordionTrigger
-								@click="toggleAccordion(idx)"
+								@click="openStates.value[idx] = !openStates.value[idx]"
 								class="accordion text-left text-lg"
 								:class="{
 									'max-md:break-all': needsBreakAll(

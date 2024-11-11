@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DashboardSection from '@/Components/DashboardSection.vue';
 import { Link } from '@inertiajs/vue3';
-import { plural } from '@/Lib/Utils';
+import { needsBreakAll, plural } from '@/Lib/Utils';
 
 const props = defineProps({
 	eventsCreated: {
@@ -98,11 +98,16 @@ const options = {
 							</section>
 							<div class="flex flex-1 flex-col gap-3 pl-4">
 								<section v-for="prediction in userPredictions[event.id]">
-									<h3>
+									<h3
+										:class="{
+											'break-all': needsBreakAll(prediction.contest.name, 30),
+											'max-md:break-all': needsBreakAll(prediction.contest.name, 20),
+										}"
+									>
 										{{ prediction.contest.name }}
 									</h3>
 									<p
-										class="flex flex-1 flex-row flex-wrap gap-2 italic text-secondary-extradark opacity-100 dark:text-secondary-extralight"
+										class="flex flex-1 flex-row flex-wrap gap-2 italic text-secondary-extradark dark:text-secondary-extralight"
 									>
 										{{ prediction.prediction_name }}
 										{{
