@@ -12,6 +12,7 @@ const props = defineProps({
 <template>
 	<section v-if="title">
 		<h2
+			:id="title.toLowerCase().replace(' ', '-')"
 			class="flex w-full items-center justify-between pb-6 pt-1 text-center text-xl font-bold max-sm:px-4 sm:pt-2 sm:text-3xl"
 		>
 			{{ title }}
