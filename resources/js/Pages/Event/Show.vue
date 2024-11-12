@@ -4,11 +4,13 @@ import DangerButton from '@/Components/DangerButton.vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import Dropdown from '@/Components/Dropdown.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { needsBreakAll, plural } from '@/Lib/Utils';
 import { router, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
 
 const props = defineProps({
 	event: {
@@ -33,6 +35,9 @@ const timeOptions = {
 	timeZoneName: 'short',
 };
 
+const canEdit = new Date(props.event.start_time) > Date.now();
+const isCreator = page.props.auth.user?.id === props.event.creator_id;
+
 const show = ref(false);
 const openStates = ref(new Array(Object.keys(props.predictionsByContest).length).fill(false));
 const dateTime = new Date(props.event.start_time);
@@ -46,6 +51,21 @@ const scoringType = props.event.scoring_type
 		return w.slice(0, 1).toUpperCase() + w.slice(1);
 	})
 	.join(' ');
+
+const predictionsByContest = ref(props.predictionsByContest);
+const predictionAlphaSort = (a, b) => b.user_name.toLowerCase() < a.user_name.toLowerCase();
+const predictionPointSort = (a, b) => b.points - a.points;
+const sortFunctions = [predictionPointSort, predictionAlphaSort];
+const currentFunctionIndex = ref(0);
+const activeSort = ref(sortFunctions[currentFunctionIndex.value]);
+
+const changeSortFunction = () => {
+	currentFunctionIndex.value = 1 - currentFunctionIndex.value;
+	activeSort.value = sortFunctions[currentFunctionIndex.value];
+	Object.keys(predictionsByContest.value).forEach((contest) => {
+		predictionsByContest.value[contest] = predictionsByContest.value[contest].sort(activeSort.value);
+	});
+};
 
 const leaderboardColor = (rank) => {
 	if (rank > 3) return 'bg-transparent';
@@ -112,22 +132,14 @@ const toggleAccordions = () => {
 						</span>
 					</template>
 				</span>
-				<span class="flex w-full flex-col justify-between gap-3 sm:flex-row">
-					<PrimaryButton
-						v-if="new Date(event.start_time) > Date.now()"
-						:href="route('event.prediction-form', event)"
-						class="w-fit"
-						>{{ hasPrediction ? 'Change prediction' : 'Make a Prediction' }}</PrimaryButton
-					>
-					<span v-if="$page.props.auth.user?.id === props.event.creator_id" class="flex flex-row gap-3">
+				<span v-if="canEdit || isCreator" class="flex w-full flex-col justify-between gap-3 sm:flex-row">
+					<PrimaryButton v-if="canEdit" :href="route('event.prediction-form', event)" class="w-fit">{{
+						hasPrediction ? 'Change prediction' : 'Make a Prediction'
+					}}</PrimaryButton>
+					<span v-if="isCreator" class="flex flex-row gap-3">
+						<SecondaryButton v-if="canEdit" :href="route('event.edit-form', event)"> Edit </SecondaryButton>
 						<SecondaryButton
-							v-if="new Date(event.start_time) > Date.now()"
-							:href="route('event.edit-form', event)"
-						>
-							Edit
-						</SecondaryButton>
-						<SecondaryButton
-							v-if="new Date(event.start_time) <= Date.now() && !event.has_winners"
+							v-if="!canEdit && !event.has_winners"
 							:href="route('event.winners-form', event)"
 						>
 							Finish
@@ -155,7 +167,12 @@ const toggleAccordions = () => {
 									class="relative min-w-max rounded-md bg-primary-extralight px-2 text-center dark:bg-primary-extradark"
 									v-for="option in contest.options
 										.split('|SEP|')
-										.sort((opt) => contest.result !== opt)"
+										.sort()
+										.sort(
+											(opt1, opt2) =>
+												(opt2 === contest.result) - (opt1 === contest.result) ||
+												opt2.toLowerCase() - opt1.toLowerCase(),
+										)"
 								>
 									<i-ic-baseline-emoji-events
 										class="absolute -left-2 -top-2 text-amber-400"
@@ -208,13 +225,41 @@ const toggleAccordions = () => {
 					<p>No leaderboard available yet.</p>
 				</template>
 			</Container>
-			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
-				<span class="flex flex-row justify-between">
+			<Container class="col-span-2 flex-col overflow-x-hidden">
+				<span class="flex flex-col justify-between gap-3 sm:flex-row">
 					<h2 class="text-2xl">Predictions</h2>
-					<SecondaryButton aria-label="Open or close prediction drawers" @click="toggleAccordions">
-						<i-ic-round-expand v-if="openStates.some((s) => s === false)" />
-						<i-ic-round-compress v-else />
-					</SecondaryButton>
+					<span class="flex flex-row justify-between gap-3">
+						<SecondaryButton
+							v-if="scoringType === 'Confidence Points'"
+							@click="changeSortFunction"
+							:aria-label="
+								activeSort.name === predictionAlphaSort
+									? 'alphabetical order'
+									: 'confidence point order'
+							"
+							class="gap-1"
+						>
+							Sort by:
+							<i-ic-round-sort-by-alpha
+								v-if="activeSort.name === 'predictionAlphaSort'"
+								class="text-lg"
+							/>
+							<i-ic-round-exposure-plus-1
+								v-if="activeSort.name === 'predictionPointSort'"
+								class="text-lg"
+							/>
+						</SecondaryButton>
+						<SecondaryButton
+							v-if="Object.keys(predictionsByContest).length > 0"
+							aria-label="Open or close prediction drawers"
+							@click="toggleAccordions"
+						>
+							<span class="text-lg">
+								<i-ic-round-expand v-if="openStates.some((s) => s === false)" />
+								<i-ic-round-compress v-else />
+							</span>
+						</SecondaryButton>
+					</span>
 				</span>
 				<template v-if="Object.keys(predictionsByContest).length > 0">
 					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-3">
@@ -231,31 +276,32 @@ const toggleAccordions = () => {
 							>
 								{{ event.contests.find((c) => c.id.toString() === key).name }}
 							</AccordionTrigger>
-							<AccordionContent>
+							<AccordionContent class="flex flex-col gap-1">
 								<p
 									v-for="prediction in predictionsByContest[key]"
-									class="flex flex-col gap-1 md:flex-row md:items-center"
+									class="flex flex-col md:flex-row md:items-center md:gap-1"
+									:key="prediction"
 								>
-									{{ prediction.user_name
-									}}<i-ic-round-keyboard-arrow-right class="hidden md:inline-flex" /><span
-										class="inline-flex text-secondary-extradark dark:text-secondary-extralight"
-										>{{ prediction.prediction_name }}</span
-									>
-									{{
-										event.scoring_type === 'confidence points'
-											? `(${plural(prediction.points, 'point')})`
-											: ''
-									}}
-									<template v-if="event.contests.find((c) => c.id.toString() === key).result">
-										<i-ic-round-check
-											class="inline-flex text-success"
-											v-if="
-												prediction.prediction_name ===
-												event.contests.find((c) => c.id.toString() === key).result
-											"
-										/>
-										<i-ic-round-close class="inline-flex text-error" v-else />
-									</template>
+									{{ prediction.user_name }}<span class="hidden text-base md:inline-flex">></span
+									><span
+										class="inline-flex items-end gap-1 text-secondary-extradark dark:text-secondary-extralight"
+										>{{ prediction.prediction_name }}
+										{{
+											scoringType === 'Confidence Points'
+												? `(${plural(prediction.points, 'point')})`
+												: ''
+										}}
+										<template v-if="event.contests.find((c) => c.id.toString() === key).result">
+											<i-ic-round-check
+												class="inline-flex text-success"
+												v-if="
+													prediction.prediction_name ===
+													event.contests.find((c) => c.id.toString() === key).result
+												"
+											/>
+											<i-ic-round-close class="inline-flex text-error" v-else />
+										</template>
+									</span>
 								</p>
 							</AccordionContent>
 						</AccordionItem>

@@ -76,7 +76,7 @@ export default {
 				},
 			},
 			animation: {
-				shake: 'shake 1s ease-in-out',
+				shake: 'shake 0.5s ease-in-out',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 			},
@@ -85,16 +85,12 @@ export default {
 					'10%, 90%': {
 						transform: 'translate(-1px, 0)',
 					},
-					'20%, 80%': {
+					'30%, 70%': {
 						transform: 'translate(2px, 0)',
 					},
 
-					'30%, 50%, 70%': {
+					'50%': {
 						transform: 'translate(-3px, 0)',
-					},
-
-					'40%, 60%': {
-						transform: 'translate(3px, 0)',
 					},
 				},
 				'accordion-down': {

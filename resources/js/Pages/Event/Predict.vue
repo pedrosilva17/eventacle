@@ -60,11 +60,7 @@ function submit() {
 						<span class="col-span-1 flex flex-col gap-3">
 							<h2 class="break-words text-xl">{{ contest.name }}</h2>
 							<span class="flex max-h-52 flex-1 flex-col gap-3 overflow-y-auto py-2">
-								<div
-									v-for="(option, index) in contest.options.split('|SEP|')"
-									:key="index"
-									class="pl-2"
-								>
+								<div v-for="(option, index) in contest.options.split('|SEP|')" :key="index">
 									<RadioInput
 										:id="'prediction_' + contest.id + '_' + index"
 										:name="'prediction_' + contest.id"
@@ -85,10 +81,10 @@ function submit() {
 									:min="1"
 									:max="event.contests.length"
 									v-model="form.points[contest.id]"
-									:isRequired="true"
+									:required="true"
 								/>
-								<InputError :message="form.errors[`points.${contest.id}`] ?? form.errors['points']" />
 							</template>
+							<InputError :message="form.errors[`points.${contest.id}`] ?? form.errors['points']" />
 						</span>
 					</template>
 					<span v-if="!$page.props.auth.user" class="col-span-2 flex flex-col">

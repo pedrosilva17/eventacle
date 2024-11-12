@@ -36,6 +36,7 @@ class CreateEvent
             'scoring_type' => $input['scoring_type'],
         ]);
         $event->creator_id = Auth::id();
+        $event->has_winners = false;
         $event->save();
 
         if (isset($input['contests']) && is_array($input['contests'])) {

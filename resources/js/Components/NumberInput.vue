@@ -3,7 +3,7 @@ const props = defineProps({
 	id: String,
 	min: Number,
 	max: Number,
-	isRequired: {
+	required: {
 		type: Boolean,
 		default: true,
 	},
@@ -19,7 +19,7 @@ const update = (inc) => {
 </script>
 
 <template>
-	<span required class="relative border-0 bg-transparent p-0">
+	<span class="relative border-0 bg-transparent p-0">
 		<input
 			:id="id"
 			:min="min"
@@ -27,7 +27,7 @@ const update = (inc) => {
 			type="number"
 			class="peer block w-full rounded-md border-black-light bg-white-light text-black-dark transition duration-300 ease-in-out focus:border-primary-extradark focus:ring-primary-extradark dark:border-black-dark dark:border-white-dark dark:bg-black-dark dark:text-white-light dark:focus:border-primary-extralight dark:focus:ring-primary-extralight"
 			v-model="modelValue"
-			:required="isRequired"
+			:required="required ?? null"
 		/>
 		<button
 			type="button"
