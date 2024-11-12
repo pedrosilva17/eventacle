@@ -1,6 +1,7 @@
 <script setup>
 import Container from '@/Components/Container.vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import DialogModal from '@/Components/DialogModal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
@@ -32,7 +33,8 @@ const timeOptions = {
 	timeZoneName: 'short',
 };
 
-let openStates = ref(new Array(Object.keys(props.predictionsByContest).length).fill(false));
+const show = ref(false);
+const openStates = ref(new Array(Object.keys(props.predictionsByContest).length).fill(false));
 const dateTime = new Date(props.event.start_time);
 const date = dateTime.toLocaleDateString('en-UK', dateOptions);
 const time = dateTime.toLocaleTimeString('en-UK', timeOptions);
@@ -51,13 +53,11 @@ const leaderboardColor = (rank) => {
 };
 
 const deleteEvent = () => {
-	if (confirm('Are you sure you want to delete this event?')) {
-		router.delete(
-			route('event.delete', {
-				event: props.event,
-			}),
-		);
-	}
+	router.delete(
+		route('event.delete', {
+			event: props.event,
+		}),
+	);
 };
 
 const getRanks = (points) => {
@@ -112,37 +112,37 @@ const toggleAccordions = () => {
 						</span>
 					</template>
 				</span>
-				<span class="flex w-full flex-col justify-between gap-5 sm:flex-row">
+				<span class="flex w-full flex-col justify-between gap-3 sm:flex-row">
 					<PrimaryButton
 						v-if="new Date(event.start_time) > Date.now()"
 						:href="route('event.prediction-form', event)"
 						class="w-fit"
 						>{{ hasPrediction ? 'Change prediction' : 'Make a Prediction' }}</PrimaryButton
 					>
-					<span v-if="$page.props.auth.user?.id === props.event.creator_id" class="flex flex-row gap-5">
+					<span v-if="$page.props.auth.user?.id === props.event.creator_id" class="flex flex-row gap-3">
 						<PrimaryButton
 							v-if="new Date(event.start_time) > Date.now()"
 							:href="route('event.edit-form', event)"
 						>
 							Edit
 						</PrimaryButton>
-						<DangerButton class="w-fit" @click="deleteEvent"> Delete </DangerButton>
+						<DangerButton class="w-fit" @click="show = !show">Delete</DangerButton>
 					</span>
 				</span>
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
 				<h2 class="text-2xl">Contests</h2>
-				<ul class="grid grid-cols-1 gap-5 md:grid-cols-2">
+				<ul class="grid grid-cols-1 gap-3 md:grid-cols-2">
 					<li v-for="contest in event.contests" :key="contest.id" class="flex h-full flex-col">
-						<p class="break-words text-xl">
+						<p :class="{ 'flex-1': !contest.description }" class="break-words text-xl">
 							{{ contest.name }}
 						</p>
-						<p>
+						<p v-if="contest.description" class="flex-1">
 							{{ contest.description }}
 						</p>
-						<span class="relative mt-2 flex flex-1">
+						<span class="relative mt-2 flex">
 							<span
-								class="flex flex-1 flex-row items-center justify-between gap-5 overflow-x-auto rounded-lg bg-white-light px-4 pb-4 pt-9 dark:bg-black-light"
+								class="flex flex-1 flex-row items-center justify-between gap-3 overflow-x-auto rounded-lg bg-white-light px-4 pb-4 pt-9 dark:bg-black-light"
 							>
 								<p class="absolute left-4 top-2 italic opacity-60">
 									Options ({{ contest.options.split('|SEP|').length }})
@@ -213,7 +213,7 @@ const toggleAccordions = () => {
 					</SecondaryButton>
 				</span>
 				<template v-if="Object.keys(predictionsByContest).length > 0">
-					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-5">
+					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-3">
 						<AccordionItem as="li" :value="key" v-for="(key, idx) in Object.keys(predictionsByContest)">
 							<AccordionTrigger
 								@click="openStates.value[idx] = !openStates.value[idx]"
@@ -262,5 +262,18 @@ const toggleAccordions = () => {
 				</template>
 			</Container>
 		</span>
+		<DialogModal :show="show" max-width="2xl" @close="show = false">
+			<template #title>Delete Event</template>
+			<template #content>
+				Are you sure you want to delete your event? You will not be able to restore it once you confirm this
+				action. If the winners have already be declared, this event's leaderboard will be preserved.
+			</template>
+			<template #footer>
+				<span class="flex gap-3">
+					<SecondaryButton @click="show = false">Cancel</SecondaryButton>
+					<DangerButton @click="deleteEvent"> Delete </DangerButton>
+				</span>
+			</template>
+		</DialogModal>
 	</AppLayout>
 </template>

@@ -109,7 +109,7 @@ function submit() {
 					<li
 						v-for="(contest, index) in form.contests"
 						:key="contest"
-						class="grid md:col-span-2 md:grid-cols-subgrid md:gap-4"
+						class="grid md:col-span-2 md:grid-cols-subgrid md:gap-3"
 					>
 						<h2 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
 						<InputGroup>

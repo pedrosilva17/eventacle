@@ -103,7 +103,7 @@ function submit() {
 					<li
 						v-for="(contest, index) in form.contests"
 						:key="contest"
-						class="grid md:col-span-2 md:grid-cols-subgrid md:gap-4"
+						class="grid md:col-span-2 md:grid-cols-subgrid md:gap-3"
 					>
 						<h2 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
 						<InputGroup>
@@ -143,7 +143,7 @@ function submit() {
 							>
 								<InputGroup class="mdflex w-full md:justify-end">
 									<span
-										class="flex flex-col items-end text-center md:flex-row md:items-center md:gap-4"
+										class="flex flex-col items-end text-center md:flex-row md:items-center md:gap-3"
 									>
 										<InputLabel
 											:for="`contest-option-${index}-${opIndex}`"
@@ -191,7 +191,6 @@ function submit() {
 						</TransitionGroup>
 					</li>
 				</TransitionGroup>
-				<span class="flex w-full flex-col items-end gap-4 md:col-start-2"> </span>
 
 				<InputGroup>
 					<InputLabel for="scoring_type">Scoring Type</InputLabel>

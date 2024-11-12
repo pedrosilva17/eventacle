@@ -56,7 +56,7 @@ function submit() {
 			<template #form>
 				<form
 					@submit.prevent="submitForm"
-					class="col-span-full m-auto grid w-full grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
+					class="col-span-full m-auto grid w-full grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
 				>
 					<template v-for="contest in event.contests" :key="contest.id" class="flex-col">
 						<span class="col-span-1 flex flex-col gap-3">
