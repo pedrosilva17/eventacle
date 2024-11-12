@@ -24,18 +24,24 @@ const close = () => {
 </script>
 
 <template>
-	<Modal :show="show" :max-width="maxWidth" :closeable="closeable" @close="close">
+	<Modal
+		:show="show"
+		:max-width="maxWidth"
+		:closeable="closeable"
+		@close="close"
+		class="text-black-dark dark:text-white-light"
+	>
 		<div class="px-6 py-4">
-			<div class="text-xl font-medium text-gray-900 dark:text-gray-100">
+			<div class="text-xl font-bold">
 				<slot name="title" />
 			</div>
 
-			<div class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+			<div class="mt-4 text-sm">
 				<slot name="content" />
 			</div>
 		</div>
 
-		<div class="flex flex-row justify-end bg-gray-100 px-6 py-4 text-end dark:bg-gray-800">
+		<div class="flex flex-row justify-end px-6 py-4 text-end">
 			<slot name="footer" />
 		</div>
 	</Modal>
