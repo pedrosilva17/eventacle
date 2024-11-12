@@ -34,7 +34,7 @@ class EditEvent
             if ($contest && $contest->event_id === $event->id) {
                 $contest->update([
                     'name' => $contestInfo['name'],
-                    'description' => $contestData['description'] ?? null,
+                    'description' => $contestInfo['description'] ?? null,
                 ]);
             }
         }

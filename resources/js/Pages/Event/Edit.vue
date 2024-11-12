@@ -1,18 +1,14 @@
 <script setup>
-import DangerButton from '@/Components/DangerButton.vue';
 import DateTimeInput from '@/Components/DateTimeInput.vue';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputGroup from '@/Components/InputGroup.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
-import SelectInput from '@/Components/SelectInput.vue';
 import TextareaInput from '@/Components/TextareaInput.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
-import { reactive } from 'vue';
 
 const props = defineProps({
 	event: {
@@ -25,45 +21,8 @@ const form = useForm({
 	name: props.event.name,
 	description: props.event.description,
 	start_time: props.event.start_time.replace('Z', ''),
-	contests: reactive(props.event.contests),
+	contests: props.event.contests,
 });
-
-console.log(props.event.start_time);
-
-const addContest = (index) => {
-	form.contests.splice(index + 1, 0, {
-		name: '',
-		description: '',
-		options: ['', ''],
-		optionIndices: [0, 1],
-	});
-};
-
-const removeContest = (index) => {
-	form.contests.splice(index, 1);
-	form.errors = [];
-};
-
-const addOption = (index) => {
-	form.contests[index].options.push('');
-	form.contests[index].optionIndices.push(
-		form.contests[index].optionIndices[form.contests[index].optionIndices.length - 1] + 1,
-	);
-};
-
-const removeOption = (index, optionIndex) => {
-	const optionIndices = form.contests[index].optionIndices;
-	form.contests[index].options.splice(optionIndices.indexOf(optionIndex), 1);
-	form.contests[index].optionIndices.splice(optionIndices.indexOf(optionIndex), 1);
-};
-
-const beforeLeave = (el) => {
-	const { marginLeft, marginTop, width, height } = window.getComputedStyle(el);
-	el.style.left = `${el.offsetLeft - parseFloat(marginLeft, 10)}px`;
-	el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`;
-	el.style.width = width;
-	el.style.height = height;
-};
 
 function submit() {
 	form.start_time = form.start_time + 'Z';

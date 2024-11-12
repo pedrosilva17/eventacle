@@ -120,12 +120,12 @@ const toggleAccordions = () => {
 						>{{ hasPrediction ? 'Change prediction' : 'Make a Prediction' }}</PrimaryButton
 					>
 					<span v-if="$page.props.auth.user?.id === props.event.creator_id" class="flex flex-row gap-3">
-						<PrimaryButton
+						<SecondaryButton
 							v-if="new Date(event.start_time) > Date.now()"
 							:href="route('event.edit-form', event)"
 						>
 							Edit
-						</PrimaryButton>
+						</SecondaryButton>
 						<DangerButton class="w-fit" @click="show = !show">Delete</DangerButton>
 					</span>
 				</span>
@@ -216,7 +216,7 @@ const toggleAccordions = () => {
 					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-3">
 						<AccordionItem as="li" :value="key" v-for="(key, idx) in Object.keys(predictionsByContest)">
 							<AccordionTrigger
-								@click="openStates.value[idx] = !openStates.value[idx]"
+								@click="openStates[idx] = !openStates[idx]"
 								class="accordion text-left text-lg"
 								:class="{
 									'max-md:break-all': needsBreakAll(
