@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import NumberInput from '@/Components/NumberInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import RadioInput from '@/Components/RadioInput.vue';
+import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 
@@ -54,10 +55,7 @@ function submit() {
 		</h1>
 		<FormSection @submit.prevent="submit">
 			<template #form>
-				<form
-					@submit.prevent="submitForm"
-					class="col-span-full m-auto grid w-full grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
-				>
+				<div class="col-span-full m-auto grid w-full grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
 					<template v-for="contest in event.contests" :key="contest.id" class="flex-col">
 						<span class="col-span-1 flex flex-col gap-3">
 							<h2 class="break-words text-xl">{{ contest.name }}</h2>
@@ -93,23 +91,15 @@ function submit() {
 							</template>
 						</span>
 					</template>
-
-					<template v-if="!$page.props.auth.user">
-						<label for="guest_user_name">Enter your name to make a prediction</label>
-						<input
-							v-model="form.guest_user_name"
-							type="text"
-							maxlength="255"
-							id="guest_user_name"
-							required
-						/>
-					</template>
-					<Transition name="fade">
-						<span v-if="form.errors['duplicate_name']" class="text-red-500">{{
-							form.errors['duplicate_name']
-						}}</span>
-					</Transition>
-				</form>
+					<span v-if="!$page.props.auth.user" class="col-span-2 flex flex-col">
+						<p class="col-span-2 mb-2 mt-6 text-sm">
+							Don't have an account? No problem! Type a username below to identify your prediction.
+						</p>
+						<InputLabel :for="'guest_user_name'" class="mb-1 w-full text-left">Username</InputLabel>
+						<TextInput v-model="form.guest_user_name" type="text" id="guest_user_name" required />
+						<InputError :message="form.errors['duplicate_name']" />
+					</span>
+				</div>
 			</template>
 			<template #actions>
 				<PrimaryButton :disabled="form.processing" class="w-fit">Submit Prediction</PrimaryButton>
