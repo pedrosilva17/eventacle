@@ -22,7 +22,7 @@ const delegatedProps = computed(() => {
 		v-bind="delegatedProps"
 		class="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
 	>
-		<div :class="cn('max-h-48 overflow-y-auto rounded-b-lg px-6', props.class)">
+		<div :class="cn('max-h-48 overflow-y-auto rounded-b-lg px-6 pb-4', props.class)">
 			<slot />
 		</div>
 	</AccordionContent>

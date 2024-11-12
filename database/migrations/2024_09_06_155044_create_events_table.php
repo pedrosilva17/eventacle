@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
             $table->dateTime('start_time');
+            $table->boolean('has_winners');
             $table->enum('scoring_type', ['single points', 'confidence points']);
             $table->timestamps();
         });

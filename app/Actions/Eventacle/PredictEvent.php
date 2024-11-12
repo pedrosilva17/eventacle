@@ -13,10 +13,16 @@ class PredictEvent
      */
     public function predict(array $input): array
     {
+        $isConfidencePoints = $input['event']['scoring_type'] === 'confidence points';
+        $contestCount = count($input['event']['contests']);
         Validator::make($input, [
-            'points' => ['nullable', 'array'],
-            'points.*' => ['integer', 'distinct', 'between:1,'.count($input['points'])],
+            'predictions' => ['required', 'array'],
+            'points' => [$isConfidencePoints ? 'required' : 'nullable', 'array', $isConfidencePoints ? 'size:'.$contestCount : ''],
+            'points.*' => ['required_with:points', 'integer', 'distinct', 'between:1,'.$contestCount],
         ], [
+            'required' => 'This field is required.',
+            'required_with' => 'This field is required.',
+            'points.size' => 'Every contest must be assigned a confidence point.',
             'points.*.distinct' => 'Each contest must have a unique confidence point.',
             'points.*.between' => 'Confidence points must be between :min and :max.',
             'points.*.integer' => 'Points must be integer values.',

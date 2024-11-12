@@ -18,11 +18,14 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
+        $dateTime = Carbon::now()->addDays(rand(-365, 365))->addHours(rand(1, 23))->addMinutes(rand(1, 59));
+
         return [
             'name' => fake()->words(3, true),
             'description' => fake()->paragraph(),
             //'creator_id' => User::factory(),
-            'start_time' => Carbon::now()->addDays(rand(-365, 365))->addHours(rand(1, 23))->addMinutes(rand(1, 59))->format('Y-m-d\TH:i\Z'),
+            'start_time' => $dateTime->format('Y-m-d\TH:i\Z'),
+            'has_winners' => $dateTime < Carbon::now(),
             'scoring_type' => fake()->boolean() ? 'single points' : 'confidence points',
         ];
     }

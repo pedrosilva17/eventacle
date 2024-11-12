@@ -126,6 +126,12 @@ const toggleAccordions = () => {
 						>
 							Edit
 						</SecondaryButton>
+						<SecondaryButton
+							v-if="new Date(event.start_time) <= Date.now() && !event.has_winners"
+							:href="route('event.winners-form', event)"
+						>
+							Finish
+						</SecondaryButton>
 						<DangerButton class="w-fit" @click="show = !show">Delete</DangerButton>
 					</span>
 				</span>
@@ -144,9 +150,7 @@ const toggleAccordions = () => {
 							<span
 								class="flex flex-1 flex-row items-center justify-between gap-3 overflow-x-auto rounded-lg bg-white-light px-4 pb-4 pt-9 dark:bg-black-light"
 							>
-								<p class="absolute left-4 top-2 italic opacity-60">
-									Options ({{ contest.options.split('|SEP|').length }})
-								</p>
+								<p class="absolute left-4 top-2 italic opacity-60">Options</p>
 								<p
 									class="relative min-w-max rounded-md bg-primary-extralight px-2 text-center dark:bg-primary-extradark"
 									v-for="option in contest.options
@@ -230,7 +234,7 @@ const toggleAccordions = () => {
 							<AccordionContent>
 								<p
 									v-for="prediction in predictionsByContest[key]"
-									class="flex flex-col gap-1 pb-3 md:flex-row md:items-center md:pb-0"
+									class="flex flex-col gap-1 md:flex-row md:items-center"
 								>
 									{{ prediction.user_name
 									}}<i-ic-round-keyboard-arrow-right class="hidden md:inline-flex" /><span

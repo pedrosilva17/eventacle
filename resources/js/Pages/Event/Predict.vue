@@ -72,12 +72,13 @@ function submit() {
 										:name="'prediction_' + contest.id"
 										:value="option"
 										v-model="form.predictions[contest.id]"
-										required
+										:required="true"
 									>
 										{{ option }}
 									</RadioInput>
 								</div>
 							</span>
+							<InputError :message="form.errors['predictions']" />
 							<template v-if="event.scoring_type === 'confidence points'">
 								<InputLabel :for="'points_' + contest.id">Confidence points</InputLabel>
 								<NumberInput
@@ -86,9 +87,9 @@ function submit() {
 									:min="1"
 									:max="event.contests.length"
 									v-model="form.points[contest.id]"
-									required
+									:isRequired="true"
 								/>
-								<InputError :message="form.errors[`points.${contest.id}`]" class="text-red-500" />
+								<InputError :message="form.errors[`points.${contest.id}`] ?? form.errors['points']" />
 							</template>
 						</span>
 					</template>
