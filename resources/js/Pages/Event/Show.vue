@@ -233,7 +233,7 @@ const toggleAccordions = () => {
 							v-if="scoringType === 'Confidence Points'"
 							@click="changeSortFunction"
 							:aria-label="
-								activeSort.name === predictionAlphaSort
+								activeSort.name === 'predictionAlphaSort'
 									? 'alphabetical order'
 									: 'confidence point order'
 							"
@@ -312,11 +312,11 @@ const toggleAccordions = () => {
 				</template>
 			</Container>
 		</span>
-		<DialogModal :show="show" max-width="2xl" @close="show = false">
+		<DialogModal :show="show" @close="show = false">
 			<template #title>Delete Event</template>
 			<template #content>
 				Are you sure you want to delete your event? You will not be able to restore it once you confirm this
-				action. If the winners have already be declared, this event's leaderboard will be preserved.
+				action. If the winners have already been published, this event's leaderboard will be preserved.
 			</template>
 			<template #footer>
 				<span class="flex gap-3">

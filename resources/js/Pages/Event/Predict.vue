@@ -76,7 +76,6 @@ function submit() {
 							<template v-if="event.scoring_type === 'confidence points'">
 								<InputLabel :for="'points_' + contest.id">Confidence points</InputLabel>
 								<NumberInput
-									type="number"
 									:id="'points_' + contest.id"
 									:min="1"
 									:max="event.contests.length"

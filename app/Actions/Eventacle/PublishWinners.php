@@ -6,6 +6,7 @@ use App\Models\Contest;
 use App\Models\Event;
 use App\Models\LeaderboardEntry;
 use App\Models\Prediction;
+use Illuminate\Support\Facades\Validator;
 
 class PublishWinners
 {
@@ -14,6 +15,14 @@ class PublishWinners
      */
     public function publish(array $input): array
     {
+        $contestCount = count($input['event']['contests']);
+        Validator::make($input, [
+            'results' => ['required', 'array', 'size:'.$contestCount],
+            'results.*' => ['required_with:results', 'string'],
+        ], [
+            'required' => 'This field is required.',
+            'size' => 'Every contest must have a winner.',
+        ])->validate();
         foreach ($input['event']['contests'] as $contest) {
             $contest['result'] = $input['results'][$contest['id']];
             Contest::where('id', $contest['id'])->update([
@@ -23,6 +32,9 @@ class PublishWinners
 
         $eventId = $input['event']['id'];
         $eventName = $input['event']['name'];
+        $event = Event::find($eventId);
+        $event->has_winners = true;
+        $event->save();
 
         return $this->calculateLeaderboard($input['event']['predictions'], $eventId, $eventName);
     }

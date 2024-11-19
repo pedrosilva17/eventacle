@@ -15,8 +15,8 @@ class CheckExistingWinners
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $areWinnersDeclared = $request->route('event')->leaderboard()->get()->isNotEmpty();
+        $areWinnersPublished = $request->route('event')->has_winners;
 
-        return $areWinnersDeclared ? redirect()->route('event.show', $request->route('event'))->with('error', 'The winners were already declared!') : $next($request);
+        return $areWinnersPublished ? redirect()->route('event.show', $request->route('event'))->with('error', 'The winners were already published!') : $next($request);
     }
 }
