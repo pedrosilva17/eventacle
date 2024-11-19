@@ -98,11 +98,13 @@ onMounted(() => {
 
 									<template #content>
 										<!-- Account Management -->
-										<div class="block px-4 py-2 text-xs text-gray-400">Manage Account</div>
+										<div class="block px-4 py-2 text-xs text-black-dark dark:text-white-light">
+											Manage Account
+										</div>
 
 										<DropdownLink :href="route('profile.show')"> Profile </DropdownLink>
 
-										<div class="border-t border-gray-200 dark:border-gray-600" />
+										<div class="border-t border-primary-light dark:border-primary-dark" />
 
 										<!-- Authentication -->
 										<form @submit.prevent="logout">
@@ -149,6 +151,9 @@ onMounted(() => {
 						<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
 							Dashboard
 						</ResponsiveNavLink>
+						<ResponsiveNavLink :href="route('event.new')" :active="route().current('event.new')">
+							Create Event
+						</ResponsiveNavLink>
 					</div>
 
 					<!-- Responsive Settings Options -->
@@ -164,10 +169,10 @@ onMounted(() => {
 								</div>
 
 								<div>
-									<div class="text-base font-medium text-gray-800 dark:text-gray-200">
+									<div class="text-base font-medium text-black-dark dark:text-white-light">
 										{{ $page.props.auth.user.name }}
 									</div>
-									<div class="text-sm font-medium text-gray-500">
+									<div class="text-sm font-medium text-black-light dark:text-white-dark">
 										{{ $page.props.auth.user.email }}
 									</div>
 								</div>
