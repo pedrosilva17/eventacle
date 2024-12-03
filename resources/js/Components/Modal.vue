@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import Button from './Button.vue';
 
 const props = defineProps({
 	show: {
@@ -97,9 +98,17 @@ const maxWidthClass = computed(() => {
 			>
 				<div
 					v-show="show"
-					class="mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full dark:bg-black"
+					class="relative mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full dark:bg-black"
 					:class="maxWidthClass"
 				>
+					<button
+						@click="close"
+						id="close"
+						aria-label="Close"
+						class="absolute right-6 top-4 transform outline-none duration-150 ease-in-out hover:text-primary focus:text-primary focus:ring-0 dark:hover:text-primary-extralight dark:focus:text-primary-extralight"
+					>
+						<i-ic-round-close aria-labelledby="close" />
+					</button>
 					<slot v-if="showSlot" />
 				</div>
 			</transition>

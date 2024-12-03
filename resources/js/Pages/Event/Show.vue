@@ -7,7 +7,7 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/Components/shadcn/accordion';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { needsBreakAll, plural } from '@/Lib/Utils';
+import { needsBreakAll, plural, toggleAccordions } from '@/Lib/Utils';
 import { router, usePage } from '@inertiajs/vue3';
 import { reactive, ref } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -86,14 +86,6 @@ const getRanks = (points) => {
 	return points.map((x) => rank.get(x));
 };
 const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
-
-const toggleAccordions = () => {
-	const accordions = document.querySelectorAll('.accordion');
-	const newState = Array.from(accordions).some((acc) => acc.dataset.state === 'closed') ? 'open' : 'closed';
-	accordions.forEach((element) => {
-		if (element.dataset.state !== newState) element.click();
-	});
-};
 </script>
 
 <template>
@@ -113,7 +105,7 @@ const toggleAccordions = () => {
 						</h1>
 						<p>{{ event.description }}</p>
 					</template>
-					<template class="flex flex-col py-1 text-lg sm:text-xl">
+					<div class="flex flex-col py-1 text-lg sm:text-xl">
 						<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row sm:items-start">
 							<p>{{ date }}</p>
 							<i-ic-round-calendar-today aria-label="Event Date" class="text-secondary" />
@@ -123,14 +115,14 @@ const toggleAccordions = () => {
 							<i-ic-round-access-time-filled aria-label="Event Time" class="text-secondary" />
 						</span>
 						<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
-							<p>{{ event.creator.name }}</p>
+							<p class="max-w-64 text-left sm:text-right">{{ event.creator.name }}</p>
 							<i-ic-round-person aria-label="Creator Name" class="text-secondary" />
 						</span>
 						<span class="flex flex-row-reverse items-center justify-end gap-2 sm:flex-row">
 							<p>{{ scoringType }}</p>
 							<i-ic-round-plus-one aria-label="Scoring Type" class="text-xl text-secondary" />
 						</span>
-					</template>
+					</div>
 				</span>
 				<span v-if="canEdit || isCreator" class="flex w-full flex-col justify-between gap-3 sm:flex-row">
 					<PrimaryButton v-if="canEdit" :href="route('event.prediction-form', event)" class="w-fit">{{
@@ -174,7 +166,7 @@ const toggleAccordions = () => {
 												opt2.toLowerCase() - opt1.toLowerCase(),
 										)"
 								>
-									<i-ic-baseline-emoji-events
+									<i-ic-round-emoji-events
 										class="absolute -left-2 -top-2 text-amber-400"
 										v-if="contest.result === option"
 									/>
@@ -225,66 +217,56 @@ const toggleAccordions = () => {
 					<p>No leaderboard available yet.</p>
 				</template>
 			</Container>
-			<Container class="col-span-2 flex-col overflow-x-hidden">
-				<span class="flex flex-col justify-between gap-3 sm:flex-row">
-					<h2 class="text-2xl">Predictions</h2>
-					<span class="flex flex-row justify-between gap-3">
-						<SecondaryButton
-							v-if="scoringType === 'Confidence Points'"
-							@click="changeSortFunction"
-							:aria-label="
-								activeSort.name === 'predictionAlphaSort'
-									? 'alphabetical order'
-									: 'confidence point order'
-							"
-							class="gap-1"
-						>
-							Sort by:
-							<i-ic-round-sort-by-alpha
-								v-if="activeSort.name === 'predictionAlphaSort'"
-								class="text-lg"
-							/>
-							<i-ic-round-exposure-plus-1
-								v-if="activeSort.name === 'predictionPointSort'"
-								class="text-lg"
-							/>
-						</SecondaryButton>
-						<SecondaryButton
-							v-if="Object.keys(predictionsByContest).length > 0"
-							aria-label="Open or close prediction drawers"
-							@click="toggleAccordions"
-						>
-							<span class="text-lg">
-								<i-ic-round-expand v-if="openStates.some((s) => s === false)" />
-								<i-ic-round-compress v-else />
-							</span>
-						</SecondaryButton>
-					</span>
+			<Container class="col-span-2 max-h-screen flex-col">
+				<h2 class="text-2xl">Predictions</h2>
+				<span class="absolute right-6 top-4 flex flex-row justify-between gap-3">
+					<SecondaryButton
+						v-if="scoringType === 'Confidence Points'"
+						@click="changeSortFunction"
+						:aria-label="
+							activeSort.name === 'predictionAlphaSort' ? 'alphabetical order' : 'confidence point order'
+						"
+						class="gap-1"
+					>
+						Sort by:
+						<i-ic-round-sort-by-alpha v-if="activeSort.name === 'predictionAlphaSort'" class="text-lg" />
+						<i-ic-round-exposure-plus-1 v-if="activeSort.name === 'predictionPointSort'" class="text-lg" />
+					</SecondaryButton>
+					<SecondaryButton
+						v-if="Object.keys(predictionsByContest).length > 0"
+						aria-label="Open or close prediction drawers"
+						@click="toggleAccordions('.accordion')"
+					>
+						<span class="text-lg">
+							<i-ic-round-expand v-if="openStates.some((s) => s === false)" />
+							<i-ic-round-compress v-else />
+						</span>
+					</SecondaryButton>
 				</span>
 				<template v-if="Object.keys(predictionsByContest).length > 0">
-					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-3">
+					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-3 overflow-y-auto">
 						<AccordionItem as="li" :value="key" v-for="(key, idx) in Object.keys(predictionsByContest)">
 							<AccordionTrigger
 								@click="openStates[idx] = !openStates[idx]"
 								class="accordion text-left text-lg"
 								:class="{
-									'max-md:break-all': needsBreakAll(
-										event.contests.find((c) => c.id.toString() === key).name,
-										25,
-									),
+									'max-md:break-all': needsBreakAll(predictionsByContest[key][0].contest_name, 25),
 								}"
 							>
-								{{ event.contests.find((c) => c.id.toString() === key).name }}
+								{{ predictionsByContest[key][0].contest_name }}
 							</AccordionTrigger>
 							<AccordionContent class="flex flex-col gap-1">
-								<p
+								<div
 									v-for="prediction in predictionsByContest[key]"
 									class="flex flex-col md:flex-row md:items-center md:gap-1"
 									:key="prediction"
 								>
-									{{ prediction.user_name }}<span class="hidden text-base md:inline-flex">></span
-									><span
-										class="inline-flex items-end gap-1 text-secondary-extradark dark:text-secondary-extralight"
+									<p class="flex md:w-1/2 md:justify-end md:text-right">
+										{{ prediction.user_name }}
+									</p>
+									<span class="hidden text-base md:inline-flex md:flex-1 md:text-center"> > </span>
+									<span
+										class="inline-flex items-end gap-1 text-secondary-extradark md:w-1/2 dark:text-secondary-extralight"
 										>{{ prediction.prediction_name }}
 										{{
 											scoringType === 'Confidence Points'
@@ -302,7 +284,7 @@ const toggleAccordions = () => {
 											<i-ic-round-close class="inline-flex text-error" v-else />
 										</template>
 									</span>
-								</p>
+								</div>
 							</AccordionContent>
 						</AccordionItem>
 					</Accordion>

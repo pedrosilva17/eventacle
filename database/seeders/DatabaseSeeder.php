@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         });
         $eventsCount = $events->count();
 
-        Contest::factory(200)->make()->each(function ($contest, $index) use ($events, $eventsCount) {
+        Contest::factory(300)->make()->each(function ($contest, $index) use ($events, $eventsCount) {
             $contest->event_id = $events[$index % $eventsCount]->id;
             if ($events[$index % $eventsCount]->start_time < Carbon::now()) {
                 $options = explode('|SEP|', $contest->options);
@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
                     'user_name' => $userId !== null ? User::find($userId)->name : $fakeName,
                     'event_id' => $event->id,
                     'contest_id' => $contest->id,
+                    'contest_name' => $contest->name,
                     'prediction_name' => $options[fake()->numberBetween(0, count($options) - 1)],
                     'points' => $event->scoring_type === 'confidence points' ? array_pop($possiblePoints) : 1,
                 ]);

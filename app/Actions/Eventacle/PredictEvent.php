@@ -2,6 +2,7 @@
 
 namespace App\Actions\Eventacle;
 
+use App\Models\Contest;
 use App\Models\Prediction;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -52,6 +53,7 @@ class PredictEvent
                 $newPrediction->user_id = $userId;
                 $newPrediction->user_name = $userName;
                 $newPrediction->contest_id = $contestId;
+                $newPrediction->contest_name = Contest::find($contestId)->name;
                 $newPrediction->event_id = $input['event']['id'];
                 $newPrediction->save();
                 array_push($predictions, $newPrediction);

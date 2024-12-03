@@ -151,7 +151,7 @@ onMounted(() => {
 						<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
 							Dashboard
 						</ResponsiveNavLink>
-						<ResponsiveNavLink :href="route('event.new')" :active="route().current('event.new')">
+						<ResponsiveNavLink :href="route('event.create')" :active="route().current('event.create')">
 							Create Event
 						</ResponsiveNavLink>
 					</div>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('user_name');
             $table->foreignId('contest_id')->constrained('contests')->onDelete('cascade');
+            $table->string('contest_name');
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->string('prediction_name');
             $table->integer('points');

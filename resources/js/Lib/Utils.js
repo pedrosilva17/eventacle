@@ -11,3 +11,10 @@ export const needsBreakAll = (str, len) => {
 		return w.length >= len;
 	});
 };
+export const toggleAccordions = (htmlClass) => {
+	const accordions = document.querySelectorAll(htmlClass);
+	const newState = Array.from(accordions).some((acc) => acc.dataset.state === 'closed') ? 'open' : 'closed';
+	accordions.forEach((element) => {
+		if (element.dataset.state !== newState) element.click();
+	});
+};

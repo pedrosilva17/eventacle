@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany(Prediction::class);
     }
 
+    public function predictionsByContest()
+    {
+        return $this->predictions()->orderByDesc('points')->get()->groupBy('contest_id');
+    }
+
     /**
      * Get the events in which the user has predicted.
      */
@@ -94,5 +99,43 @@ class User extends Authenticatable
     public function leaderboardEntries(): HasMany
     {
         return $this->hasMany(LeaderboardEntry::class)->orderByDesc('score');
+    }
+
+    /**
+     * Get the number of wins in predictions this user achieved.
+     */
+    public function wins(): int
+    {
+        $winCount = 0;
+        $userEntries = $this->leaderboardEntries()->get();
+        $eventEntries = LeaderboardEntry::findMany(array_map(function ($entry) {
+            return $entry['event_id'];
+        }, $userEntries->toArray()));
+        foreach ($userEntries as $entry) {
+            if ($eventEntries->where('event_id', $entry->event_id)->max('score') === $entry->score) {
+                $winCount++;
+            }
+        }
+
+        return $winCount;
+    }
+
+    /**
+     * Get the number of times the user has placed in the podium when predicting events.
+     */
+    public function podiums(): int
+    {
+        $podiumCount = 0;
+        $userEntries = $this->leaderboardEntries()->get();
+        $eventEntries = LeaderboardEntry::whereIn('event_id', array_map(function ($entry) {
+            return $entry['event_id'];
+        }, $userEntries->toArray()))->get();
+        foreach ($userEntries as $entry) {
+            if ($eventEntries->where('event_id', $entry->event_id)->count() <= 3 || $eventEntries->where('event_id', $entry->event_id)->sortByDesc('score')->take(3)->min('score') <= $entry->score) {
+                $podiumCount++;
+            }
+        }
+
+        return $podiumCount;
     }
 }
