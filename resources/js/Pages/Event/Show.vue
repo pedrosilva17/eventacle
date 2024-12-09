@@ -142,7 +142,7 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
 				<h2 class="text-2xl">Contests</h2>
-				<ul class="grid grid-cols-1 gap-3 md:grid-cols-2">
+				<ul class="grid grid-cols-1 gap-3 overflow-y-auto md:grid-cols-2">
 					<li v-for="contest in event.contests" :key="contest.id" class="flex h-full flex-col">
 						<p :class="{ 'flex-1': !contest.description }" class="break-words text-xl">
 							{{ contest.name }}
@@ -265,9 +265,10 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 										{{ prediction.user_name }}
 									</p>
 									<span class="hidden text-base md:inline-flex md:flex-1 md:text-center"> > </span>
-									<span
-										class="inline-flex items-end gap-1 text-secondary-extradark md:w-1/2 dark:text-secondary-extralight"
-										>{{ prediction.prediction_name }}
+									<div
+										class="inline-flex items-end justify-between gap-1 text-secondary-extradark md:w-1/2 md:justify-start dark:text-secondary-extralight"
+									>
+										{{ prediction.prediction_name }}
 										{{
 											scoringType === 'Confidence Points'
 												? `(${plural(prediction.points, 'point')})`
@@ -283,7 +284,7 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 											/>
 											<i-ic-round-close class="inline-flex text-error" v-else />
 										</template>
-									</span>
+									</div>
 								</div>
 							</AccordionContent>
 						</AccordionItem>

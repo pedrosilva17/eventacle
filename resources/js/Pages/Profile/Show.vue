@@ -32,7 +32,7 @@ const openStates = ref(new Array(Object.keys(page.props.eventsPredicted).length)
 	<AppLayout title="Profile">
 		<div class="grid-rows-auto grid auto-rows-min grid-cols-2 gap-3">
 			<Container class="col-span-2 flex-col">
-				<div class="flex flex-1 flex-row justify-between">
+				<div class="flex flex-1 flex-row justify-between gap-3">
 					<h1
 						:class="{
 							'break-all': needsBreakAll($page.props.auth.user.name, 35),
@@ -42,11 +42,11 @@ const openStates = ref(new Array(Object.keys(page.props.eventsPredicted).length)
 					>
 						{{ $page.props.auth.user.name }}
 					</h1>
-					<PrimaryButton id="edit" aria-label="Edit profile" @click="show = true">
+					<PrimaryButton id="edit" aria-label="Edit profile" @click="show = true" class="h-fit">
 						<i-ic-round-edit aria-labelledby="edit" />
 					</PrimaryButton>
 				</div>
-				<p class="-mt-8 flex text-sm text-black-light dark:text-white-dark">
+				<p class="-mt-8 flex break-all text-sm text-black-light dark:text-white-dark">
 					{{ $page.props.auth.user.email }}
 				</p>
 				<section class="flex flex-col gap-2">
@@ -149,15 +149,15 @@ const openStates = ref(new Array(Object.keys(page.props.eventsPredicted).length)
 								{{ event.name }}
 							</AccordionTrigger>
 							<AccordionContent class="flex flex-col gap-1">
-								<span
+								<div
 									v-for="contest in event.contests"
 									class="flex flex-col md:flex-row md:items-center md:gap-1"
 									:key="contest"
 								>
 									<p class="flex md:w-1/2 md:justify-end md:text-right">{{ contest.name }}</p>
 									<span class="hidden text-center text-base md:inline-flex md:flex-1">></span>
-									<p
-										class="inline-flex items-end gap-1 text-secondary-extradark md:w-1/2 dark:text-secondary-extralight"
+									<div
+										class="inline-flex items-end justify-between gap-1 text-secondary-extradark md:w-1/2 dark:text-secondary-extralight"
 									>
 										{{ $page.props.predictionsByContest[contest.id][0].prediction_name }}
 										{{
@@ -165,18 +165,18 @@ const openStates = ref(new Array(Object.keys(page.props.eventsPredicted).length)
 												? `(${plural($page.props.predictionsByContest[contest.id][0].prediction_name, 'point')})`
 												: ''
 										}}
-									</p>
-									<template v-if="contest.result">
-										<i-ic-round-check
-											class="inline-flex text-success"
-											v-if="
-												$page.props.predictionsByContest[contest.id][0].prediction_name ===
-												contest.result
-											"
-										/>
-										<i-ic-round-close class="inline-flex text-error" v-else />
-									</template>
-								</span>
+										<span v-if="contest.result">
+											<i-ic-round-check
+												class="inline-flex text-success"
+												v-if="
+													$page.props.predictionsByContest[contest.id][0].prediction_name ===
+													contest.result
+												"
+											/>
+											<i-ic-round-close class="inline-flex text-error" v-else />
+										</span>
+									</div>
+								</div>
 							</AccordionContent>
 						</AccordionItem>
 					</Accordion>

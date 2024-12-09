@@ -116,9 +116,7 @@ onMounted(() => {
 						</div>
 					</template>
 					<template v-else>
-						<div
-							class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex sm:flex-1 sm:items-center sm:justify-end"
-						>
+						<div class="-my-px ms-10 flex flex-1 items-center justify-end space-x-8">
 							<Link :href="route('login')">
 								<PrimaryButton type="button" aria-label="Access login or register page">
 									<i-ic-round-login class="-translate-x-[2px] text-xl" aria-label="Login/Register" />
@@ -129,7 +127,7 @@ onMounted(() => {
 					<!-- Navigation Links -->
 
 					<!-- Hamburger -->
-					<div class="-me-2 flex items-center sm:hidden">
+					<div v-if="$page.props.auth.user" class="-me-2 flex items-center sm:hidden">
 						<PrimaryButton
 							aria-label="Open Navigation Menu"
 							@click="showingNavigationDropdown = !showingNavigationDropdown"
@@ -147,17 +145,16 @@ onMounted(() => {
 					:class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
 					class="sm:hidden"
 				>
-					<div class="space-y-1 pb-3 pt-2">
-						<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-							Dashboard
-						</ResponsiveNavLink>
-						<ResponsiveNavLink :href="route('event.create')" :active="route().current('event.create')">
-							Create Event
-						</ResponsiveNavLink>
-					</div>
-
 					<!-- Responsive Settings Options -->
 					<template v-if="$page.props.auth.user">
+						<div class="space-y-1 pb-3 pt-2">
+							<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+								Dashboard
+							</ResponsiveNavLink>
+							<ResponsiveNavLink :href="route('event.create')" :active="route().current('event.create')">
+								Create Event
+							</ResponsiveNavLink>
+						</div>
 						<div class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
 							<div class="flex items-center px-4">
 								<div v-if="$page.props.jetstream.managesProfilePhotos" class="me-3 shrink-0">
