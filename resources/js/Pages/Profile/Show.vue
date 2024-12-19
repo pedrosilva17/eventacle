@@ -17,6 +17,7 @@ import Accordion from '@/Components/shadcn/accordion/Accordion.vue';
 import AccordionItem from '@/Components/shadcn/accordion/AccordionItem.vue';
 import AccordionTrigger from '@/Components/shadcn/accordion/AccordionTrigger.vue';
 import AccordionContent from '@/Components/shadcn/accordion/AccordionContent.vue';
+import SmallEventCard from '@/Components/SmallEventCard.vue';
 
 defineProps({
 	confirmsTwoFactorAuthentication: Boolean,
@@ -83,34 +84,9 @@ const openStates = ref(new Array(Object.keys(page.props.eventsPredicted).length)
 					No upcoming events created yet. Time to change that!
 				</p>
 				<div v-else class="flex max-h-screen flex-col gap-3">
-					<Link
-						:href="route('event.show', event)"
-						v-for="event in $page.props.eventsCreated"
-						class="group flex flex-1 rounded-lg outline-none transition duration-300 ease-in-out focus:border-primary-extradark focus:ring-2 focus:ring-primary-extradark focus:ring-offset-2 focus:ring-offset-white dark:border-white-dark dark:focus:border-primary-extralight dark:focus:ring-primary-extralight dark:focus:ring-offset-black"
-					>
-						<section
-							class="flex min-h-36 max-w-full flex-1 flex-col rounded-lg bg-white-light px-6 py-4 text-xl transition duration-300 ease-in-out hover:bg-primary-extralight group-focus:bg-primary-extralight dark:bg-black-light dark:hover:bg-primary-extradark dark:group-focus:bg-primary-extradark"
-						>
-							<h2
-								class="-mx-6 -mt-4 h-full break-words rounded-t-lg bg-primary-extralight px-6 py-4 text-xl sm:text-2xl dark:bg-primary-extradark"
-							>
-								{{ event.name }}
-							</h2>
-							<span class="mt-4 flex flex-row">
-								<p class="flex-1 text-sm">
-									{{
-										new Date(event.start_time)
-											.toLocaleString('en-UK', options)
-											.replace(/,(?=[^,]*$)/, ' •')
-									}}
-								</p>
-								<p class="flex items-center justify-end gap-1 text-sm">
-									{{ event.predictions.length / event.contests.length }}
-									<i-ic-round-group class="text-base" aria-label="Number of users with predictions" />
-								</p>
-							</span>
-						</section>
-					</Link>
+					<template v-for="event in $page.props.eventsCreated">
+						<SmallEventCard :event="event" />
+					</template>
 				</div>
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col md:col-span-1">
@@ -128,12 +104,7 @@ const openStates = ref(new Array(Object.keys(page.props.eventsPredicted).length)
 					</SecondaryButton>
 				</span>
 				<template v-if="Object.keys($page.props.predictionsByContest).length > 0">
-					<Accordion
-						type="multiple"
-						as="ul"
-						collapsible
-						class="flex h-full flex-col justify-between gap-3 overflow-y-auto"
-					>
+					<Accordion type="multiple" as="ul" collapsible class="flex h-full flex-col gap-3 overflow-y-auto">
 						<AccordionItem
 							as="li"
 							:value="event.id.toString()"

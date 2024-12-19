@@ -18,3 +18,13 @@ export const toggleAccordions = (htmlClass) => {
 		if (element.dataset.state !== newState) element.click();
 	});
 };
+
+export const dateTimeOptions = {
+	weekday: 'short',
+	year: 'numeric',
+	month: 'short',
+	day: 'numeric',
+	hour: 'numeric',
+	minute: 'numeric',
+	timeZoneName: 'short',
+};

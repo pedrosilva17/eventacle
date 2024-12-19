@@ -129,13 +129,10 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 						hasPrediction ? 'Change prediction' : 'Make a Prediction'
 					}}</PrimaryButton>
 					<span v-if="isCreator" class="flex flex-row gap-3">
-						<SecondaryButton v-if="canEdit" :href="route('event.edit-form', event)"> Edit </SecondaryButton>
-						<SecondaryButton
-							v-if="!canEdit && !event.has_winners"
-							:href="route('event.winners-form', event)"
-						>
+						<PrimaryButton v-if="canEdit" :href="route('event.edit-form', event)"> Edit </PrimaryButton>
+						<PrimaryButton v-if="!canEdit && !event.has_winners" :href="route('event.winners-form', event)">
 							Finish
-						</SecondaryButton>
+						</PrimaryButton>
 						<DangerButton class="w-fit" @click="show = !show">Delete</DangerButton>
 					</span>
 				</span>
