@@ -19,6 +19,10 @@ class EditEvent
             'contests' => ['required', 'array'],
             'contests.*.name' => ['required_with:contests', 'string', 'max:120'],
             'contests.*.description' => ['nullable', 'string', 'max:300'],
+        ], [
+            'required' => 'This field is required.',
+            'required_with' => 'This field is required.',
+            'max' => 'Keep this field under :max characters.',
         ])->validate();
 
         $event = Event::where('id', $input['event']['id'])->first();

@@ -1,14 +1,13 @@
 <script setup>
-import DateTimeInput from '@/Components/DateTimeInput.vue';
 import FormSection from '@/Components/FormSection.vue';
-import InputError from '@/Components/InputError.vue';
-import InputGroup from '@/Components/InputGroup.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextareaInput from '@/Components/TextareaInput.vue';
-import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
+import EventStartTimeField from './Partials/EventStartTimeField.vue';
+import EventDescriptionField from './Partials/EventDescriptionField.vue';
+import EventNameField from './Partials/EventNameField.vue';
+import ContestNameField from './Partials/ContestNameField.vue';
+import ContestDescriptionField from './Partials/ContestDescriptionField.vue';
 
 const props = defineProps({
 	event: {
@@ -31,6 +30,7 @@ function submit() {
 			event: props.event,
 		}),
 	);
+	form.start_time = form.start_time.slice(0, -1);
 }
 </script>
 
@@ -41,28 +41,9 @@ function submit() {
 		</h1>
 		<FormSection @submit.prevent="submit">
 			<template #form>
-				<InputGroup>
-					<InputLabel for="name">Name</InputLabel>
-					<TextInput v-model="form.name" type="text" id="name" disabled />
-					<InputError :message="form.errors.name" />
-				</InputGroup>
-
-				<InputGroup>
-					<InputLabel for="description">Description</InputLabel>
-					<TextareaInput v-model="form.description" id="description"></TextareaInput>
-					<InputError :message="form.errors.description" />
-				</InputGroup>
-
-				<InputGroup>
-					<InputLabel for="start_time">Start time</InputLabel>
-					<DateTimeInput v-model="form.start_time" id="start_time" />
-					<InputError :message="form.errors.start_time" />
-					<p
-						class="absolute left-[68px] text-xs text-black-light max-md:top-[3px] md:-bottom-1 md:left-[100px] dark:text-white-dark"
-					>
-						(UTC)
-					</p>
-				</InputGroup>
+				<EventNameField v-model="form.name" :error="form.errors.name" disabled />
+				<EventDescriptionField v-model="form.description" :error="form.errors.description" />
+				<EventStartTimeField v-model="form.start_time" :error="form.errors.start_time" />
 
 				<ul class="my-8 grid gap-16 md:col-span-2 md:grid-cols-subgrid">
 					<li
@@ -71,20 +52,16 @@ function submit() {
 						class="-mx-6 -my-4 grid gap-3 bg-white-light px-6 py-4 md:col-span-2 md:grid-cols-subgrid lg:rounded-lg dark:bg-black-light"
 					>
 						<h2 class="text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
-						<InputGroup>
-							<InputLabel :for="'contest-name-' + index">Contest Name</InputLabel>
-							<TextInput v-model="contest.name" type="text" :id="'contest-name-' + index" />
-							<InputError :message="form.errors[`contests.${index}.name`]" />
-						</InputGroup>
-
-						<InputGroup>
-							<InputLabel :for="'contest-description-' + index">Contest Description</InputLabel>
-							<TextareaInput
-								v-model="contest.description"
-								:id="'contest-description-' + index"
-							></TextareaInput>
-							<InputError :message="form.errors[`contests.${index}.description`]" />
-						</InputGroup>
+						<ContestNameField
+							v-model="contest.name"
+							:error="form.errors[`contests.${index}.name`]"
+							:index="index"
+						/>
+						<ContestDescriptionField
+							v-model="contest.description"
+							:error="form.errors[`contests.${index}.description`]"
+							:index="index"
+						/>
 					</li>
 				</ul>
 			</template>
