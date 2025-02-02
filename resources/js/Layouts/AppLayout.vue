@@ -9,6 +9,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Toaster from '@/Components/shadcn/sonner/Sonner.vue';
 import { toast } from 'vue-sonner';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import OutlineButton from '@/Components/OutlineButton.vue';
 
 defineProps({
 	title: String,
@@ -116,12 +118,9 @@ onMounted(() => {
 						</div>
 					</template>
 					<template v-else>
-						<div class="-my-px ms-10 flex flex-1 items-center justify-end space-x-8">
-							<Link :href="route('login')">
-								<PrimaryButton type="button" aria-label="Access login or register page">
-									<i-ic-round-login class="-translate-x-[2px] text-xl" aria-label="Login/Register" />
-								</PrimaryButton>
-							</Link>
+						<div class="-my-px ms-10 flex flex-1 items-center justify-end gap-3">
+							<OutlineButton :href="route('login')"> Login </OutlineButton>
+							<PrimaryButton :href="route('register')"> Register </PrimaryButton>
 						</div>
 					</template>
 					<!-- Navigation Links -->

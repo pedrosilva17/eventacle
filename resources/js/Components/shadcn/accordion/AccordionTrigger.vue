@@ -23,7 +23,7 @@ const delegatedProps = computed(() => {
 			v-bind="delegatedProps"
 			:class="
 				cn(
-					'flex flex-1 items-center justify-between px-6 py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180',
+					'flex h-full flex-1 items-center justify-between rounded-lg px-6 py-4 font-medium transition focus:outline-none focus:ring focus:ring-primary dark:focus:ring-primary-extralight [&[data-state=open]>svg]:rotate-180',
 					props.class,
 				)
 			"

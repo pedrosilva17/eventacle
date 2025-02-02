@@ -64,13 +64,13 @@ function submit() {
 					</p>
 				</InputGroup>
 
-				<ul class="my-8 grid md:col-span-2 md:grid-cols-subgrid md:gap-8">
+				<ul class="my-8 grid gap-16 md:col-span-2 md:grid-cols-subgrid">
 					<li
 						v-for="(contest, index) in form.contests"
 						:key="contest"
-						class="grid md:col-span-2 md:grid-cols-subgrid md:gap-3"
+						class="-mx-6 -my-4 grid gap-3 bg-white-light px-6 py-4 md:col-span-2 md:grid-cols-subgrid lg:rounded-lg dark:bg-black-light"
 					>
-						<h2 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
+						<h2 class="text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
 						<InputGroup>
 							<InputLabel :for="'contest-name-' + index">Contest Name</InputLabel>
 							<TextInput v-model="contest.name" type="text" :id="'contest-name-' + index" />

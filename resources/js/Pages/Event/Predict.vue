@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import RadioInput from '@/Components/RadioInput.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { CONFIDENCE_POINTS_HELP, SINGLE_POINTS_HELP } from '@/Lib/Utils';
 import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -54,6 +55,14 @@ function submit() {
 			Predict - {{ event.name }}
 		</h1>
 		<FormSection @submit.prevent="submit">
+			<template #description>
+				<p v-if="($page, props.event.scoring_type === 'single points')">
+					{{ SINGLE_POINTS_HELP }}
+				</p>
+				<p v-else-if="($page, props.event.scoring_type === 'confidence points')">
+					{{ CONFIDENCE_POINTS_HELP }}
+				</p>
+			</template>
 			<template #form>
 				<div class="col-span-full m-auto grid w-full grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
 					<template v-for="contest in event.contests" :key="contest.id" class="flex-col">

@@ -19,9 +19,9 @@ const props = defineProps({
 
 <template>
 	<AppLayout title="Dashboard">
-		<DashboardSection title="Your events">
+		<DashboardSection title="Your upcoming events">
 			<template #icon>
-				<i-ic-round-event aria-labelledby="your-events" />
+				<i-ic-round-event aria-labelledby="your-upcoming-events" />
 			</template>
 			<template #content>
 				<p v-if="eventsCreated.length === 0">No upcoming events created yet. Time to change that!</p>
@@ -32,9 +32,9 @@ const props = defineProps({
 				</div>
 			</template>
 		</DashboardSection>
-		<DashboardSection title="Your predictions">
+		<DashboardSection title="Your current predictions">
 			<template #icon>
-				<i-ic-round-casino aria-labelledby="your-predictions" />
+				<i-ic-round-casino aria-labelledby="your-current-predictions" />
 			</template>
 			<template #content>
 				<p v-if="eventsPredicted.length === 0" class="text-center">

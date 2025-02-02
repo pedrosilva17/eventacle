@@ -28,3 +28,8 @@ export const dateTimeOptions = {
 	minute: 'numeric',
 	timeZoneName: 'short',
 };
+
+export const SINGLE_POINTS_HELP = 'Single point scoring is simple: every contest is worth a point.';
+
+export const CONFIDENCE_POINTS_HELP =
+	'Confidence point scoring prompts the user to order their predictions based on how confident they are to get each one right, from 1 (least confident) up to the number of contests (most confident), assigning that score to each prediction. For every correct prediction, their confidence score is added to the total. Useful to make ties less common.';

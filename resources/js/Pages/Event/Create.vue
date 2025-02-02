@@ -11,6 +11,7 @@ import SelectInput from '@/Components/SelectInput.vue';
 import TextareaInput from '@/Components/TextareaInput.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { CONFIDENCE_POINTS_HELP, SINGLE_POINTS_HELP } from '@/Lib/Utils';
 import { useForm } from '@inertiajs/vue3';
 import { reactive } from 'vue';
 
@@ -97,15 +98,15 @@ function submit() {
 				<TransitionGroup
 					name="scale"
 					tag="ul"
-					class="my-8 grid md:col-span-2 md:grid-cols-subgrid md:gap-8"
+					class="my-8 grid md:col-span-2 md:grid-cols-subgrid md:gap-16"
 					:duration="300"
 				>
 					<li
 						v-for="(contest, index) in form.contests"
 						:key="contest"
-						class="grid md:col-span-2 md:grid-cols-subgrid md:gap-3"
+						class="-mx-6 -my-4 grid gap-3 bg-white-light px-6 py-4 md:col-span-2 md:grid-cols-subgrid lg:rounded-lg dark:bg-black-light"
 					>
-						<h2 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
+						<h2 class="text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
 						<InputGroup>
 							<InputLabel :for="'contest-name-' + index">Contest Name</InputLabel>
 							<TextInput v-model="contest.name" type="text" :id="'contest-name-' + index" />
@@ -204,13 +205,10 @@ function submit() {
 						class="col-span-2 mt-2 w-full justify-start break-words text-end md:w-2/3"
 					>
 						<p v-if="form.scoring_type === 'single points'">
-							Single point scoring is simple: every contest is worth a point.
+							{{ SINGLE_POINTS_HELP }}
 						</p>
 						<p v-else-if="form.scoring_type === 'confidence points'">
-							Confidence point scoring prompts the user to order their predictions based on how confident
-							they are to get each one right, from 1 (least confident) up to the number of contests (most
-							confident), assigning that score to each prediction. For every correct prediction, their
-							confidence score is added to the total. Useful to make ties less common.
+							{{ CONFIDENCE_POINTS_HELP }}
 						</p>
 					</Transition>
 				</InputGroup>

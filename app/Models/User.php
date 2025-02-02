@@ -102,40 +102,36 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the number of wins in predictions this user achieved.
-     */
-    public function wins(): int
-    {
-        $winCount = 0;
-        $userEntries = $this->leaderboardEntries()->get();
-        $eventEntries = LeaderboardEntry::findMany(array_map(function ($entry) {
-            return $entry['event_id'];
-        }, $userEntries->toArray()));
-        foreach ($userEntries as $entry) {
-            if ($eventEntries->where('event_id', $entry->event_id)->max('score') === $entry->score) {
-                $winCount++;
-            }
-        }
-
-        return $winCount;
-    }
-
-    /**
      * Get the number of times the user has placed in the podium when predicting events.
      */
-    public function podiums(): int
+    public function podiums(): array
     {
-        $podiumCount = 0;
+        $positionCount = [0, 0, 0];
         $userEntries = $this->leaderboardEntries()->get();
         $eventEntries = LeaderboardEntry::whereIn('event_id', array_map(function ($entry) {
             return $entry['event_id'];
         }, $userEntries->toArray()))->get();
         foreach ($userEntries as $entry) {
-            if ($eventEntries->where('event_id', $entry->event_id)->count() <= 3 || $eventEntries->where('event_id', $entry->event_id)->sortByDesc('score')->take(3)->min('score') <= $entry->score) {
-                $podiumCount++;
+            $top3 = array_values(array_map(function ($entry) {
+                return $entry['score'];
+            },
+                $eventEntries->where('event_id', $entry->event_id)->sortByDesc('score')->take(3)->toArray()));
+            if ($eventEntries->where('event_id', $entry->event_id)->count() <= 3 || in_array($entry->score, $top3) !== false) {
+                $idx = array_search($entry->score, $top3);
+                $positionCount[$idx]++;
             }
         }
 
-        return $podiumCount;
+        return $positionCount;
+    }
+
+    public function podiumCount(): int
+    {
+        return array_sum($this->podiums());
+    }
+
+    public function winRate(): float
+    {
+        return round(($this->podiums()[0] / $this->leaderboardEntries()->get()->count()) * 100, 2);
     }
 }

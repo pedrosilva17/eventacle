@@ -22,7 +22,7 @@ defineProps({
 			>
 				{{ event.name }}
 			</h2>
-			<span class="mt-4 flex flex-row">
+			<span class="mt-4 flex flex-row gap-3">
 				<p class="flex-1 text-sm">
 					{{
 						new Date(event.start_time).toLocaleString('en-UK', dateTimeOptions).replace(/,(?=[^,]*$)/, ' •')
