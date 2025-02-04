@@ -10,7 +10,7 @@ import SelectInput from '@/Components/SelectInput.vue';
 import TextareaInput from '@/Components/TextareaInput.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { CONFIDENCE_POINTS_HELP, SINGLE_POINTS_HELP } from '@/Lib/Utils';
+import { beforeLeave, CONFIDENCE_POINTS_HELP, SINGLE_POINTS_HELP } from '@/Lib/Utils';
 import { useForm } from '@inertiajs/vue3';
 import { reactive } from 'vue';
 import EventStartTimeField from './Partials/EventStartTimeField.vue';
@@ -59,14 +59,6 @@ const removeOption = (index, optionIndex) => {
 	const optionIndices = form.contests[index].optionIndices;
 	form.contests[index].options.splice(optionIndices.indexOf(optionIndex), 1);
 	form.contests[index].optionIndices.splice(optionIndices.indexOf(optionIndex), 1);
-};
-
-const beforeLeave = (el) => {
-	const { marginLeft, marginTop, width, height } = window.getComputedStyle(el);
-	el.style.left = `${el.offsetLeft - parseFloat(marginLeft, 10)}px`;
-	el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`;
-	el.style.width = width;
-	el.style.height = height;
 };
 
 function submit() {

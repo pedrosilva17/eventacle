@@ -53,7 +53,7 @@ const scoringType = props.event.scoring_type
 	.join(' ');
 
 const predictionsByContest = ref(props.predictionsByContest);
-const predictionAlphaSort = (a, b) => b.user_name.toLowerCase() < a.user_name.toLowerCase();
+const predictionAlphaSort = (a, b) => (b.user_name.toLowerCase() < a.user_name.toLowerCase() ? -1 : 1);
 const predictionPointSort = (a, b) => b.points - a.points;
 const sortFunctions = [predictionPointSort, predictionAlphaSort];
 const currentFunctionIndex = ref(0);
@@ -90,9 +90,9 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 
 <template>
 	<AppLayout :title="event.name">
-		<span class="grid-rows-auto grid auto-rows-min grid-cols-2 gap-3">
+		<div class="grid-rows-auto grid auto-rows-min grid-cols-2 gap-3">
 			<Container class="col-span-2 flex-col">
-				<span class="flex flex-col gap-3 sm:flex-row">
+				<div class="flex flex-col gap-3 sm:flex-row">
 					<template class="flex flex-1 flex-col gap-2">
 						<h1
 							:class="{
@@ -123,19 +123,19 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 							<i-ic-round-plus-one aria-label="Scoring Type" class="text-xl text-secondary" />
 						</span>
 					</div>
-				</span>
-				<span v-if="canEdit || isCreator" class="flex w-full flex-col justify-between gap-3 sm:flex-row">
+				</div>
+				<div v-if="canEdit || isCreator" class="flex w-full flex-col justify-between gap-3 sm:flex-row">
 					<PrimaryButton v-if="canEdit" :href="route('event.prediction-form', event)" class="w-fit">{{
 						hasPrediction ? 'Change prediction' : 'Make a Prediction'
 					}}</PrimaryButton>
-					<span v-if="isCreator" class="flex flex-row gap-3">
+					<div v-if="isCreator" class="flex flex-row gap-3">
 						<PrimaryButton v-if="canEdit" :href="route('event.edit-form', event)"> Edit </PrimaryButton>
 						<PrimaryButton v-if="!canEdit && !event.has_winners" :href="route('event.winners-form', event)">
 							Finish
 						</PrimaryButton>
 						<DangerButton class="w-fit" @click="show = !show">Delete</DangerButton>
-					</span>
-				</span>
+					</div>
+				</div>
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
 				<h2 class="text-2xl">Contests</h2>
@@ -147,8 +147,8 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 						<p v-if="contest.description" class="flex-1">
 							{{ contest.description }}
 						</p>
-						<span class="relative mt-2 flex">
-							<span
+						<div class="relative mt-2 flex">
+							<div
 								class="flex flex-1 flex-row items-center justify-between gap-3 overflow-x-auto rounded-lg bg-white-light px-4 pb-4 pt-9 dark:bg-black-light"
 							>
 								<p class="absolute left-4 top-2 italic opacity-60">Options</p>
@@ -169,8 +169,8 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 									/>
 									{{ option }}
 								</p>
-							</span>
-						</span>
+							</div>
+						</div>
 					</li>
 				</ul>
 			</Container>
@@ -196,12 +196,12 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 									>
 										<path d="m1080 0 v1920l-540-633-540 633v-1920z" />
 									</svg>
-									<span
+									<div
 										:class="leaderboardColor(ranks[index])"
 										class="z-5 relative m-auto flex w-6 justify-center rounded-full"
 									>
 										{{ ranks[index] }}
-									</span>
+									</div>
 								</td>
 								<td>{{ entry.user_name }}</td>
 								<td>{{ entry.score }}</td>
@@ -216,14 +216,14 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col">
 				<h2 class="text-2xl">Predictions</h2>
-				<span class="absolute right-6 top-4 flex flex-row justify-between gap-3">
+				<div class="absolute right-6 top-4 flex flex-row justify-between gap-3">
 					<SecondaryButton
 						v-if="scoringType === 'Confidence Points'"
 						@click="changeSortFunction"
 						:aria-label="
 							activeSort.name === 'predictionAlphaSort' ? 'alphabetical order' : 'confidence point order'
 						"
-						class="gap-1"
+						class="gap-1 text-xs sm:text-lg"
 					>
 						Sort by:
 						<i-ic-round-sort-by-alpha v-if="activeSort.name === 'predictionAlphaSort'" class="text-lg" />
@@ -234,12 +234,12 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 						aria-label="Open or close prediction drawers"
 						@click="toggleAccordions('.accordion')"
 					>
-						<span class="text-lg">
+						<div class="text-lg">
 							<i-ic-round-expand v-if="openStates.some((s) => s === false)" />
 							<i-ic-round-compress v-else />
-						</span>
+						</div>
 					</SecondaryButton>
-				</span>
+				</div>
 				<template v-if="Object.keys(predictionsByContest).length > 0">
 					<Accordion type="multiple" as="ul" collapsible class="flex flex-col gap-3 overflow-y-auto">
 						<AccordionItem as="li" :value="key" v-for="(key, idx) in Object.keys(predictionsByContest)">
@@ -261,7 +261,7 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 									<p class="flex md:w-1/2 md:justify-end md:text-right">
 										{{ prediction.user_name }}
 									</p>
-									<span class="hidden text-base md:inline-flex md:flex-1 md:text-center"> > </span>
+									<div class="hidden text-base md:inline-flex md:flex-1 md:text-center">></div>
 									<div
 										class="inline-flex items-end justify-between gap-1 text-secondary-extradark md:w-1/2 md:justify-start dark:text-secondary-extralight"
 									>
@@ -291,7 +291,7 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 					<p>No predictions made yet.</p>
 				</template>
 			</Container>
-		</span>
+		</div>
 		<DialogModal :show="show" @close="show = false">
 			<template #title>Delete Event</template>
 			<template #content>
@@ -299,10 +299,10 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 				action. If the winners have already been published, this event's leaderboard will be preserved.
 			</template>
 			<template #footer>
-				<span class="flex gap-3">
+				<div class="flex gap-3">
 					<SecondaryButton @click="show = false">Cancel</SecondaryButton>
 					<DangerButton @click="deleteEvent"> Delete </DangerButton>
-				</span>
+				</div>
 			</template>
 		</DialogModal>
 	</AppLayout>

@@ -186,7 +186,7 @@ const creationDate = new Date(page.props.auth.user.created_at);
 						<p class="ml-auto flex">{{ $page.props.eventsCreated.length }}</p>
 					</span>
 					<span class="flex flex-row items-center gap-2 sm:flex-row">
-						<i-ic-round-casino aria-labelledby="predictions-made" class="text-secondary" />
+						<i-ic-round-auto-awesome aria-labelledby="predictions-made" class="text-secondary" />
 						<p id="predictions-made">Predictions made</p>
 						<p class="ml-auto flex">{{ $page.props.eventsPredicted.length }}</p>
 					</span>

@@ -34,7 +34,7 @@ const props = defineProps({
 		</DashboardSection>
 		<DashboardSection title="Your current predictions">
 			<template #icon>
-				<i-ic-round-casino aria-labelledby="your-current-predictions" />
+				<i-ic-round-auto-awesome aria-labelledby="your-current-predictions" />
 			</template>
 			<template #content>
 				<p v-if="eventsPredicted.length === 0" class="text-center">

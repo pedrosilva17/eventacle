@@ -59,7 +59,7 @@ onMounted(() => {
 							<p
 								class="flex h-full w-auto items-center font-serif text-3xl font-bold text-primary dark:text-primary-extralight"
 							>
-								Eventacle
+								Event<span class="text-black-light dark:text-white-dark">acle</span>
 							</p>
 							<ApplicationLogo
 								class="absolute right-0 top-2 max-w-12 opacity-40 group-hover:animate-shake"
@@ -118,7 +118,7 @@ onMounted(() => {
 						</div>
 					</template>
 					<template v-else>
-						<div class="-my-px ms-10 flex flex-1 items-center justify-end gap-3">
+						<div class="-my-px ms-10 hidden items-center justify-end gap-3 sm:flex sm:flex-1">
 							<OutlineButton :href="route('login')"> Login </OutlineButton>
 							<PrimaryButton :href="route('register')"> Register </PrimaryButton>
 						</div>
@@ -126,7 +126,7 @@ onMounted(() => {
 					<!-- Navigation Links -->
 
 					<!-- Hamburger -->
-					<div v-if="$page.props.auth.user" class="-me-2 flex items-center sm:hidden">
+					<div class="-me-2 flex items-center sm:hidden">
 						<PrimaryButton
 							aria-label="Open Navigation Menu"
 							@click="showingNavigationDropdown = !showingNavigationDropdown"
@@ -251,6 +251,14 @@ onMounted(() => {
 								</template>
 							</div>
 						</div>
+					</template>
+					<template v-else>
+						<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+							Login
+						</ResponsiveNavLink>
+						<ResponsiveNavLink :href="route('event.create')" :active="route().current('event.create')">
+							Register
+						</ResponsiveNavLink>
 					</template>
 				</div>
 			</nav>
