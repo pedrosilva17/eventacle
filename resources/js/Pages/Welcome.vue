@@ -2,13 +2,14 @@
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import LandingPageCard from '@/Components/LandingPageCard.vue';
 import LandingPageContainer from '@/Components/LandingPageContainer.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 </script>
 
 <template>
 	<AppLayout title="Welcome">
 		<Transition name="slide-fade" mode="out-in" appear>
-			<h1 class="mt-12 flex w-full flex-col items-center text-5xl sm:text-8xl">
+			<h1 class="mb-8 mt-12 flex w-full flex-col items-center text-5xl sm:text-8xl">
 				No spending.
 				<Transition name="slide-fade" mode="out-in" style="transition-delay: 0.5s" appear>
 					<span class="inline-flex">No pressure.</span>
@@ -18,9 +19,12 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 				</Transition>
 			</h1>
 		</Transition>
-		<div class="ml-[50%] mt-16 flex w-screen -translate-x-1/2 flex-col bg-white dark:bg-black">
+		<PrimaryButton :href="route('register')" class="group mx-auto -mb-8 mt-2 w-fit">
+			<span class="text-2xl group-hover:animate-pulse">Register</span>
+		</PrimaryButton>
+		<div class="ml-[50%] mt-8 flex w-screen -translate-x-1/2 flex-col bg-white dark:bg-black">
 			<LandingPageContainer>
-				<template #heading> No bets - just brags </template>
+				<template #heading> Zero bets - all brags </template>
 				<template #content>
 					<p class="flex max-w-2xl text-center text-lg">
 						Whether you're into sports, award shows or the regional Magic the Gathering tournament,
@@ -30,7 +34,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 				</template>
 			</LandingPageContainer>
 			<LandingPageContainer>
-				<template #heading> Our features </template>
+				<template #heading> What you can do </template>
 				<template #content>
 					<div class="mx-auto grid w-fit grid-cols-1 justify-around gap-6 lg:grid-cols-3">
 						<LandingPageCard title="Create">
@@ -47,7 +51,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 								<i-ic-round-auto-awesome class="text-2xl sm:text-4xl" />
 							</template>
 							<template #content>
-								But your expert hat on and predict the outcomes of the event's contests: you might even
+								Put your expert hat on and predict the outcomes of the event's contests: you might even
 								have to measure how confident you are!
 							</template>
 						</LandingPageCard>
@@ -76,7 +80,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 								line!
 							</template>
 						</LandingPageCard>
-						<LandingPageCard title="Not just sports">
+						<LandingPageCard title="More than sports">
 							<template #icon>
 								<i-ic-round-checklist class="text-2xl sm:text-4xl" />
 							</template>
@@ -96,6 +100,12 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 					</div>
 				</template>
 			</LandingPageContainer>
+			<section class="flex w-full flex-col items-center gap-6 py-16">
+				<h2 class="text-2xl font-bold sm:text-4xl">Join the fun!</h2>
+				<PrimaryButton :href="route('register')" class="group">
+					<span class="text-2xl group-hover:animate-pulse">Register</span>
+				</PrimaryButton>
+			</section>
 		</div>
 	</AppLayout>
 </template>

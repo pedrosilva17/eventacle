@@ -47,7 +47,7 @@ onMounted(() => {
 		<Head :title="title" />
 		<Toaster />
 		<div class="min-h-screen bg-white-dark text-black-dark dark:bg-black-dark dark:text-white-light">
-			<nav class="bg-white text-black-dark dark:bg-black dark:text-white-light">
+			<nav class="relative bg-white text-black-dark dark:bg-black dark:text-white-light">
 				<!-- Primary Navigation Menu -->
 				<div class="mx-auto flex h-16 max-w-7xl justify-between px-4 sm:px-6 lg:px-8">
 					<!-- Logo -->
@@ -61,14 +61,16 @@ onMounted(() => {
 							>
 								Event<span class="text-black-light dark:text-white-dark">acle</span>
 							</p>
-							<ApplicationLogo
-								class="absolute right-0 top-2 max-w-12 opacity-40 group-hover:animate-shake"
-							/>
 						</Link>
 					</div>
+					<span class="flex flex-1 items-center justify-center">
+						<ApplicationLogo
+							class="hidden h-12 w-12 hover:animate-shake md:absolute md:left-1/2 md:flex md:-translate-x-1/2"
+						/>
+					</span>
 
 					<template v-if="$page.props.auth.user">
-						<div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex sm:flex-1 sm:justify-end">
+						<div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex sm:justify-end">
 							<NavLink :href="route('dashboard')" :active="route().current('dashboard')">
 								Dashboard
 							</NavLink>
@@ -118,8 +120,8 @@ onMounted(() => {
 						</div>
 					</template>
 					<template v-else>
-						<div class="-my-px ms-10 hidden items-center justify-end gap-3 sm:flex sm:flex-1">
-							<OutlineButton :href="route('login')"> Login </OutlineButton>
+						<div class="-my-px hidden items-center justify-end gap-3 sm:flex">
+							<OutlineButton :href="route('login')"> Log in </OutlineButton>
 							<PrimaryButton :href="route('register')"> Register </PrimaryButton>
 						</div>
 					</template>
@@ -253,10 +255,10 @@ onMounted(() => {
 						</div>
 					</template>
 					<template v-else>
-						<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-							Login
+						<ResponsiveNavLink :href="route('login')" :active="route().current('login')">
+							Log in
 						</ResponsiveNavLink>
-						<ResponsiveNavLink :href="route('event.create')" :active="route().current('event.create')">
+						<ResponsiveNavLink :href="route('register')" :active="route().current('register')">
 							Register
 						</ResponsiveNavLink>
 					</template>

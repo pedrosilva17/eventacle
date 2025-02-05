@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 
 defineProps({
 	canResetPassword: Boolean,
@@ -33,29 +34,40 @@ const submit = () => {
 	<Head title="Log in" />
 
 	<AuthenticationCard>
-		<template #logo>
-			<AuthenticationCardLogo />
-		</template>
-
 		<div v-if="status" class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
 			{{ status }}
 		</div>
 
 		<form @submit.prevent="submit">
+			<ApplicationLogo class="m-auto w-48" />
+			<h1
+				class="mb-8 mt-4 flex w-full justify-center text-2xl font-bold text-black-dark sm:text-4xl dark:text-white-light"
+			>
+				Welcome back!
+			</h1>
 			<div>
-				<InputLabel for="email" value="Email" />
-				<TextInput id="email" v-model="form.email" type="email" required autofocus autocomplete="username" />
+				<InputLabel class="sr-only" for="email" value="Email" />
+				<TextInput
+					id="email"
+					v-model="form.email"
+					type="email"
+					required
+					autofocus
+					autocomplete="email"
+					placeholder="Email"
+				/>
 				<InputError class="mt-2" :message="form.errors.email" />
 			</div>
 
 			<div class="mt-4">
-				<InputLabel for="password" value="Password" />
+				<InputLabel class="sr-only" for="password" value="Password" />
 				<TextInput
 					id="password"
 					v-model="form.password"
 					type="password"
 					required
 					autocomplete="current-password"
+					placeholder="Password"
 				/>
 				<InputError class="mt-2" :message="form.errors.password" />
 			</div>
@@ -63,17 +75,16 @@ const submit = () => {
 			<div class="mt-4 block">
 				<label class="flex items-center">
 					<Checkbox v-model:checked="form.remember" name="remember" />
-					<span class="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
+					<span class="ms-2 text-sm text-black-light dark:text-white-dark">Remember me</span>
 				</label>
 			</div>
 
 			<div class="mt-4 flex items-center justify-end">
 				<Link
-					v-if="canResetPassword"
-					:href="route('password.request')"
-					class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+					:href="route('register')"
+					class="rounded-md text-sm text-black-light underline transition hover:text-primary-extradark focus:outline-none focus:ring-2 focus:ring-primary-extradark focus:ring-offset-2 focus:ring-offset-white dark:text-white-dark dark:hover:text-primary-extralight dark:focus:ring-primary-extralight dark:focus:ring-offset-black"
 				>
-					Forgot your password?
+					Don't have an account?
 				</Link>
 
 				<PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">

@@ -53,7 +53,7 @@ const scoringType = props.event.scoring_type
 	.join(' ');
 
 const predictionsByContest = ref(props.predictionsByContest);
-const predictionAlphaSort = (a, b) => (b.user_name.toLowerCase() < a.user_name.toLowerCase() ? -1 : 1);
+const predictionAlphaSort = (a, b) => (b.user_name.toLowerCase() < a.user_name.toLowerCase() ? 1 : -1);
 const predictionPointSort = (a, b) => b.points - a.points;
 const sortFunctions = [predictionPointSort, predictionAlphaSort];
 const currentFunctionIndex = ref(0);
@@ -139,7 +139,7 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col overflow-x-hidden">
 				<h2 class="text-2xl">Contests</h2>
-				<ul class="grid grid-cols-1 gap-3 overflow-y-auto md:grid-cols-2">
+				<ul class="grid grid-cols-1 gap-3 overflow-y-auto p-1 md:grid-cols-2">
 					<li v-for="contest in event.contests" :key="contest.id" class="flex h-full flex-col">
 						<p :class="{ 'flex-1': !contest.description }" class="break-words text-xl">
 							{{ contest.name }}
