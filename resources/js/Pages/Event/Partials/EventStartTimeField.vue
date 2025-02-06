@@ -18,10 +18,6 @@ const fieldValue = defineModel({ type: String });
 		<InputLabel for="start_time">Start time</InputLabel>
 		<DateTimeInput v-model="fieldValue" id="start_time" />
 		<InputError :message="error" />
-		<p
-			class="absolute left-[68px] text-xs text-black-light max-md:top-[3px] md:-bottom-1 md:left-[100px] dark:text-white-dark"
-		>
-			(UTC)
-		</p>
+		<p class="mt-1 flex text-xs text-black-light md:-mt-3 dark:text-white-dark">(Your timezone)</p>
 	</InputGroup>
 </template>

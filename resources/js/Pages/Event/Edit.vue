@@ -8,6 +8,7 @@ import EventDescriptionField from './Partials/EventDescriptionField.vue';
 import EventNameField from './Partials/EventNameField.vue';
 import ContestNameField from './Partials/ContestNameField.vue';
 import ContestDescriptionField from './Partials/ContestDescriptionField.vue';
+import { convertUtcToLocalString } from '@/Lib/Utils';
 
 const props = defineProps({
 	event: {
@@ -19,18 +20,17 @@ const form = useForm({
 	event: props.event,
 	name: props.event.name,
 	description: props.event.description,
-	start_time: props.event.start_time.replace('Z', ''),
+	start_time: convertUtcToLocalString(props.event.start_time),
+	user_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 	contests: props.event.contests,
 });
 
 function submit() {
-	form.start_time = form.start_time + 'Z';
 	form.post(
 		route('event.edit', {
 			event: props.event,
 		}),
 	);
-	form.start_time = form.start_time.slice(0, -1);
 }
 </script>
 
@@ -41,6 +41,7 @@ function submit() {
 		</h1>
 		<FormSection @submit.prevent="submit">
 			<template #form>
+				<input type="hidden" v-model="form.user_timezone" />
 				<EventNameField v-model="form.name" :error="form.errors.name" disabled />
 				<EventDescriptionField v-model="form.description" :error="form.errors.description" />
 				<EventStartTimeField v-model="form.start_time" :error="form.errors.start_time" />

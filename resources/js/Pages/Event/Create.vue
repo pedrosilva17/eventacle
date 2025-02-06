@@ -23,6 +23,7 @@ const form = useForm({
 	name: '',
 	description: '',
 	start_time: '',
+	user_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 	contests: reactive([
 		{
 			name: '',
@@ -62,9 +63,7 @@ const removeOption = (index, optionIndex) => {
 };
 
 function submit() {
-	form.start_time = form.start_time + 'Z';
 	form.post(route('event.new'));
-	form.start_time = form.start_time.slice(0, -1);
 }
 </script>
 
@@ -75,6 +74,7 @@ function submit() {
 		</h1>
 		<FormSection @submit.prevent="submit">
 			<template #form>
+				<input type="hidden" v-model="form.user_timezone" />
 				<EventNameField v-model="form.name" :error="form.errors.name" />
 				<EventDescriptionField v-model="form.description" :error="form.errors.description" />
 				<EventStartTimeField v-model="form.start_time" :error="form.errors.start_time" />

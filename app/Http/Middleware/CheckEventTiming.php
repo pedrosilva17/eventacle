@@ -11,19 +11,19 @@ class CheckEventTiming
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next, $type)
+    public function handle(Request $request, Closure $next, $type, $tz = null)
     {
         $event = $request->route('event');
         $startTime = Carbon::parse($event->start_time);
 
         switch ($type) {
             case 'predictions':
-                if (Carbon::now()->isAfter($startTime)) {
+                if (Carbon::now($tz)->isAfter($startTime)) {
                     return redirect()->route('event.show', $event)->with('error', 'You can\'t do that, the event has already started!');
                 }
                 break;
             case 'winners':
-                if (Carbon::now()->isBefore($startTime)) {
+                if (Carbon::now($tz)->isBefore($startTime)) {
                     return redirect()->route('event.show', $event)->with('error', 'You can\'t do that, the event hasn\'t started yet!');
                 }
                 break;

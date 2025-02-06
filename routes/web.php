@@ -40,13 +40,13 @@ Route::prefix('/event')->name('event')->group(function () {
             return Inertia::render('Event/Edit', [
                 'event' => $event->load('contests'),
             ]);
-        })->middleware(CheckEventCreator::class)->name('.edit-form');
+        })->middleware([CheckEventCreator::class])->name('.edit-form');
 
         Route::post('/{event}/edit', function (Event $event) {
             (new EditEvent)->edit(request()->all());
 
             return redirect()->route('event.show', $event)->with('success', 'Event edited successfully.');
-        })->middleware(CheckEventCreator::class)->name('.edit');
+        })->middleware([CheckEventCreator::class, CheckEventTiming::class.':predictions'])->name('.edit');
 
         Route::delete('/{event}/delete', function (Event $event) {
             DB::transaction(function () use ($event) {
