@@ -64,9 +64,7 @@ onMounted(() => {
 						</Link>
 					</div>
 					<span class="flex flex-1 items-center justify-center">
-						<ApplicationLogo
-							class="hidden h-12 w-12 hover:animate-shake md:absolute md:left-1/2 md:flex md:-translate-x-1/2"
-						/>
+						<ApplicationLogo class="hidden h-12 w-12 md:absolute md:left-1/2 md:flex md:-translate-x-1/2" />
 					</span>
 
 					<template v-if="$page.props.auth.user">

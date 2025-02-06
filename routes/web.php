@@ -9,7 +9,6 @@ use App\Http\Middleware\CheckEventTiming;
 use App\Http\Middleware\CheckExistingWinners;
 use App\Models\Event;
 use App\Models\LeaderboardEntry;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -99,9 +98,9 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard', [
-            'eventsCreated' => Auth::user()->eventsCreated()->where('start_time', '>=', Carbon::now()->subDay())->orderBy('start_time')->get()->load('contests', 'predictions'),
+            'eventsCreated' => Auth::user()->eventsCreated()->where('has_winners', '=', false)->orderBy('start_time')->get()->load('contests', 'predictions'),
             'eventsPredicted' => Auth::user()->eventsPredicted()->filter(function (Event $event) {
-                return $event->start_time >= Carbon::now()->subDay();
+                return ! $event->has_winners;
             })->sortBy('start_time')->values()->load('contests', 'predictions'),
             'userPredictions' => Auth::user()->predictions()->get()->load('contest')->groupBy('event_id'),
         ]);
