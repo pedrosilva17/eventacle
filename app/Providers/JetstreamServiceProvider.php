@@ -32,6 +32,7 @@ class JetstreamServiceProvider extends ServiceProvider
                     'eventsCreated' => Auth::user()->eventsCreated()->orderByDesc('start_time')->get()->load('contests', 'predictions'),
                     'eventsPredicted' => Auth::user()->eventsPredicted()->load('contests'),
                     'leaderboardEntries' => Auth::user()->leaderboardEntries()->get(),
+                    'totalNumEventsPredicted' => Auth::user()->totalNumEventsPredicted(),
                     'podiums' => Auth::user()->podiums(),
                     'podiumCount' => Auth::user()->podiumCount(),
                     'winRate' => Auth::user()->winRate(),

@@ -64,6 +64,22 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($user) {
+            if ($user->isDirty('name')) {
+                \DB::table('predictions')
+                    ->where('user_id', $user->id)
+                    ->update(['user_name' => $user->name]);
+                \DB::table('leaderboards')
+                    ->where('user_id', $user->id)
+                    ->update(['user_name' => $user->name]);
+            }
+        });
+    }
+
     /**
      * Get the events created by the user.
      */
@@ -86,11 +102,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the events in which the user has predicted.
+     * Get the existing events in which the user has predicted.
      */
     public function eventsPredicted()
     {
         return Event::findMany($this->predictions()->get()->pluck('event_id'));
+    }
+
+    /**
+     * Get the number of events the user has predicted: Ongoing or ended, even if deleted (post-finish).
+     */
+    public function totalNumEventsPredicted(): int
+    {
+        return $this->eventsPredicted()->where('has_winners', false)->count() + $this->leaderboardEntries()->get()->count();
     }
 
     /**

@@ -68,7 +68,7 @@ const creationDate = new Date(page.props.auth.user.created_at);
 						<p class="text-base">Date joined</p>
 					</li>
 					<li class="flex h-full flex-col items-center gap-3">
-						<p class="flex flex-1 items-center">{{ $page.props.eventsPredicted.length }}</p>
+						<p class="flex flex-1 items-center">{{ $page.props.totalNumEventsPredicted }}</p>
 						<p class="text-base">Events foreseen</p>
 					</li>
 					<li class="flex h-full flex-col items-center text-2xl">
@@ -188,7 +188,7 @@ const creationDate = new Date(page.props.auth.user.created_at);
 					<span class="flex flex-row items-center gap-2 sm:flex-row">
 						<i-ic-round-auto-awesome aria-labelledby="predictions-made" class="text-secondary" />
 						<p id="predictions-made">Predictions made</p>
-						<p class="ml-auto flex">{{ $page.props.eventsPredicted.length }}</p>
+						<p class="ml-auto flex">{{ $page.props.totalNumEventsPredicted }}</p>
 					</span>
 					<span class="flex flex-row items-center gap-2 sm:flex-row">
 						<i-ic-round-emoji-events aria-labelledby="wins" class="text-secondary" />

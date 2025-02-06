@@ -11,6 +11,19 @@ class Contest extends Model
 
     protected $fillable = ['name', 'description', 'options', 'result'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($contest) {
+            if ($contest->isDirty('name')) {
+                \DB::table('predictions')
+                    ->where('contest_id', $contest->id)
+                    ->update(['contest_name' => $contest->name]);
+            }
+        });
+    }
+
     /**
      * Get the event that the contest belongs to.
      */

@@ -90,7 +90,7 @@ function submit() {
 						:key="contest"
 						class="-mx-6 -my-4 grid gap-3 bg-white-light px-6 py-4 md:col-span-2 md:grid-cols-subgrid lg:rounded-lg dark:bg-black-light"
 					>
-						<h2 class="text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
+						<h2 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
 						<ContestNameField
 							v-model="contest.name"
 							:error="form.errors[`contests.${index}.name`]"

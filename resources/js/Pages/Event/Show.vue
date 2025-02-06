@@ -247,7 +247,7 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 								@click="openStates[idx] = !openStates[idx]"
 								class="accordion text-left text-lg"
 								:class="{
-									'max-md:break-all': needsBreakAll(predictionsByContest[key][0].contest_name, 25),
+									'max-md:break-all': needsBreakAll(predictionsByContest[key][0].contest_name, 20),
 								}"
 							>
 								{{ predictionsByContest[key][0].contest_name }}
