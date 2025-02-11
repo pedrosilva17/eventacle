@@ -25,6 +25,8 @@ const logout = () => {
 
 const page = usePage();
 const message = ref('');
+const footerLinkClasses =
+	'transition-colors hover:text-primary-dark dark:hover:text-primary-extralight focus:text-primary-dark dark:focus:text-primary-extralight';
 
 onMounted(() => {
 	const flash = page.props.flash;
@@ -49,7 +51,7 @@ onMounted(() => {
 		<div class="flex min-h-screen flex-col bg-white-dark text-black-dark dark:bg-black-dark dark:text-white-light">
 			<nav class="relative bg-white text-black-dark dark:bg-black dark:text-white-light">
 				<!-- Primary Navigation Menu -->
-				<div class="mx-auto flex h-16 max-w-7xl justify-between px-4 sm:px-6 lg:px-8">
+				<div class="mx-auto flex h-16 max-w-screen-xl justify-between px-4 sm:px-6 lg:px-8">
 					<!-- Logo -->
 					<div class="flex shrink-0 items-center">
 						<Link
@@ -237,18 +239,68 @@ onMounted(() => {
 
 			<!-- Page Heading -->
 			<header v-if="$slots.header" class="bg-white shadow dark:bg-gray-800">
-				<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+				<div class="mx-auto max-w-screen-xl px-4 py-6 sm:px-6 lg:px-8">
 					<slot name="header" />
 				</div>
 			</header>
 
 			<!-- Page Content -->
 			<main class="h-full flex-1 text-black-dark dark:text-white-light">
-				<div class="mx-auto flex max-w-7xl flex-col py-12 sm:px-6 lg:px-8">
+				<div class="mx-auto flex max-w-screen-xl flex-col py-12 sm:px-6 lg:px-8">
 					<slot />
 				</div>
 			</main>
-			<footer class="flex">Footer</footer>
+			<footer class="flex bg-white dark:bg-black">
+				<div
+					class="mx-auto flex w-full max-w-screen-xl flex-col justify-between gap-3 px-6 py-3 sm:flex-row lg:px-8"
+				>
+					<div class="flex w-full flex-row gap-3">
+						<ApplicationLogo class="my-auto h-fit w-32" />
+						<section class="my-auto flex h-fit flex-col">
+							<h3 class="font-bold">Eventacle</h3>
+							<div class="flex flex-col gap-2 text-sm text-black-light dark:text-white-dark">
+								<p class="italic">
+									Create events, predict their results and compete for the ultimate prize: bragging
+									rights.
+								</p>
+								<p>
+									Built by
+									<a
+										target="_blank"
+										href="https://github.com/pedrosilva17"
+										:class="footerLinkClasses"
+										class="underline"
+									>
+										@pedrosilva17
+									</a>
+								</p>
+							</div>
+						</section>
+					</div>
+					<ul class="my-auto flex h-fit w-full flex-col items-end gap-2 sm:flex-row sm:justify-end sm:gap-6">
+						<li>
+							<a
+								target="_blank"
+								href="https://github.com/pedrosilva17/eventacle"
+								:class="footerLinkClasses"
+								class="flex flex-row items-center gap-1"
+								><i-ic-round-code aria-labelledby="source-code" />
+								<p id="source-code">Source code</p></a
+							>
+						</li>
+						<li>
+							<a
+								target="_blank"
+								href="https://frompedrosilva.com"
+								:class="footerLinkClasses"
+								class="flex flex-row items-center gap-1"
+								><i-ic-round-language aria-labelledby="author-website" />
+								<p id="author-website">Author website</p></a
+							>
+						</li>
+					</ul>
+				</div>
+			</footer>
 		</div>
 	</div>
 </template>
