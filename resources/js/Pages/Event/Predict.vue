@@ -82,7 +82,10 @@ function submit() {
 								</div>
 							</span>
 							<InputError :message="form.errors['predictions']" />
-							<template v-if="event.scoring_type === 'confidence points'">
+							<div
+								v-if="event.scoring_type === 'confidence points'"
+								class="flex min-h-28 w-full flex-col"
+							>
 								<InputLabel :for="'points_' + contest.id">Confidence points</InputLabel>
 								<NumberInput
 									:id="'points_' + contest.id"
@@ -91,8 +94,8 @@ function submit() {
 									v-model="form.points[contest.id]"
 									:required="true"
 								/>
-							</template>
-							<InputError :message="form.errors[`points.${contest.id}`] ?? form.errors['points']" />
+								<InputError :message="form.errors[`points.${contest.id}`] ?? form.errors['points']" />
+							</div>
 						</span>
 					</template>
 					<span v-if="!$page.props.auth.user" class="col-span-2 flex flex-col">

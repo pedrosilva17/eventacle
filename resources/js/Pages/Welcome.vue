@@ -19,7 +19,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 				</Transition>
 			</h1>
 		</Transition>
-		<PrimaryButton :href="route('register')" class="group mx-auto -mb-8 mt-2 w-fit">
+		<PrimaryButton :href="route('register')" class="group mx-auto -mb-6 mt-2 w-fit">
 			<span class="text-2xl group-hover:animate-pulse">Register</span>
 		</PrimaryButton>
 		<div class="ml-[50%] mt-8 flex w-screen -translate-x-1/2 flex-col bg-white dark:bg-black">

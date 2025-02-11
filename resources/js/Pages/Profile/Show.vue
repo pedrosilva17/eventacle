@@ -177,9 +177,7 @@ const creationDate = new Date(page.props.auth.user.created_at);
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col">
 				<h2 class="text-2xl">Stats</h2>
-				<div
-					class="flex flex-1 flex-col justify-between gap-3 rounded-lg bg-white-light px-6 py-4 sm:text-lg dark:bg-black-light"
-				>
+				<div class="flex flex-1 flex-col justify-between gap-3 sm:text-lg">
 					<span class="flex w-full flex-row items-center gap-2 sm:flex-row">
 						<i-ic-round-edit-calendar aria-labelledby="events-created" class="text-secondary" />
 						<p id="events-created">Events created</p>

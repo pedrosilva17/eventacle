@@ -7,12 +7,12 @@ use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
-class EditEvent
+class UpdateEvent
 {
     /**
-     * Edit the given event and associated contests.
+     * Update the given event and associated contests.
      */
-    public function edit(array $input): void
+    public static function update(array $input): void
     {
         Validator::make($input, [
             'description' => ['nullable', 'string', 'max:300'],

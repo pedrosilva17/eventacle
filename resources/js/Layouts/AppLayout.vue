@@ -46,7 +46,7 @@ onMounted(() => {
 	<div>
 		<Head :title="title" />
 		<Toaster />
-		<div class="min-h-screen bg-white-dark text-black-dark dark:bg-black-dark dark:text-white-light">
+		<div class="flex min-h-screen flex-col bg-white-dark text-black-dark dark:bg-black-dark dark:text-white-light">
 			<nav class="relative bg-white text-black-dark dark:bg-black dark:text-white-light">
 				<!-- Primary Navigation Menu -->
 				<div class="mx-auto flex h-16 max-w-7xl justify-between px-4 sm:px-6 lg:px-8">
@@ -100,13 +100,9 @@ onMounted(() => {
 
 									<template #content>
 										<!-- Account Management -->
-										<div class="block px-4 py-2 text-xs text-black-dark dark:text-white-light">
-											Manage Account
-										</div>
-
 										<DropdownLink :href="route('profile.show')"> Profile </DropdownLink>
 
-										<div class="border-t border-primary-light dark:border-primary-dark" />
+										<div class="border-t border-white-dark dark:border-black-light" />
 
 										<!-- Authentication -->
 										<form @submit.prevent="logout">
@@ -146,7 +142,7 @@ onMounted(() => {
 				>
 					<!-- Responsive Settings Options -->
 					<template v-if="$page.props.auth.user">
-						<div class="space-y-1 pb-3 pt-2">
+						<div class="space-y-1 py-2">
 							<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
 								Dashboard
 							</ResponsiveNavLink>
@@ -154,102 +150,78 @@ onMounted(() => {
 								Create Event
 							</ResponsiveNavLink>
 						</div>
-						<div class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
-							<div class="flex items-center px-4">
-								<div v-if="$page.props.jetstream.managesProfilePhotos" class="me-3 shrink-0">
-									<img
-										class="h-10 w-10 rounded-full object-cover"
-										:src="$page.props.auth.user.profile_photo_url"
-										:alt="$page.props.auth.user.name"
-									/>
-								</div>
+						<div class="border-t border-white-dark py-2 dark:border-black-light">
+							<ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+								Profile
+							</ResponsiveNavLink>
 
-								<div>
-									<div class="text-base font-medium text-black-dark dark:text-white-light">
-										{{ $page.props.auth.user.name }}
-									</div>
-									<div class="text-sm font-medium text-black-light dark:text-white-dark">
-										{{ $page.props.auth.user.email }}
-									</div>
-								</div>
-							</div>
+							<ResponsiveNavLink
+								v-if="$page.props.jetstream.hasApiFeatures"
+								:href="route('api-tokens.index')"
+								:active="route().current('api-tokens.index')"
+							>
+								API Tokens
+							</ResponsiveNavLink>
 
-							<div class="mt-3 space-y-1">
+							<!-- Authentication -->
+							<form method="POST" @submit.prevent="logout">
+								<ResponsiveNavLink as="button"> Log Out </ResponsiveNavLink>
+							</form>
+
+							<!-- Team Management -->
+							<template v-if="$page.props.jetstream.hasTeamFeatures">
+								<div class="border-t border-white-dark dark:border-black-light" />
+
+								<div class="block px-4 py-2 text-xs text-gray-400">Manage Team</div>
+
+								<!-- Team Settings -->
 								<ResponsiveNavLink
-									:href="route('profile.show')"
-									:active="route().current('profile.show')"
+									:href="route('teams.show', $page.props.auth.user.current_team)"
+									:active="route().current('teams.show')"
 								>
-									Profile
+									Team Settings
 								</ResponsiveNavLink>
 
 								<ResponsiveNavLink
-									v-if="$page.props.jetstream.hasApiFeatures"
-									:href="route('api-tokens.index')"
-									:active="route().current('api-tokens.index')"
+									v-if="$page.props.jetstream.canCreateTeams"
+									:href="route('teams.create')"
+									:active="route().current('teams.create')"
 								>
-									API Tokens
+									Create New Team
 								</ResponsiveNavLink>
 
-								<!-- Authentication -->
-								<form method="POST" @submit.prevent="logout">
-									<ResponsiveNavLink as="button"> Log Out </ResponsiveNavLink>
-								</form>
+								<!-- Team Switcher -->
+								<template v-if="$page.props.auth.user.all_teams.length > 1">
+									<div class="border-t border-white-dark dark:border-black-light" />
 
-								<!-- Team Management -->
-								<template v-if="$page.props.jetstream.hasTeamFeatures">
-									<div class="border-t border-gray-200 dark:border-gray-600" />
+									<div class="block px-4 py-2 text-xs text-gray-400">Switch Teams</div>
 
-									<div class="block px-4 py-2 text-xs text-gray-400">Manage Team</div>
-
-									<!-- Team Settings -->
-									<ResponsiveNavLink
-										:href="route('teams.show', $page.props.auth.user.current_team)"
-										:active="route().current('teams.show')"
-									>
-										Team Settings
-									</ResponsiveNavLink>
-
-									<ResponsiveNavLink
-										v-if="$page.props.jetstream.canCreateTeams"
-										:href="route('teams.create')"
-										:active="route().current('teams.create')"
-									>
-										Create New Team
-									</ResponsiveNavLink>
-
-									<!-- Team Switcher -->
-									<template v-if="$page.props.auth.user.all_teams.length > 1">
-										<div class="border-t border-gray-200 dark:border-gray-600" />
-
-										<div class="block px-4 py-2 text-xs text-gray-400">Switch Teams</div>
-
-										<template v-for="team in $page.props.auth.user.all_teams" :key="team.id">
-											<form @submit.prevent="switchToTeam(team)">
-												<ResponsiveNavLink as="button">
-													<div class="flex items-center">
-														<svg
-															v-if="team.id == $page.props.auth.user.current_team_id"
-															class="me-2 h-5 w-5 text-green-400"
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															stroke-width="1.5"
-															stroke="currentColor"
-														>
-															<path
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-															/>
-														</svg>
-														<div>{{ team.name }}</div>
-													</div>
-												</ResponsiveNavLink>
-											</form>
-										</template>
+									<template v-for="team in $page.props.auth.user.all_teams" :key="team.id">
+										<form @submit.prevent="switchToTeam(team)">
+											<ResponsiveNavLink as="button">
+												<div class="flex items-center">
+													<svg
+														v-if="team.id == $page.props.auth.user.current_team_id"
+														class="me-2 h-5 w-5 text-green-400"
+														xmlns="http://www.w3.org/2000/svg"
+														fill="none"
+														viewBox="0 0 24 24"
+														stroke-width="1.5"
+														stroke="currentColor"
+													>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+														/>
+													</svg>
+													<div>{{ team.name }}</div>
+												</div>
+											</ResponsiveNavLink>
+										</form>
 									</template>
 								</template>
-							</div>
+							</template>
 						</div>
 					</template>
 					<template v-else>
@@ -271,11 +243,12 @@ onMounted(() => {
 			</header>
 
 			<!-- Page Content -->
-			<main class="text-black-dark dark:text-white-light">
+			<main class="h-full flex-1 text-black-dark dark:text-white-light">
 				<div class="mx-auto flex max-w-7xl flex-col py-12 sm:px-6 lg:px-8">
 					<slot />
 				</div>
 			</main>
+			<footer class="flex">Footer</footer>
 		</div>
 	</div>
 </template>

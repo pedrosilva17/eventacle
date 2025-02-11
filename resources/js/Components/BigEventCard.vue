@@ -46,7 +46,7 @@ defineProps({
 						{{ prediction.contest.name }}
 					</h3>
 					<p
-						class="flex flex-1 flex-row flex-wrap gap-2 text-base italic text-secondary-extradark group-hover:text-black-dark sm:text-lg dark:text-secondary-extralight"
+						class="flex flex-1 flex-row flex-wrap gap-2 text-base italic text-secondary-extradark group-hover:text-black-dark sm:text-lg dark:text-secondary-extralight dark:group-hover:text-secondary-extralight"
 					>
 						{{ prediction.prediction_name }}
 						{{

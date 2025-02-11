@@ -1,9 +1,9 @@
 <?php
 
 use App\Actions\Eventacle\CreateEvent;
-use App\Actions\Eventacle\EditEvent;
 use App\Actions\Eventacle\PredictEvent;
 use App\Actions\Eventacle\PublishWinners;
+use App\Actions\Eventacle\UpdateEvent;
 use App\Http\Middleware\CheckEventCreator;
 use App\Http\Middleware\CheckEventTiming;
 use App\Http\Middleware\CheckExistingWinners;
@@ -43,7 +43,7 @@ Route::prefix('/event')->name('event')->group(function () {
         })->middleware([CheckEventCreator::class])->name('.edit-form');
 
         Route::post('/{event}/edit', function (Event $event) {
-            (new EditEvent)->edit(request()->all());
+            (new UpdateEvent)->update(request()->all());
 
             return redirect()->route('event.show', $event)->with('success', 'Event edited successfully.');
         })->middleware([CheckEventCreator::class, CheckEventTiming::class.':predictions'])->name('.edit');

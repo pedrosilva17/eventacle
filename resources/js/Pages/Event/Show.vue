@@ -11,6 +11,8 @@ import { needsBreakAll, plural, toggleAccordions } from '@/Lib/Utils';
 import { router, usePage } from '@inertiajs/vue3';
 import { reactive, ref } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import { toast } from 'vue-sonner';
+import OutlineButton from '@/Components/OutlineButton.vue';
 
 const props = defineProps({
 	event: {
@@ -86,6 +88,18 @@ const getRanks = (points) => {
 	return points.map((x) => rank.get(x));
 };
 const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
+
+const copied = ref(false);
+const copyEventLink = async () => {
+	try {
+		await navigator.clipboard.writeText(document.URL).then(() => {
+			copied.value = true;
+			toast.success('Copied to clipboard!');
+		});
+	} catch (error) {
+		toast.error('An error occurred. Try copying the link manually!');
+	}
+};
 </script>
 
 <template>
@@ -124,16 +138,26 @@ const ranks = getRanks(props.event.leaderboard.map((entry) => entry.score));
 						</span>
 					</div>
 				</div>
-				<div v-if="canEdit || isCreator" class="flex w-full flex-col justify-between gap-3 sm:flex-row">
+				<div v-if="canEdit || isCreator" class="flex w-full flex-col gap-3 sm:flex-row">
 					<PrimaryButton v-if="canEdit" :href="route('event.prediction-form', event)" class="w-fit">{{
 						hasPrediction ? 'Change prediction' : 'Make a Prediction'
 					}}</PrimaryButton>
-					<div v-if="isCreator" class="flex flex-row gap-3">
-						<PrimaryButton v-if="canEdit" :href="route('event.edit-form', event)"> Edit </PrimaryButton>
+					<OutlineButton v-if="canEdit" @click="copyEventLink" class="w-fit">
+						<Transition name="scale" mode="out-in">
+							<i-ic-round-share v-if="!copied" aria-label="Copy event link" class="text-lg" />
+							<i-ic-round-check v-else aria-label="Link copied" class="text-lg" />
+						</Transition>
+					</OutlineButton>
+					<div v-if="isCreator" class="relative flex flex-1 flex-row gap-3 sm:justify-end">
+						<OutlineButton v-if="canEdit" :href="route('event.edit-form', event)">
+							<i-ic-round-edit aria-label="Edit event" class="text-lg" />
+						</OutlineButton>
 						<PrimaryButton v-if="!canEdit && !event.has_winners" :href="route('event.winners-form', event)">
-							Finish
+							Finish Event
 						</PrimaryButton>
-						<DangerButton class="w-fit" @click="show = !show">Delete</DangerButton>
+						<DangerButton @click="show = !show">
+							<i-ic-round-delete aria-label="Delete event" class="text-lg" />
+						</DangerButton>
 					</div>
 				</div>
 			</Container>

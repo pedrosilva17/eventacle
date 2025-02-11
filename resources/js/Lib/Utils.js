@@ -50,7 +50,8 @@ export const dateTimeOptions = {
 	timeZoneName: 'short',
 };
 
-export const SINGLE_POINTS_HELP = 'Single point scoring is simple: every contest is worth a point.';
+export const SINGLE_POINTS_HELP =
+	'Single point scoring is simple: every contest awards you with a point if you guess correctly. The person with the most correct guesses wins!';
 
 export const CONFIDENCE_POINTS_HELP =
-	'Confidence point scoring prompts the user to order their predictions based on how confident they are to get each one right, from 1 (least confident) up to the number of contests (most confident), assigning that score to each prediction. For every correct prediction, their confidence score is added to the total. Useful to make ties less common.';
+	'With confidence point scoring, you must order your predictions based on how confident you are to guess each one correctly, from 1 (least confident) up to the number of contests (most confident). For every correct prediction, the confidence score you chose is added to your total score!';

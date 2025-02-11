@@ -47,27 +47,33 @@
 }
 
 :root {
+  scrollbar-gutter: stable both-edges;
   background-color: theme('colors.white.dark');
-  scrollbar-color: theme('colors.primary.DEFAULT') theme('colors.white.dark');
 }
 
-:root::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-:root::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: theme('colors.white.dark');
 }
 
-:root::-webkit-scrollbar-thumb {
-  background: theme('colors.white.dark');
+::-webkit-scrollbar-thumb {
+  background: theme('colors.primary.dark');
   border-radius: 100vh;
+  border: 1px solid theme('colors.primary.dark');
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme('colors.primary.DEFAULT');
   border: 1px solid theme('colors.primary.DEFAULT');
 }
 
-:root::-webkit-scrollbar-thumb:hover {
-  background: theme('colors.primary.DEFAULT');
+::-webkit-scrollbar-thumb:active {
+  background: theme('colors.primary.light');
+  border: 1px solid theme('colors.primary.light');
 }
 
 input::-webkit-outer-spin-button,
