@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
 
         $events = Event::factory(50)->make()->each(function ($event) use ($users) {
             $event->creator_id = $users->random()->id;
+            $creator = User::find($event->creator_id);
+            $creator->num_events_created += 1;
+            $creator->save();
             $event->save();
         });
         $eventsCount = $events->count();

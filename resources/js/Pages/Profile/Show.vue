@@ -181,7 +181,7 @@ const creationDate = new Date(page.props.auth.user.created_at);
 					<span class="flex w-full flex-row items-center gap-2 sm:flex-row">
 						<i-ic-round-edit-calendar aria-labelledby="events-created" class="text-secondary" />
 						<p id="events-created">Events created</p>
-						<p class="ml-auto flex">{{ $page.props.eventsCreated.length }}</p>
+						<p class="ml-auto flex">{{ $page.props.auth.user.num_events_created }}</p>
 					</span>
 					<span class="flex flex-row items-center gap-2 sm:flex-row">
 						<i-ic-round-auto-awesome aria-labelledby="predictions-made" class="text-secondary" />

@@ -22,7 +22,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 		<PrimaryButton :href="route('register')" class="group mx-auto -mb-6 mt-2 w-fit">
 			<span class="text-2xl group-hover:animate-pulse">Register</span>
 		</PrimaryButton>
-		<div class="ml-[50%] mt-8 flex w-screen -translate-x-1/2 flex-col bg-white dark:bg-black">
+		<div class="ml-[50%] mt-8 flex w-screen -translate-x-1/2 flex-col">
 			<LandingPageContainer>
 				<template #heading> Zero bets - all brags </template>
 				<template #content>
@@ -100,7 +100,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 					</div>
 				</template>
 			</LandingPageContainer>
-			<section class="flex w-full flex-col items-center gap-6 py-16">
+			<section class="mt-12 flex w-full flex-col items-center gap-6 py-16">
 				<h2 class="text-2xl font-bold sm:text-4xl">Join the fun!</h2>
 				<PrimaryButton :href="route('register')" class="group">
 					<span class="text-2xl group-hover:animate-pulse">Register</span>

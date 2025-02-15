@@ -56,6 +56,8 @@ class CreateEvent
             }
         }
 
+        Auth::user()->num_events_created += 1;
+
         return $event;
     }
 }
