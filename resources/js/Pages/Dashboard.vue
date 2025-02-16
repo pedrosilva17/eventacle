@@ -40,7 +40,7 @@ const props = defineProps({
 			</template>
 			<template #content>
 				<p v-if="Array.from(eventsPredicted).length === 0" class="text-center">
-					You have no predictions on upcoming events. Try your luck!
+					No predictions on upcoming events. Try it out!
 				</p>
 				<div v-else class="flex flex-col gap-3">
 					<template v-for="event in eventsPredicted">

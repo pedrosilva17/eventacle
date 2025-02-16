@@ -67,7 +67,7 @@ function submit() {
 				</ul>
 			</template>
 			<template #actions>
-				<PrimaryButton type="submit">Update Event</PrimaryButton>
+				<PrimaryButton type="submit">Edit Event</PrimaryButton>
 			</template>
 		</FormSection>
 	</AppLayout>

@@ -7,6 +7,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import TextLink from '@/Components/TextLink.vue';
 
 const form = useForm({
 	name: '',
@@ -115,12 +116,7 @@ const submit = () => {
 			</div>
 
 			<div class="mt-4 flex items-center justify-end">
-				<Link
-					:href="route('login')"
-					class="rounded-md text-sm text-black-light underline transition hover:text-primary-extradark focus:outline-none focus:ring-2 focus:ring-primary-extradark focus:ring-offset-2 focus:ring-offset-white dark:text-white-dark dark:hover:text-primary-extralight dark:focus:ring-primary-extralight dark:focus:ring-offset-black"
-				>
-					Already have an account?
-				</Link>
+				<TextLink :href="route('login')" class="underline"> Already have an account? </TextLink>
 
 				<PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
 					Register

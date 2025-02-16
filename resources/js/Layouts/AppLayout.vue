@@ -11,6 +11,7 @@ import Toaster from '@/Components/shadcn/sonner/Sonner.vue';
 import { toast } from 'vue-sonner';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import OutlineButton from '@/Components/OutlineButton.vue';
+import TextLink from '@/Components/TextLink.vue';
 
 defineProps({
 	title: String,
@@ -25,8 +26,6 @@ const logout = () => {
 
 const page = usePage();
 const message = ref('');
-const footerLinkClasses =
-	'transition-colors hover:text-primary-dark dark:hover:text-primary-extralight focus:text-primary-dark dark:focus:text-primary-extralight';
 
 onMounted(() => {
 	const flash = page.props.flash;
@@ -56,7 +55,7 @@ onMounted(() => {
 					<div class="flex shrink-0 items-center">
 						<Link
 							:href="$page.props.auth.user ? route('dashboard') : route('welcome')"
-							class="group relative flex h-full flex-row items-center gap-3"
+							class="group flex h-full flex-row items-center gap-3"
 						>
 							<p
 								class="flex h-full w-auto items-center font-serif text-3xl font-bold text-primary dark:text-primary-extralight"
@@ -265,38 +264,40 @@ onMounted(() => {
 								</p>
 								<p>
 									Built by
-									<a
+									<TextLink
+										external
 										target="_blank"
 										href="https://github.com/pedrosilva17"
-										:class="footerLinkClasses"
 										class="underline"
 									>
 										@pedrosilva17
-									</a>
+									</TextLink>
 								</p>
 							</div>
 						</section>
 					</div>
 					<ul class="my-auto flex h-fit w-full flex-col items-end gap-2 sm:flex-row sm:justify-end sm:gap-6">
 						<li>
-							<a
+							<TextLink
+								external
 								target="_blank"
 								href="https://github.com/pedrosilva17/eventacle"
-								:class="footerLinkClasses"
-								class="flex flex-row items-center gap-1"
-								><i-ic-round-code aria-labelledby="source-code" />
-								<p id="source-code">Source code</p></a
+								class="flex flex-row items-center gap-1 text-lg text-black-dark dark:text-white-light"
 							>
+								<i-ic-round-code aria-labelledby="source-code" />
+								<p id="source-code">Source code</p>
+							</TextLink>
 						</li>
 						<li>
-							<a
+							<TextLink
+								external
 								target="_blank"
 								href="https://frompedrosilva.com"
-								:class="footerLinkClasses"
-								class="flex flex-row items-center gap-1"
-								><i-ic-round-language aria-labelledby="author-website" />
-								<p id="author-website">Author website</p></a
+								class="flex flex-row items-center gap-1 text-lg text-black-dark dark:text-white-light"
 							>
+								<i-ic-round-language aria-labelledby="author-website" />
+								<p id="author-website">Author website</p>
+							</TextLink>
 						</li>
 					</ul>
 				</div>

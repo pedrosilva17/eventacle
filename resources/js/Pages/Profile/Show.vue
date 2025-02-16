@@ -90,10 +90,8 @@ const creationDate = new Date(page.props.auth.user.created_at);
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col">
 				<h2 class="text-2xl">Events Created</h2>
-				<p v-if="$page.props.eventsCreated.length === 0">
-					No upcoming events created yet. Time to change that!
-				</p>
-				<div v-else class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+				<p v-if="$page.props.eventsCreated.length === 0">No events created yet. Time to change that!</p>
+				<div v-else class="grid grid-cols-1 gap-3 overflow-y-auto p-1 sm:grid-cols-2 lg:grid-cols-3">
 					<template v-for="event in $page.props.eventsCreated">
 						<SmallEventCard :event="event" />
 					</template>
@@ -172,7 +170,7 @@ const creationDate = new Date(page.props.auth.user.created_at);
 					</Accordion>
 				</template>
 				<template v-else>
-					<p>No predictions made yet.</p>
+					<p>No predictions made yet. Try it out!</p>
 				</template>
 			</Container>
 			<Container class="col-span-2 max-h-screen flex-col">

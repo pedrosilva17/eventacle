@@ -122,13 +122,13 @@ function submit() {
 								:key="form.contests[index].optionIndices[opIndex]"
 								class="flex justify-end"
 							>
-								<InputGroup class="mdflex w-full md:justify-end">
+								<InputGroup class="w-full md:flex md:justify-end">
 									<span
 										class="flex flex-col items-end text-center md:flex-row md:items-center md:gap-3"
 									>
 										<InputLabel
 											:for="`contest-option-${index}-${opIndex}`"
-											class="w-full text-start md:w-48"
+											class="w-full text-start"
 											>Contest Option</InputLabel
 										>
 										<TextInput
@@ -153,23 +153,23 @@ function submit() {
 									/>
 								</InputGroup>
 							</span>
-							<span
-								class="mt-8 flex h-full w-full flex-col items-end justify-end gap-12 md:col-start-2"
-								key="contest buttons"
-							>
-								<DangerButton
-									:disabled="form.contests.length <= 1"
-									class="w-fit gap-2 md:col-start-2"
-									type="button"
-									@click="removeContest(index)"
-								>
-									Remove Contest {{ index + 1 }}<i-ic-round-delete class="text-lg" />
-								</DangerButton>
-								<SecondaryButton type="button" @click="addContest(index)" class="w-fit gap-2"
-									>Add Contest<i-ic-round-add class="text-lg"
-								/></SecondaryButton>
-							</span>
 						</TransitionGroup>
+						<span
+							class="mt-2 flex flex-col items-end justify-end gap-8 md:col-start-2"
+							key="contest buttons"
+						>
+							<DangerButton
+								:disabled="form.contests.length <= 1"
+								class="w-fit gap-2 md:col-start-2"
+								type="button"
+								@click="removeContest(index)"
+							>
+								Remove Contest {{ index + 1 }}<i-ic-round-delete class="text-lg" />
+							</DangerButton>
+							<SecondaryButton type="button" @click="addContest(index)" class="w-fit gap-2"
+								>Add Contest<i-ic-round-add class="text-lg"
+							/></SecondaryButton>
+						</span>
 					</li>
 				</TransitionGroup>
 
@@ -182,7 +182,7 @@ function submit() {
 					<Transition
 						name="fade"
 						mode="out-in"
-						class="col-span-2 mt-2 w-full justify-start break-words text-end md:w-2/3"
+						class="col-span-2 row-start-3 mt-2 w-full justify-start break-words text-end md:w-2/3"
 					>
 						<p v-if="form.scoring_type === 'single points'">
 							{{ SINGLE_POINTS_HELP }}

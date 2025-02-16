@@ -138,17 +138,19 @@ const copyEventLink = async () => {
 						</span>
 					</div>
 				</div>
-				<div v-if="canEdit || isCreator" class="flex w-full flex-col gap-3 sm:flex-row">
-					<PrimaryButton v-if="canEdit" :href="route('event.prediction-form', event)" class="w-fit">{{
-						hasPrediction ? 'Change prediction' : 'Make a Prediction'
-					}}</PrimaryButton>
-					<OutlineButton v-if="canEdit" @click="copyEventLink" class="w-fit">
-						<Transition name="scale" mode="out-in">
-							<i-ic-round-share v-if="!copied" aria-label="Copy event link" class="text-lg" />
-							<i-ic-round-check v-else aria-label="Link copied" class="text-lg" />
-						</Transition>
-					</OutlineButton>
-					<div v-if="isCreator" class="relative flex flex-1 flex-row gap-3 sm:justify-end">
+				<div class="flex w-full flex-col gap-3 sm:flex-row">
+					<div v-if="canEdit" class="flex flex-col gap-3 sm:flex-row">
+						<PrimaryButton v-if="canEdit" :href="route('event.prediction-form', event)" class="w-fit">{{
+							hasPrediction ? 'Change prediction' : 'Make a Prediction'
+						}}</PrimaryButton>
+						<OutlineButton @click="copyEventLink" class="w-fit">
+							<Transition name="scale" mode="out-in">
+								<i-ic-round-share v-if="!copied" aria-label="Copy event link" class="text-lg" />
+								<i-ic-round-check v-else aria-label="Link copied" class="text-lg" />
+							</Transition>
+						</OutlineButton>
+					</div>
+					<div v-if="isCreator" class="flex flex-1 flex-row gap-3 sm:justify-end">
 						<OutlineButton v-if="canEdit" :href="route('event.edit-form', event)">
 							<i-ic-round-edit aria-label="Edit event" class="text-lg" />
 						</OutlineButton>
