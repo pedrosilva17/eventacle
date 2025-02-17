@@ -1,7 +1,6 @@
 <script setup>
 import { cn } from '@/Lib/Utils';
 import { Link } from '@inertiajs/vue3';
-import { defineProps } from 'vue';
 
 defineProps({
 	external: {

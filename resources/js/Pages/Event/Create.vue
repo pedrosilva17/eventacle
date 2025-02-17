@@ -7,10 +7,9 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import SelectInput from '@/Components/SelectInput.vue';
-import TextareaInput from '@/Components/TextareaInput.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { beforeLeave, CONFIDENCE_POINTS_HELP, SINGLE_POINTS_HELP } from '@/Lib/Utils';
+import { beforeLeave, CONFIDENCE_POINTS_HELP, convertUtcToLocalString, SINGLE_POINTS_HELP } from '@/Lib/Utils';
 import { useForm } from '@inertiajs/vue3';
 import { reactive } from 'vue';
 import EventStartTimeField from './Partials/EventStartTimeField.vue';
@@ -22,7 +21,7 @@ import ContestDescriptionField from './Partials/ContestDescriptionField.vue';
 const form = useForm({
 	name: '',
 	description: '',
-	start_time: '',
+	start_time: convertUtcToLocalString(new Date().toISOString()),
 	user_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 	contests: reactive([
 		{

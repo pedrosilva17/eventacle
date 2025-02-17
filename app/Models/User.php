@@ -156,6 +156,6 @@ class User extends Authenticatable
 
     public function winRate(): float
     {
-        return round(($this->podiums()[0] / $this->leaderboardEntries()->get()->count()) * 100, 2);
+        return round(($this->podiums()[0] / max($this->leaderboardEntries()->get()->count(), 1)) * 100, 2);
     }
 }

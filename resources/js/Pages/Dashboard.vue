@@ -39,9 +39,7 @@ const props = defineProps({
 				<i-ic-round-auto-awesome aria-labelledby="your-current-predictions" />
 			</template>
 			<template #content>
-				<p v-if="Array.from(eventsPredicted).length === 0" class="text-center">
-					No predictions on upcoming events. Try it out!
-				</p>
+				<p v-if="Array.from(eventsPredicted).length === 0">No predictions on upcoming events. Try it out!</p>
 				<div v-else class="flex flex-col gap-3">
 					<template v-for="event in eventsPredicted">
 						<BigEventCard :event="event" :predictions="userPredictions[event.id]" />
