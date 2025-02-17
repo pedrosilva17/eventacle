@@ -132,16 +132,16 @@ class User extends Authenticatable
     {
         $positionCount = [0, 0, 0];
         $userEntries = $this->leaderboardEntries()->get();
-        $eventEntries = LeaderboardEntry::whereIn('event_id', array_map(function ($entry) {
-            return $entry['event_id'];
+        $eventEntries = LeaderboardEntry::whereIn('event_slug', array_map(function ($entry) {
+            return $entry['event_slug'];
         }, $userEntries->toArray()))->get();
-        foreach ($userEntries as $entry) {
+        foreach ($userEntries as $userEntry) {
             $top3 = array_values(array_map(function ($entry) {
                 return $entry['score'];
             },
-                $eventEntries->where('event_id', $entry->event_id)->sortByDesc('score')->take(3)->toArray()));
-            if ($eventEntries->where('event_id', $entry->event_id)->count() <= 3 || in_array($entry->score, $top3) !== false) {
-                $idx = array_search($entry->score, $top3);
+                $eventEntries->where('event_slug', $userEntry->event_slug)->sortByDesc('score')->take(3)->toArray()));
+            if ($eventEntries->where('event_slug', $userEntry->event_slug)->count() <= 3 || in_array($userEntry->score, $top3) !== false) {
+                $idx = array_search($userEntry->score, $top3);
                 $positionCount[$idx]++;
             }
         }

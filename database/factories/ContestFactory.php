@@ -28,7 +28,7 @@ class ContestFactory extends Factory
             'description' => fake()->paragraph(),
             'options' => implode('|SEP|', $options),
             'result' => null,
-            //'event_id' => Event::factory(),
+            // 'event_id' => Event::factory(),
         ];
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('user_name');
             $table->foreignId('event_id')->nullable()->constrained('events');
-            $table->string('event_name');
+            $table->string('event_slug');  // serves as unique identifier after event is deleted
             $table->integer('score');
             $table->timestamps();
         });

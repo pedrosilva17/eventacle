@@ -31,15 +31,15 @@ class PublishWinners
         }
 
         $eventId = $input['event']['id'];
-        $eventName = $input['event']['name'];
+        $eventSlug = $input['event']['slug'];
         $event = Event::find($eventId);
         $event->has_winners = true;
         $event->save();
 
-        return $this->calculateLeaderboard($input['event']['predictions'], $eventId, $eventName);
+        return $this->calculateLeaderboard($input['event']['predictions'], $eventId, $eventSlug);
     }
 
-    protected function calculateLeaderboard(array $predictions, int $eventId, string $eventName)
+    protected function calculateLeaderboard(array $predictions, int $eventId, string $eventSlug)
     {
         $entries = [];
         $predictions = Prediction::where('event_id', $eventId)->get()->groupBy('user_id');
@@ -63,7 +63,7 @@ class PublishWinners
             $newEntry->user_id = gettype($userId) === 'integer' ? $userId : null;
             $newEntry->user_name = $userPredictions[0]['user_name'];
             $newEntry->event_id = $eventId;
-            $newEntry->event_name = $eventName;
+            $newEntry->event_slug = $eventSlug;
             $newEntry->score = $score;
             $newEntry->save();
             array_push($entries, $newEntry);

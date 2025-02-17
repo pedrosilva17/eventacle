@@ -23,7 +23,7 @@ class EventFactory extends Factory
         return [
             'name' => fake()->words(3, true),
             'description' => fake()->paragraph(),
-            //'creator_id' => User::factory(),
+            // 'creator_id' => User::factory(),
             'start_time' => $dateTime->format('Y-m-d\TH:i\Z'),
             'has_winners' => $dateTime < Carbon::now(),
             'scoring_type' => fake()->boolean() ? 'single points' : 'confidence points',
