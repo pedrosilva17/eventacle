@@ -4,8 +4,8 @@ namespace App\Actions\Eventacle;
 
 use App\Models\Contest;
 use App\Models\Event;
+use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CreateEvent
@@ -40,8 +40,8 @@ class CreateEvent
             'start_time' => $utcTime,
             'scoring_type' => $input['scoring_type'],
         ]);
-        $event->creator_id = Auth::id();
         $event->has_winners = false;
+        $event->creator_id = $input['creator_id'];
         $event->save();
 
         if (isset($input['contests']) && is_array($input['contests'])) {
@@ -56,7 +56,9 @@ class CreateEvent
             }
         }
 
-        Auth::user()->num_events_created += 1;
+        $creator = User::find($input['creator_id']);
+        $creator->num_events_created += 1;
+        $creator->save();
 
         return $event;
     }

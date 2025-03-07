@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -9,7 +9,6 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Toaster from '@/Components/shadcn/sonner/Sonner.vue';
 import { toast } from 'vue-sonner';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
 import OutlineButton from '@/Components/OutlineButton.vue';
 import TextLink from '@/Components/TextLink.vue';
 
@@ -26,8 +25,9 @@ const logout = () => {
 
 const page = usePage();
 const message = ref('');
+const dashboardRoute = page.props.auth.user?.is_admin ? 'admin.panel' : 'dashboard';
 
-onMounted(() => {
+const spawnToast = () => {
 	const flash = page.props.flash;
 	const messageSet = new Set(Object.values(flash));
 	const toastProps = {
@@ -40,7 +40,19 @@ onMounted(() => {
 		const toastFunc = flash.error ? toast.error : flash.success ? toast.success : toast.info;
 		return toastFunc(message.value, toastProps);
 	}
+};
+
+onMounted(() => {
+	spawnToast();
 });
+
+watch(
+	() => page.props.flash,
+	(flash) => {
+		spawnToast();
+	},
+	{ deep: true },
+);
 </script>
 
 <template>
@@ -54,7 +66,7 @@ onMounted(() => {
 					<!-- Logo -->
 					<div class="flex shrink-0 items-center">
 						<Link
-							:href="$page.props.auth.user ? route('dashboard') : route('welcome')"
+							:href="$page.props.auth.user ? route(dashboardRoute) : route('welcome')"
 							class="group flex h-full flex-row items-center gap-3"
 						>
 							<p
@@ -65,11 +77,18 @@ onMounted(() => {
 						</Link>
 					</div>
 					<span class="flex flex-1 items-center justify-center">
-						<ApplicationLogo class="hidden h-12 w-12 md:absolute md:left-1/2 md:flex md:-translate-x-1/2" />
+						<ApplicationLogo class="hidden h-12 w-12 md:flex lg:absolute lg:left-1/2 lg:-translate-x-1/2" />
 					</span>
 
 					<template v-if="$page.props.auth.user">
 						<div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex sm:justify-end">
+							<NavLink
+								v-if="$page.props.auth.user.is_admin"
+								:href="route('admin.panel')"
+								:active="route().current('admin.panel')"
+							>
+								Admin
+							</NavLink>
 							<NavLink :href="route('dashboard')" :active="route().current('dashboard')">
 								Dashboard
 							</NavLink>
@@ -144,6 +163,13 @@ onMounted(() => {
 					<!-- Responsive Settings Options -->
 					<template v-if="$page.props.auth.user">
 						<div class="space-y-1 py-2">
+							<ResponsiveNavLink
+								v-if="$page.props.auth.user.is_admin"
+								:href="route('admin.panel')"
+								:active="route().current('admin.panel')"
+							>
+								Admin
+							</ResponsiveNavLink>
 							<ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
 								Dashboard
 							</ResponsiveNavLink>

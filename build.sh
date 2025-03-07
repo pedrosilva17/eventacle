@@ -6,7 +6,13 @@ if [ ! -d "vendor" ]; then
   composer install
 fi
 
-./sail build --no-cache
+if [ -n "$1" ]; then
+  ./sail build $1;
+else
+  ./sail build;
+fi
+
+./sail artisan config:clear
 
 if [ ! -f "database/database.sqlite" ]; then
   touch database/database.sqlite

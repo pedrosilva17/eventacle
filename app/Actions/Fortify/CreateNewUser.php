@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -23,6 +24,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:120', 'unique:users'],
             'password' => $this->passwordRules(),
+            'is_admin' => ['nullable', 'boolean'],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
@@ -32,7 +34,9 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
-        $user->num_events_created = 0;
+        if (Auth::check() && Auth::user()->is_admin) {
+            $user->is_admin = $input['is_admin'] ?? false;
+        }
         $user->save();
 
         return $user;

@@ -46,6 +46,10 @@
   opacity: 0;
 }
 
+html {
+  scrollbar-color: theme('colors.primary.DEFAULT') theme('colors.white.dark');
+}
+
 :root {
   scrollbar-gutter: stable both-edges;
   background-color: theme('colors.white.dark');

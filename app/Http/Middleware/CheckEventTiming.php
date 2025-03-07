@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CheckEventTiming
 {
@@ -13,6 +14,9 @@ class CheckEventTiming
      */
     public function handle(Request $request, Closure $next, $type, $tz = null)
     {
+        if (Auth::check() && Auth::user()->is_admin) {
+            return $next($request);
+        }
         $event = $request->route('event');
         $startTime = Carbon::parse($event->start_time);
 

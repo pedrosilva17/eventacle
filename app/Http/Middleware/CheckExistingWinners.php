@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckExistingWinners
@@ -15,6 +16,9 @@ class CheckExistingWinners
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (Auth::check() && Auth::user()->is_admin) {
+            return $next($request);
+        }
         $areWinnersPublished = $request->route('event')->has_winners;
 
         return $areWinnersPublished ? redirect()->route('event.show', $request->route('event'))->with('error', 'The winners were already published!') : $next($request);

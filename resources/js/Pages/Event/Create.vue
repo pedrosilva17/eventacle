@@ -1,28 +1,25 @@
 <script setup>
-import DangerButton from '@/Components/DangerButton.vue';
-import FormSection from '@/Components/FormSection.vue';
-import InputError from '@/Components/InputError.vue';
-import InputGroup from '@/Components/InputGroup.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
-import SelectInput from '@/Components/SelectInput.vue';
-import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { beforeLeave, CONFIDENCE_POINTS_HELP, convertUtcToLocalString, SINGLE_POINTS_HELP } from '@/Lib/Utils';
-import { useForm } from '@inertiajs/vue3';
+import { convertUtcToLocalString } from '@/Lib/Utils';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { reactive } from 'vue';
-import EventStartTimeField from './Partials/EventStartTimeField.vue';
-import EventDescriptionField from './Partials/EventDescriptionField.vue';
-import EventNameField from './Partials/EventNameField.vue';
-import ContestNameField from './Partials/ContestNameField.vue';
-import ContestDescriptionField from './Partials/ContestDescriptionField.vue';
+import EventForm from './Partials/EventForm.vue';
+import FormTitle from '@/Components/FormTitle.vue';
 
+const props = defineProps({
+	users: {
+		type: Array,
+		default: [],
+	},
+});
+
+const page = usePage();
 const form = useForm({
 	name: '',
 	description: '',
 	start_time: convertUtcToLocalString(new Date().toISOString()),
 	user_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+	creator_id: page.props.auth.user.id,
 	contests: reactive([
 		{
 			name: '',
@@ -34,167 +31,20 @@ const form = useForm({
 	scoring_type: 'single points',
 });
 
-const addContest = (index) => {
-	form.contests.splice(index + 1, 0, {
-		name: '',
-		description: '',
-		options: ['', ''],
-		optionIndices: [0, 1],
-	});
-};
-
-const removeContest = (index) => {
-	form.contests.splice(index, 1);
-	form.errors = [];
-};
-
-const addOption = (index) => {
-	form.contests[index].options.push('');
-	form.contests[index].optionIndices.push(
-		form.contests[index].optionIndices[form.contests[index].optionIndices.length - 1] + 1,
-	);
-};
-
-const removeOption = (index, optionIndex) => {
-	const optionIndices = form.contests[index].optionIndices;
-	form.contests[index].options.splice(optionIndices.indexOf(optionIndex), 1);
-	form.contests[index].optionIndices.splice(optionIndices.indexOf(optionIndex), 1);
-};
-
 function submit() {
 	form.post(route('event.new'));
 }
 </script>
 
 <template>
-	<AppLayout title="Create">
-		<h1 class="flex w-full items-center pb-6 pt-1 text-center text-xl font-bold max-sm:px-4 sm:pt-2 sm:text-3xl">
-			Create Event
-		</h1>
-		<FormSection @submit.prevent="submit">
-			<template #form>
-				<input type="hidden" v-model="form.user_timezone" />
-				<EventNameField v-model="form.name" :error="form.errors.name" />
-				<EventDescriptionField v-model="form.description" :error="form.errors.description" />
-				<EventStartTimeField v-model="form.start_time" :error="form.errors.start_time" />
-
-				<TransitionGroup
-					name="scale"
-					tag="ul"
-					class="my-8 grid md:col-span-2 md:grid-cols-subgrid md:gap-16"
-					:duration="300"
-				>
-					<li
-						v-for="(contest, index) in form.contests"
-						:key="contest"
-						class="-mx-6 -my-4 grid gap-3 bg-white-light px-6 py-4 md:col-span-2 md:grid-cols-subgrid lg:rounded-lg dark:bg-black-light"
-					>
-						<h2 class="text-end text-lg font-bold md:col-span-2">Contest {{ index + 1 }}</h2>
-						<ContestNameField
-							v-model="contest.name"
-							:error="form.errors[`contests.${index}.name`]"
-							:index="index"
-						/>
-						<ContestDescriptionField
-							v-model="contest.description"
-							:error="form.errors[`contests.${index}.description`]"
-							:index="index"
-						/>
-
-						<TransitionGroup
-							@before-leave="beforeLeave"
-							name="slide-fade"
-							tag="div"
-							class="relative mt-8 flex flex-col max-md:mb-4 md:col-span-2 md:ml-auto md:mt-4 md:w-2/3 md:gap-2"
-						>
-							<span class="flex w-full flex-col items-end gap-2 md:col-start-2" key="add button">
-								<SecondaryButton
-									aria-label="Add option"
-									class="w-fit gap-2 md:col-start-2"
-									type="button"
-									@click="addOption(index)"
-									><i-ic-round-add class="text-lg"
-								/></SecondaryButton>
-							</span>
-							<span
-								v-for="(op, opIndex) in contest.options"
-								:key="form.contests[index].optionIndices[opIndex]"
-								class="flex justify-end"
-							>
-								<InputGroup class="w-full md:flex md:justify-end">
-									<span
-										class="flex flex-col items-end text-center md:flex-row md:items-center md:gap-3"
-									>
-										<InputLabel
-											:for="`contest-option-${index}-${opIndex}`"
-											class="w-full text-start"
-											>Contest Option</InputLabel
-										>
-										<TextInput
-											v-model="contest.options[opIndex]"
-											type="text"
-											:id="`contest-option-${index}-${opIndex}`"
-											class="md:w-64"
-										/>
-										<DangerButton
-											aria-label="Remove option"
-											:disabled="contest.options.length <= 2"
-											class="w-fit items-end max-md:mt-2"
-											type="button"
-											@click="removeOption(index, form.contests[index].optionIndices[opIndex])"
-										>
-											<i-ic-round-delete class="text-lg" />
-										</DangerButton>
-									</span>
-									<InputError
-										class="text-right"
-										:message="form.errors[`contests.${index}.options.${opIndex}`]"
-									/>
-								</InputGroup>
-							</span>
-						</TransitionGroup>
-						<span
-							class="mt-2 flex flex-col items-end justify-end gap-8 md:col-start-2"
-							key="contest buttons"
-						>
-							<DangerButton
-								:disabled="form.contests.length <= 1"
-								class="w-fit gap-2 md:col-start-2"
-								type="button"
-								@click="removeContest(index)"
-							>
-								Remove Contest {{ index + 1 }}<i-ic-round-delete class="text-lg" />
-							</DangerButton>
-							<SecondaryButton type="button" @click="addContest(index)" class="w-fit gap-2"
-								>Add Contest<i-ic-round-add class="text-lg"
-							/></SecondaryButton>
-						</span>
-					</li>
-				</TransitionGroup>
-
-				<InputGroup>
-					<InputLabel for="scoring_type">Scoring Type</InputLabel>
-					<SelectInput v-model="form.scoring_type" id="scoring_type" required>
-						<option value="single points">Single Points</option>
-						<option value="confidence points" selected>Confidence Points</option>
-					</SelectInput>
-					<Transition
-						name="fade"
-						mode="out-in"
-						class="col-span-2 row-start-3 mt-2 w-full justify-start break-words text-end md:w-2/3"
-					>
-						<p v-if="form.scoring_type === 'single points'">
-							{{ SINGLE_POINTS_HELP }}
-						</p>
-						<p v-else-if="form.scoring_type === 'confidence points'">
-							{{ CONFIDENCE_POINTS_HELP }}
-						</p>
-					</Transition>
-				</InputGroup>
-			</template>
-			<template #actions>
-				<PrimaryButton :disabled="form.processing">Create Event</PrimaryButton>
-			</template>
-		</FormSection>
+	<AppLayout title="Create Event">
+		<FormTitle title="Create Event" />
+		<EventForm
+			@submitted="submit"
+			:form="form"
+			button-text="Create Event"
+			:creating-or-admin="true"
+			:users="users"
+		/>
 	</AppLayout>
 </template>

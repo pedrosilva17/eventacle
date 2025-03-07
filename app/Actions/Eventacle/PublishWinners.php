@@ -59,6 +59,19 @@ class PublishWinners
                     $score += $prediction['points'];
                 }
             }
+            // Only happens when an admin redeclares winners
+            $existingEntry = LeaderboardEntry::where([
+                ['user_id', gettype($userId) === 'integer' ? $userId : null],
+                ['user_name', $userPredictions[0]['user_name']],
+                ['event_id', $eventId],
+            ])->first();
+
+            if ($existingEntry) {
+                $existingEntry->score = $score;
+                $existingEntry->save();
+
+                continue;
+            }
             $newEntry = LeaderboardEntry::make();
             $newEntry->user_id = gettype($userId) === 'integer' ? $userId : null;
             $newEntry->user_name = $userPredictions[0]['user_name'];

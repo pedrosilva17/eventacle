@@ -4,9 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckEventCreator
+class CheckAdminPrivileges
 {
     /**
      * Handle an incoming request.
@@ -15,12 +16,9 @@ class CheckEventCreator
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        $event = $request->route('event');
-        if (auth()->check() && (auth()->user()->id === $event->creator_id || auth()->user()->is_admin)) {
+        if (Auth::check() && Auth::user()->is_admin) {
             return $next($request);
         }
-
-        return redirect()->route('event.show', $request->route('event'))->with('error', 'You are not the creator of this event!');
+        abort(404);
     }
 }

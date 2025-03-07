@@ -39,6 +39,7 @@ const timeOptions = {
 
 const canEdit = new Date(props.event.start_time) > Date.now();
 const isCreator = page.props.auth.user?.id === props.event.creator_id;
+const isAdmin = page.props.auth.user?.is_admin;
 
 const show = ref(false);
 const openStates = ref(new Array(Object.keys(props.predictionsByContest).length).fill(false));
@@ -139,8 +140,8 @@ const copyEventLink = async () => {
 					</div>
 				</div>
 				<div class="flex w-full flex-col gap-3 sm:flex-row">
-					<div v-if="canEdit" class="flex flex-col gap-3 sm:flex-row">
-						<PrimaryButton v-if="canEdit" :href="route('event.prediction-form', event)" class="w-fit">{{
+					<div v-if="canEdit || isAdmin" class="flex flex-col gap-3 sm:flex-row">
+						<PrimaryButton :href="route('event.prediction', event)" class="w-fit">{{
 							hasPrediction ? 'Change prediction' : 'Make a Prediction'
 						}}</PrimaryButton>
 						<OutlineButton @click="copyEventLink" class="w-fit">
@@ -150,11 +151,14 @@ const copyEventLink = async () => {
 							</Transition>
 						</OutlineButton>
 					</div>
-					<div v-if="isCreator" class="flex flex-1 flex-row gap-3 sm:justify-end">
-						<OutlineButton v-if="canEdit" :href="route('event.edit-form', event)">
+					<div v-if="isCreator || isAdmin" class="flex flex-1 flex-row gap-3 sm:justify-end">
+						<OutlineButton v-if="canEdit || isAdmin" :href="route('event.edit', event)">
 							<i-ic-round-edit aria-label="Edit event" class="text-lg" />
 						</OutlineButton>
-						<PrimaryButton v-if="!canEdit && !event.has_winners" :href="route('event.winners-form', event)">
+						<PrimaryButton
+							v-if="(!canEdit && !event.has_winners) || isAdmin"
+							:href="route('event.winners', event)"
+						>
 							Finish Event
 						</PrimaryButton>
 						<DangerButton @click="show = !show">

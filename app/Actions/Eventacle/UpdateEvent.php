@@ -5,6 +5,7 @@ namespace App\Actions\Eventacle;
 use App\Models\Contest;
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateEvent
@@ -15,12 +16,14 @@ class UpdateEvent
     public static function update(array $input): void
     {
         Validator::make($input, [
+            'name' => ['required', 'string', 'max:70'],
             'description' => ['nullable', 'string', 'max:300'],
             'start_time' => ['required', 'date', 'after:'.now($input['user_timezone'])->toDateTimeString()],
-            'user_timezone' => ['required', 'string'],
             'contests' => ['required', 'array'],
             'contests.*.name' => ['required_with:contests', 'string', 'max:120'],
             'contests.*.description' => ['nullable', 'string', 'max:300'],
+            'contests.*.options' => ['required_with:contests', 'array'],
+            'contests.*.options.*' => ['required_with:contests', 'string', 'max:70'],
         ], [
             'required' => 'This field is required.',
             'required_with' => 'This field is required.',
@@ -33,19 +36,41 @@ class UpdateEvent
         $utcTime = $startTime->setTimezone('UTC')->toISOString();
 
         $event->update([
+            'name' => $input['name'],
             'description' => $input['description'] ?? null,
             'start_time' => $utcTime,
+            'scoring_type' => $input['scoring_type'],
         ]);
+        $event->creator_id = $input['creator_id'];
+        $event->save();
 
         foreach ($input['contests'] as $contestInfo) {
-            $contest = Contest::find($contestInfo['id']);
-
-            if ($contest && $contest->event_id === $event->id) {
-                $contest->update([
+            if (! array_key_exists('id', $contestInfo)) {
+                $contest = Contest::make([
                     'name' => $contestInfo['name'],
                     'description' => $contestInfo['description'] ?? null,
+                    'options' => implode('|SEP|', str_replace('|SEP|', '', $contestInfo['options'])),
                 ]);
+                $contest->event_id = $event->id;
+                $contest->save();
+            } else {
+                $contest = Contest::find($contestInfo['id']);
+
+                if ($contest && $contest->event_id === $event->id) {
+                    $contest->update([
+                        'name' => $contestInfo['name'],
+                        'description' => $contestInfo['description'] ?? null,
+                        'options' => implode('|SEP|', str_replace('|SEP|', '', $contestInfo['options'])),
+                    ]);
+                }
             }
+        }
+        $deletedContestIds = array_diff(
+            $event->contests->pluck('id')->toArray(),
+            Arr::pluck($input['contests'], 'id')
+        );
+        foreach ($deletedContestIds as $contestId) {
+            Contest::destroy($contestId);
         }
     }
 }
