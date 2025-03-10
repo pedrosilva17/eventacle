@@ -60,7 +60,7 @@ const displayDots = (page) => {
 
 const deleteRow = () => {
 	show.value = false;
-	router.delete(route(`${props.resource}.delete`, { [props.resource]: activeItem.value }));
+	router.delete(route(`admin.${props.resource}.delete`, { [props.resource]: activeItem.value }));
 	activeItem.value = null;
 };
 </script>
@@ -103,7 +103,9 @@ const deleteRow = () => {
 				</div>
 				<div class="flex gap-2">
 					<Link
+						id="first-page"
 						:href="items.first_page_url"
+						alt="First Page"
 						:class="[
 							'rounded-md px-2 py-1 text-sm transition',
 							'bg-white-light enabled:hover:bg-white-dark dark:bg-black-light enabled:dark:hover:bg-black-dark',
@@ -111,7 +113,7 @@ const deleteRow = () => {
 						]"
 						:disabled="items.current_page === 1"
 					>
-						<i-ic-round-first-page class="text-lg" />
+						<i-ic-round-first-page aria-labelledby="first-page" class="text-lg" />
 					</Link>
 					<template v-for="page in items.last_page" :key="page">
 						<Link
@@ -134,7 +136,9 @@ const deleteRow = () => {
 						</span>
 					</template>
 					<Link
+						id="last-page"
 						:href="items.last_page_url"
+						alt="Last Page"
 						:class="[
 							'rounded-md px-2 py-1 text-sm transition',
 							'bg-white-light enabled:hover:bg-white-dark dark:bg-black-light enabled:dark:hover:bg-black-dark',
@@ -142,7 +146,7 @@ const deleteRow = () => {
 						]"
 						:disabled="items.current_page === items.last_page"
 					>
-						<i-ic-round-last-page class="text-lg" />
+						<i-ic-round-last-page aria-labelledby="last-page" class="text-lg" />
 					</Link>
 				</div>
 			</div>

@@ -10,6 +10,7 @@ use App\Http\Middleware\CheckAdminPrivileges;
 use App\Http\Middleware\CheckEventCreator;
 use App\Http\Middleware\CheckEventTiming;
 use App\Http\Middleware\CheckExistingWinners;
+use App\Models\ActivityLog;
 use App\Models\Event;
 use App\Models\Prediction;
 use App\Models\User;
@@ -111,23 +112,10 @@ Route::middleware([
     Route::middleware(CheckAdminPrivileges::class)->group(function () {
         Route::prefix('/admin')->name('admin')->group(function () {
             Route::get('/panel', function () {
-                $now = now();
-                $hourAgo = $now->copy()->subHour();
-                $dayAgo = $now->copy()->subDay();
-                $weekAgo = $now->copy()->subWeek();
-
                 return Inertia::render('Admin/Show', [
                     'stats' => [
-                        'events' => [
-                            'hour' => Event::where('created_at', '>=', $hourAgo)->count(),
-                            'day' => Event::where('created_at', '>=', $dayAgo)->count(),
-                            'week' => Event::where('created_at', '>=', $weekAgo)->count(),
-                        ],
-                        'predictions' => [
-                            'hour' => Prediction::where('created_at', '>=', $hourAgo)->count(),
-                            'day' => Prediction::where('created_at', '>=', $dayAgo)->count(),
-                            'week' => Prediction::where('created_at', '>=', $weekAgo)->count(),
-                        ],
+                        'events' => ActivityLog::getModelPeriodicStats(Event::class),
+                        'predictions' => ActivityLog::getModelPeriodicStats(Prediction::class),
                     ],
                 ]);
             })->name('.panel');
@@ -175,6 +163,11 @@ Route::middleware([
                     'users' => User::orderBy('name')->get(),
                 ]);
             })->name('.event.edit');
+            Route::delete('/event/{event}/delete', function (Event $event) {
+                $event->delete();
+
+                return redirect()->route('admin.events')->with('success', 'Event deleted successfully.');
+            })->name('.event.delete');
         });
     });
 });

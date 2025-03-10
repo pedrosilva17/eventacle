@@ -72,16 +72,16 @@ const creationDate = new Date(page.props.auth.user.created_at);
 						<p class="text-base">Events foreseen</p>
 					</li>
 					<li class="flex h-full flex-col items-center text-2xl">
-						<p class="flex flex-row items-center gap-3">
-							{{ $page.props.podiums[0] }}
+						<p class="flex min-w-16 flex-row items-center justify-between gap-3">
+							<span class="flex w-4 justify-center">{{ $page.props.podiums[0] }}</span>
 							<i-ic-round-emoji-events aria-label="First places" class="text-amber-400" />
 						</p>
-						<p class="flex flex-row items-center gap-3">
-							{{ $page.props.podiums[1] }}
+						<p class="flex min-w-16 flex-row items-center justify-between gap-3">
+							<span class="flex w-4 justify-center">{{ $page.props.podiums[1] }}</span>
 							<i-ic-round-emoji-events aria-label="Second places" class="text-gray-400" />
 						</p>
-						<p class="flex flex-row items-center gap-3">
-							{{ $page.props.podiums[2] }}
+						<p class="flex min-w-16 flex-row items-center justify-between gap-3">
+							<span class="flex w-4 justify-center">{{ $page.props.podiums[2] }}</span>
 							<i-ic-round-emoji-events aria-label="Third places" class="text-amber-800" />
 						</p>
 						<p class="mt-3 text-base">Podiums conquered</p>

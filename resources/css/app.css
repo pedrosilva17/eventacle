@@ -48,6 +48,7 @@
 
 html {
   scrollbar-color: theme('colors.primary.DEFAULT') theme('colors.white.dark');
+  scrollbar-width: thin;
 }
 
 :root {

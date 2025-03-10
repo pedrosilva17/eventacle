@@ -15,13 +15,13 @@ class Event extends Model
 
     protected $fillable = ['name', 'description', 'start_time', 'scoring_type'];
 
-    /**
-     * Automatically generate a url slug when creating an event.
-     */
     protected static function boot()
     {
         parent::boot();
 
+        /**
+         * Automatically generate a url slug when creating an event.
+         */
         static::creating(function ($event) {
             if (empty($event->slug)) {
                 $event->slug =
@@ -33,6 +33,25 @@ class Event extends Model
                     '-'.
                     md5(Str::random(16).$event->name.$event->creator_id);
             }
+        });
+
+        /**
+         * Create an activity log when an event is created.
+         */
+        static::created(function ($event) {
+            ActivityLog::create([
+                'model_id' => $event->id,
+                'model_type' => get_class($event),
+            ]);
+        });
+
+        /**
+         * Nullify the model_id in the activity log when an event is deleted.
+         */
+        static::deleted(function ($event) {
+            ActivityLog::where('model_type', get_class($event))
+                ->where('model_id', $event->id)
+                ->update(['model_id' => null]);
         });
     }
 

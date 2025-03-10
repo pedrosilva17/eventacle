@@ -32,15 +32,13 @@ const cards = [
 			</template>
 		</DashboardSection>
 
-		<DashboardSection title="Website Statistics" class="mt-6">
+		<DashboardSection title="Website Stats" class="mt-6">
 			<template #icon>
 				<i-ic-round-analytics aria-labelledby="website-stats" />
 			</template>
 			<template #content>
-				<div class="flex flex-col gap-3">
-					<StatsCard title="Events Created" :stats="stats.events" />
-					<StatsCard title="Predictions Made" :stats="stats.predictions" />
-				</div>
+				<StatsCard title="Events created" :stats="stats.events" />
+				<StatsCard title="Events predicted" :stats="stats.predictions" />
 			</template>
 		</DashboardSection>
 	</AppLayout>

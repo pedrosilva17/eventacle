@@ -12,6 +12,30 @@ class Prediction extends Model
 
     protected $fillable = ['prediction_name', 'points'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * Create an activity log when a prediction is created.
+         */
+        static::created(function ($event) {
+            ActivityLog::create([
+                'model_id' => $event->id,
+                'model_type' => get_class($event),
+            ]);
+        });
+
+        /**
+         * Nullify the model_id in the activity log when a prediction is deleted.
+         */
+        static::deleted(function ($event) {
+            ActivityLog::where('model_type', get_class($event))
+                ->where('model_id', $event->id)
+                ->update(['model_id' => null]);
+        });
+    }
+
     /**
      * Get the contest this prediction was made for.
      */
