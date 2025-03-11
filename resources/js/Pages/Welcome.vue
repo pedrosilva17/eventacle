@@ -24,7 +24,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 		</PrimaryButton>
 		<div class="ml-[50%] mt-8 flex w-screen -translate-x-1/2 flex-col">
 			<LandingPageContainer>
-				<template #heading> Zero bets - all brags </template>
+				<template #heading> No spending - much bragging </template>
 				<template #content>
 					<p class="flex max-w-2xl text-center text-lg">
 						Whether you're into sports, award shows or the regional Magic the Gathering tournament,
@@ -94,7 +94,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 								<i-ic-round-group class="text-2xl sm:text-4xl" />
 							</template>
 							<template #content>
-								No betting means anyone can participate and enjoy friendly competition!
+								No money betting means anyone can participate and enjoy friendly competition!
 							</template>
 						</LandingPageCard>
 					</div>

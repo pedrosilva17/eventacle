@@ -15,7 +15,6 @@ else
 fi
 
 if [ $? -eq 0 ]; then
-  ./sail artisan config:clear
 
   if [ ! -f "database/database.sqlite" ]; then
     touch database/database.sqlite
