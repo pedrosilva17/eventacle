@@ -41,7 +41,7 @@ function submit() {
 		<EventForm
 			@submitted="submit"
 			:form="form"
-			button-text="Create Event"
+			button-text="Edit Event"
 			:creating-or-admin="$page.props.auth.user?.is_admin"
 			:users="users"
 		/>

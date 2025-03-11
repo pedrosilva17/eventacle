@@ -1,14 +1,18 @@
 <script setup>
+import DangerButton from '@/Components/DangerButton.vue';
+import DialogModal from '@/Components/DialogModal.vue';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import NumberInput from '@/Components/NumberInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import RadioInput from '@/Components/RadioInput.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { CONFIDENCE_POINTS_HELP, SINGLE_POINTS_HELP } from '@/Lib/Utils';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
 	event: {
@@ -18,6 +22,8 @@ const props = defineProps({
 		type: [Number, String, null],
 	},
 });
+
+const show = ref(false);
 
 const userPredictions = {};
 const userPoints = {};
@@ -38,6 +44,15 @@ const form = useForm({
 	points: userPoints,
 	event: props.event,
 });
+
+const deletePredictions = () => {
+	router.delete(
+		route('event.delete-user-predictions', {
+			event: props.event,
+			userId: props.userId,
+		}),
+	);
+};
 
 function submit() {
 	form.points = form.event.scoring_type === 'confidence points' ? form.points : {};
@@ -110,7 +125,24 @@ function submit() {
 			</template>
 			<template #actions>
 				<PrimaryButton :disabled="form.processing" class="w-fit">Submit Prediction</PrimaryButton>
+				<DangerButton
+					v-if="$page.props.auth.user && Object.keys(userPredictions).length !== 0"
+					@click="show = !show"
+					class="ml-3"
+				>
+					<i-ic-round-delete aria-label="Delete event" class="text-lg" />
+				</DangerButton>
 			</template>
 		</FormSection>
+		<DialogModal :show="show" @close="show = false">
+			<template #title>Delete Event</template>
+			<template #content> Are you sure you want to delete your predictions? </template>
+			<template #footer>
+				<div class="flex gap-3">
+					<SecondaryButton @click="show = false">Cancel</SecondaryButton>
+					<DangerButton @click="deletePredictions"> Delete </DangerButton>
+				</div>
+			</template>
+		</DialogModal>
 	</AppLayout>
 </template>

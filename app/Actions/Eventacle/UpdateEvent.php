@@ -20,15 +20,16 @@ class UpdateEvent
             'description' => ['nullable', 'string', 'max:300'],
             'start_time' => ['required', 'date', 'after:'.now($input['user_timezone'])->toDateTimeString()],
             'contests' => ['required', 'array'],
-            'contests.*.name' => ['required_with:contests', 'string', 'max:120'],
+            'contests.*.name' => ['required_with:contests', 'string', 'max:120', 'distinct:ignore_case'],
             'contests.*.description' => ['nullable', 'string', 'max:300'],
             'contests.*.options' => ['required_with:contests', 'array'],
-            'contests.*.options.*' => ['required_with:contests', 'string', 'max:70'],
+            'contests.*.options.*' => ['required_with:contests', 'string', 'max:70', 'distinct:ignore_case'],
         ], [
             'required' => 'This field is required.',
             'required_with' => 'This field is required.',
             'after' => 'Choose a date and time in the future.',
             'max' => 'Keep this field under :max characters.',
+            'distinct' => 'Each option must have a unique name.',
         ])->validate();
 
         $event = Event::where('id', $input['event']['id'])->first();

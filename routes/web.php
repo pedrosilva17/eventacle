@@ -61,6 +61,15 @@ Route::prefix('/event')->name('event')->group(function () {
             return redirect()->route(Auth::user()->is_admin ? 'admin.events' : 'dashboard')->with('success', 'Event deleted successfully.');
         })->middleware(CheckEventCreator::class)->name('.delete');
 
+        Route::delete('/{event}/delete-user-predictions/{userId}', function (Event $event, int $userId) {
+            $predictions = $event->predictions()->where('user_id', $userId)->get();
+            DB::transaction(function () use ($predictions) {
+                $predictions->each->delete();
+            });
+
+            return redirect()->route('event.show', $event)->with('success', 'User\'s predictions deleted successfully.');
+        })->middleware(CheckEventTiming::class.':predictions')->name('.delete-user-predictions');
+
         Route::get('/{event}/winners', function (Event $event) {
             return Inertia::render('Event/Winners', [
                 'event' => $event->load('contests', 'predictions'),
