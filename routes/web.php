@@ -123,6 +123,7 @@ Route::middleware([
             Route::get('/panel', function () {
                 return Inertia::render('Admin/Show', [
                     'stats' => [
+                        'users' => ActivityLog::getModelPeriodicStats(User::class),
                         'events' => ActivityLog::getModelPeriodicStats(Event::class),
                         'predictions' => ActivityLog::getModelPeriodicStats(Prediction::class),
                     ],

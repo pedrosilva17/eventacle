@@ -37,8 +37,9 @@ const cards = [
 				<i-ic-round-analytics aria-labelledby="website-stats" />
 			</template>
 			<template #content>
+				<StatsCard title="Users registered" :stats="stats.users" />
 				<StatsCard title="Events created" :stats="stats.events" />
-				<StatsCard title="Events predicted" :stats="stats.predictions" />
+				<StatsCard title="Predictions made" :stats="stats.predictions" />
 			</template>
 		</DashboardSection>
 	</AppLayout>

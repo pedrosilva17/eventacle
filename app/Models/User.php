@@ -68,6 +68,25 @@ class User extends Authenticatable
     {
         parent::boot();
 
+        /**
+         * Create an activity log when a user is created.
+         */
+        static::created(function ($user) {
+            ActivityLog::create([
+                'model_id' => $user->id,
+                'model_type' => get_class($user),
+            ]);
+        });
+
+        /**
+         * Nullify the model_id in the activity log when a user is deleted.
+         */
+        static::deleted(function ($user) {
+            ActivityLog::where('model_type', get_class($user))
+                ->where('model_id', $user->id)
+                ->update(['model_id' => null]);
+        });
+
         static::updated(function ($user) {
             if ($user->isDirty('name')) {
                 \DB::table('predictions')
