@@ -24,7 +24,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 		</PrimaryButton>
 		<div class="ml-[50%] mt-8 flex w-screen -translate-x-1/2 flex-col">
 			<LandingPageContainer>
-				<template #heading> No spending - much bragging </template>
+				<template #heading> No spending - just bragging </template>
 				<template #content>
 					<p class="flex max-w-2xl text-center text-lg">
 						Whether you're into sports, award shows or the regional Magic the Gathering tournament,
@@ -71,7 +71,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 				<template #heading> What makes us unique </template>
 				<template #content>
 					<div class="mx-auto grid w-fit grid-cols-1 justify-around gap-6 lg:grid-cols-3">
-						<LandingPageCard title="No money">
+						<LandingPageCard title="No money involved">
 							<template #icon>
 								<i-ic-round-money-off class="text-2xl sm:text-4xl" />
 							</template>

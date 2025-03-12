@@ -1,15 +1,15 @@
-<h1 align="center"> Eventacle </h1>
-
 <div align="center">
     <img src="public/images/eventacle-logo-small.png" alt="Eventacle Logo" width="250"/>
 </div>
-<br/>
 
-Create events, predict their results and compete with your friends for the ultimate prize: bragging rights.
+<h1 align="center"> Eventacle </h1>
+<p align="center">Create events, predict their results and compete with your friends for the ultimate prize: bragging rights.</p>
+
+------
 
 ## About
 
-**Eventacle** transforms prediction contests into a hassle-free, spending-free experience. Create events, track predictions, and settle once and for all who has the sharpest forecasting skills - all without losing a dime.
+**Eventacle** transforms prediction contests into a hassle-free, spending-free experience. If you enjoy guessing the outcomes of various events such as sports, cerimonies or competitions (especially with friends), this website is for you.
 
 ## Core Features
 
@@ -19,9 +19,9 @@ Create events, predict their results and compete with your friends for the ultim
 
 ## What Makes Eventacle Unique
 
-- **No Financial Risk** - Pure entertainment without monetary involvement
-- **Diverse Events** - Not limited to sports, predict anything
-- **Inclusive Platform** - Suitable for all ages and interests
+- **No money involved** - Relax and have fun, with no money on the line
+- **Diverse events** - Not limited to sports, not limited to known events
+- **Fun for everyone** - Suitable for all ages and interests
 
 ## Self-hosting
 

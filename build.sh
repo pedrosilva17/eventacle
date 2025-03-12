@@ -19,6 +19,7 @@ if [ $? -eq 0 ]; then
   if [ ! -f "database/database.sqlite" ]; then
     touch database/database.sqlite
     php artisan migrate --force
+    php artisan db:seed --force
   fi
 
   npm ci && npm run build
