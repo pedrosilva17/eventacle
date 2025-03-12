@@ -43,6 +43,9 @@ class Event extends Model
                 'model_id' => $event->id,
                 'model_type' => get_class($event),
             ]);
+            $user = User::find($event->creator_id);
+            $user->num_events_created += 1;
+            $user->save();
         });
 
         /**

@@ -50,12 +50,16 @@ cp .env.example .env
 ./build.sh && ./start.sh
 ```
 
-4. Run migrations and seed the database:
-```bash
-./sail artisan migrate:fresh && ./sail artisan db:seed
-```
-
 The application should now be running at `http://localhost:3000`. Enjoy!
+
+## Screenshots
+
+![Home Page](screenshots/home-page.png)
+![Home Page](screenshots/dashboard-page.png)
+![Home Page](screenshots/create-event-page.png)
+![Home Page](screenshots/event-page.png)
+![Home Page](screenshots/event-page-2.png)
+![Home Page](screenshots/predict-page.png)
 
 ## The Name
 

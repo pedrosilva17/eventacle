@@ -4,7 +4,6 @@ namespace App\Actions\Eventacle;
 
 use App\Models\Contest;
 use App\Models\Event;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -55,10 +54,6 @@ class CreateEvent
                 $newContest->save();
             }
         }
-
-        $creator = User::find($input['creator_id']);
-        $creator->num_events_created += 1;
-        $creator->save();
 
         return $event;
     }

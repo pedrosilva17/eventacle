@@ -10,7 +10,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 	<AppLayout title="Welcome">
 		<Transition name="slide-fade" mode="out-in" appear>
 			<h1 class="mb-8 mt-12 flex w-full flex-col items-center text-5xl sm:text-8xl">
-				No spending.
+				No betting.
 				<Transition name="slide-fade" mode="out-in" style="transition-delay: 0.5s" appear>
 					<span class="inline-flex">No pressure.</span>
 				</Transition>
@@ -19,9 +19,6 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 				</Transition>
 			</h1>
 		</Transition>
-		<PrimaryButton :href="route('register')" class="group mx-auto -mb-6 mt-2 w-fit">
-			<span class="text-2xl group-hover:animate-pulse">Register</span>
-		</PrimaryButton>
 		<div class="ml-[50%] mt-8 flex w-screen -translate-x-1/2 flex-col">
 			<LandingPageContainer>
 				<template #heading> No spending - just bragging </template>
@@ -29,7 +26,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 					<p class="flex max-w-2xl text-center text-lg">
 						Whether you're into sports, award shows or the regional Magic the Gathering tournament,
 						Eventacle lets you test your prediction skills - no money involved. Create events, climb
-						leaderboards, and prove you're the best at forecasting the future!
+						leaderboards, and prove you're the best at predicting the future!
 					</p>
 				</template>
 			</LandingPageContainer>
