@@ -12,7 +12,7 @@ const back = () => window.history.back();
 		<div
 			class="relative mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg dark:bg-black"
 		>
-			<OutlineButton @click="back">
+			<OutlineButton @click="back" aria-label="Back">
 				<i-ic-round-arrow-back class="text-lg" />
 			</OutlineButton>
 			<slot />

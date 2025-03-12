@@ -67,7 +67,7 @@ const deleteRow = () => {
 
 <template>
 	<Container>
-		<div class="flex max-h-[calc(100vh-346px)] w-full flex-col gap-4 overflow-hidden p-4">
+		<div class="flex h-[calc(100vh-346px)] min-h-64 w-full flex-col gap-4 overflow-hidden p-4">
 			<div class="flex items-center justify-between">
 				<h1 class="text-lg font-bold sm:text-2xl">
 					Manage {{ title ? title : resource.charAt(0).toUpperCase() + resource.slice(1) + 's' }}
@@ -105,7 +105,7 @@ const deleteRow = () => {
 					<Link
 						id="first-page"
 						:href="items.first_page_url"
-						alt="First Page"
+						aria-label="First Page"
 						:class="[
 							'rounded-md px-2 py-1 text-sm transition',
 							'bg-white-light enabled:hover:bg-white-dark dark:bg-black-light enabled:dark:hover:bg-black-dark',
@@ -138,7 +138,7 @@ const deleteRow = () => {
 					<Link
 						id="last-page"
 						:href="items.last_page_url"
-						alt="Last Page"
+						aria-label="Last Page"
 						:class="[
 							'rounded-md px-2 py-1 text-sm transition',
 							'bg-white-light enabled:hover:bg-white-dark dark:bg-black-light enabled:dark:hover:bg-black-dark',

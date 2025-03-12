@@ -15,7 +15,7 @@ defineProps({
 <template>
 	<Link
 		:href="route('event.show', event)"
-		class="group rounded-lg outline-none transition duration-300 ease-in-out focus:border-primary-extradark focus:ring-2 focus:ring-primary-extradark focus:ring-offset-2 focus:ring-offset-white dark:border-white-dark dark:focus:border-primary-extralight dark:focus:ring-primary-extralight dark:focus:ring-offset-black"
+		class="group rounded-lg shadow-sm outline-none transition duration-300 ease-in-out focus:border-primary-extradark focus:ring-2 focus:ring-primary-extradark focus:ring-offset-2 focus:ring-offset-white dark:border-white-dark dark:focus:border-primary-extralight dark:focus:ring-primary-extralight dark:focus:ring-offset-black"
 	>
 		<div
 			class="flex min-h-32 flex-1 flex-col justify-between rounded-lg bg-white-light py-4 text-xl transition duration-300 ease-in-out hover:bg-primary-extralight group-focus:bg-primary-extralight sm:flex-row sm:px-6 dark:bg-black-light dark:hover:bg-primary-extradark dark:group-focus:bg-primary-extradark"

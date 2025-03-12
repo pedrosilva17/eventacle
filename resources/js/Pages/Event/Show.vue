@@ -140,7 +140,7 @@ const copyEventLink = async () => {
 					</div>
 				</div>
 				<div class="flex w-full flex-col gap-3 sm:flex-row">
-					<div v-if="canEdit || isAdmin" class="flex flex-col gap-3 sm:flex-row">
+					<div v-if="canEdit || isAdmin" class="flex flex-row gap-3">
 						<PrimaryButton :href="route('event.prediction', event)" class="w-fit">{{
 							hasPrediction ? 'Change prediction' : 'Make a Prediction'
 						}}</PrimaryButton>
@@ -152,15 +152,15 @@ const copyEventLink = async () => {
 						</OutlineButton>
 					</div>
 					<div v-if="isCreator || isAdmin" class="flex flex-1 flex-row gap-3 sm:justify-end">
-						<OutlineButton v-if="canEdit || isAdmin" :href="route('event.edit', event)">
-							<i-ic-round-edit aria-label="Edit event" class="text-lg" />
-						</OutlineButton>
 						<PrimaryButton
 							v-if="(!canEdit && !event.has_winners) || isAdmin"
 							:href="route('event.winners', event)"
 						>
 							Finish Event
 						</PrimaryButton>
+						<OutlineButton v-if="canEdit || isAdmin" :href="route('event.edit', event)">
+							<i-ic-round-edit aria-label="Edit event" class="text-lg" />
+						</OutlineButton>
 						<DangerButton @click="show = !show">
 							<i-ic-round-delete aria-label="Delete event" class="text-lg" />
 						</DangerButton>

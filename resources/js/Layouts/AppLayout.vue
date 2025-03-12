@@ -281,8 +281,8 @@ watch(
 				>
 					<div class="flex w-full flex-row gap-3">
 						<ApplicationLogo class="my-auto h-fit w-32" />
-						<section class="my-auto flex h-fit flex-col">
-							<h3 class="font-bold">Eventacle</h3>
+						<div class="my-auto flex h-fit flex-col">
+							<p class="font-bold">Eventacle</p>
 							<div class="flex flex-col gap-2 text-sm text-black-light dark:text-white-dark">
 								<p class="italic">
 									Create events, predict their results and compete for the ultimate prize: bragging
@@ -300,7 +300,7 @@ watch(
 									</TextLink>
 								</p>
 							</div>
-						</section>
+						</div>
 					</div>
 					<ul class="my-auto flex h-fit w-full flex-col items-end gap-2 sm:flex-row sm:justify-end sm:gap-6">
 						<li>
